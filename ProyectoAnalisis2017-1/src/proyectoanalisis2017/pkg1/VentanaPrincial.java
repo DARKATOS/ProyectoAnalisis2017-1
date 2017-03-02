@@ -5,7 +5,7 @@
  */
 package proyectoanalisis2017.pkg1;
 
-import com.sun.webkit.CursorManager;
+//import com.sun.webkit.CursorManager;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
@@ -43,10 +43,10 @@ public class VentanaPrincial extends javax.swing.JFrame {
         pnlVentana1.setX2Ciudad((int) (this.getWidth() * 0.8));
         pnlVentana1.setX1Componente((int) (this.getWidth() * 0.8));
         pnlVentana1.setX2Componete(this.getWidth() - (int) (this.getWidth() * 0.1));
-        pnlVentana1.setAltura(this.getHeight() - 100);
+        pnlVentana1.setAltura(this.getHeight());
         pnlVentana1.crearComponentes();
         crearCiudad();
-
+        
         pnlVentana1.setCiudad(ciudad);
     }
 
@@ -63,6 +63,12 @@ public class VentanaPrincial extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        pnlVentana1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                pnlVentana1KeyReleased(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -108,6 +114,10 @@ public class VentanaPrincial extends javax.swing.JFrame {
             Logger.getLogger(VentanaPrincial.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void pnlVentana1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnlVentana1KeyReleased
+        // TODO add your handling code here:sd
+    }//GEN-LAST:event_pnlVentana1KeyReleased
 
     /**
      * @param args the command line arguments
@@ -181,7 +191,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
                 }
             }
 
-            this.ciudad = new Ciudad(matriz, this.nCiudad, this.mCiudad, (int) ((this.getWidth() * 0.8) / this.mCiudad), (int) ((this.getHeight() - 100) / this.nCiudad));
+            this.ciudad = new Ciudad(matriz, this.nCiudad, this.mCiudad, (int) ((this.getWidth() * 0.8) / this.mCiudad), (int) ((this.getHeight()) / this.nCiudad));
         } else if (option == 1) {
             try {
                 LeerCiudad(JOptionPane.showInputDialog("Ingresar nombre"));

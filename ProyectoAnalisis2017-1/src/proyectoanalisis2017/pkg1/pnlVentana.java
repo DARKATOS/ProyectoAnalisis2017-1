@@ -93,7 +93,7 @@ public class pnlVentana extends javax.swing.JPanel {
     }//GEN-LAST:event_formMouseClicked
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
-        System.out.println("proyectoanalisis2017.pkg1.pnlVentana.formMousePressed()");
+
         if (evt.getX() > this.x1Componente && evt.getX() < this.x2Componete) {
             for (int i = 0; i < this.lstComponente.size(); i++) {
                 if (this.lstComponente.get(i).area.contains(new Point(evt.getX(), evt.getY()))) {
@@ -105,7 +105,7 @@ public class pnlVentana extends javax.swing.JPanel {
     }//GEN-LAST:event_formMousePressed
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
-        if (this.estaSelecionadoComponente && evt.getX() > this.x1Ciudad && evt.getX() < this.x2Ciudad-50&&evt.getY()<this.altura-70) {
+        if (this.estaSelecionadoComponente) {
             this.xImgSelecionada = evt.getX();
             this.yImgSelecionada = evt.getY();
             repaint();
@@ -114,14 +114,19 @@ public class pnlVentana extends javax.swing.JPanel {
 
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
         if (this.estaSelecionadoComponente) {
-            this.estaSelecionadoComponente = false;
+            try {
 
-            this.xImgSelecionada = 0;
-            this.yImgSelecionada = 0;
-            int auxN = evt.getY() / this.ciudad.altoCampo;
-            int auxM = evt.getX() / this.ciudad.anchoCampo;
-            this.ciudad.matrizCiudad[auxN][auxM] = this.tipoSeleccionado;
-            this.tipoSeleccionado = 1;///__________________________________________________________asAsdasd
+                this.estaSelecionadoComponente = false;
+                this.xImgSelecionada = 0;
+                this.yImgSelecionada = 0;
+                int auxN = evt.getY() / this.ciudad.altoCampo;
+                int auxM = evt.getX() / this.ciudad.anchoCampo;
+                this.ciudad.matrizCiudad[auxN][auxM] = this.tipoSeleccionado;
+                this.tipoSeleccionado = 1;///__________________________________________________________asAsdasd
+
+            } catch (Exception e) {
+
+            }
             repaint();
         }
     }//GEN-LAST:event_formMouseReleased
@@ -133,33 +138,37 @@ public class pnlVentana extends javax.swing.JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
-        //Animacion de halar el objeto
-
-        // lineas de referencia de las areas de la aplicacion
-        g.drawRect(0, 0, this.x2Ciudad, this.altura);
-        g.setColor(Color.red);
-        g.drawRect(this.x1Componente, 0, this.x2Componete - this.x1Componente, this.altura);
-        //------Pintar componentes--------
-        pintarComponentes(g);
+         pintarComponentes(g);
         if (ciudad != null) {
+            // lineas de referencia de las areas de la aplicacion
+            g.drawRect(0, 0, this.x2Ciudad, this.altura);
+            //g.setColor(Color.red);
+            // g.drawRect(this.x1Componente, 0, this.x2Componete - this.x1Componente, this.altura);
+            //------Pintar componentes--------
+
+           
+
             pintarCiudad(g);
-        }
-        if (estaSelecionadoComponente) {
-            g.drawImage(new ImageIcon(getClass().getResource("../ImgComponetes/" + this.tipoSeleccionado + ".png")).getImage(), this.xImgSelecionada, this.yImgSelecionada, 100, 100, this);
-            int auxN = this.yImgSelecionada / this.ciudad.altoCampo;
-            int auxM = this.xImgSelecionada / this.ciudad.anchoCampo;
-            System.out.println(auxN+"--"+auxM);
-            g.drawRect(auxM*this.ciudad.anchoCampo,auxN*this.ciudad.altoCampo, this.ciudad.anchoCampo, this.ciudad.altoCampo);
+
+            //pinta la anamiacion de colocar imagen en el tablero
+            if (this.estaSelecionadoComponente && this.xImgSelecionada > this.x1Ciudad && this.xImgSelecionada < this.x2Ciudad && this.yImgSelecionada > 0 && this.yImgSelecionada < this.altura) {
+                g.drawImage(new ImageIcon(getClass().getResource("../ImgComponetes/" + this.tipoSeleccionado + ".png")).getImage(), this.xImgSelecionada, this.yImgSelecionada, 100, 100, this);
+                int auxN = this.yImgSelecionada / this.ciudad.altoCampo;
+                int auxM = this.xImgSelecionada / this.ciudad.anchoCampo;
+                System.out.println(auxN + "--" + auxM);
+                g.drawRect(auxM * this.ciudad.anchoCampo, auxN * this.ciudad.altoCampo, this.ciudad.anchoCampo, this.ciudad.altoCampo);
+            }
         }
     }
 
     public void crearComponentes() {
         System.out.println(this.x1Componente);
-        this.lstComponente.add(new Componente(this.idContador++, 1, "../ImgComponetes/1.png", this.x1Componente + 20, this.idContador * 100, 100, 100));
-        this.lstComponente.add(new Componente(this.idContador++, 2, "../ImgComponetes/2.png", this.x1Componente + 20, this.idContador * 100, 100, 100));
-        this.lstComponente.add(new Componente(this.idContador++, 3, "../ImgComponetes/3.png", this.x1Componente + 20, this.idContador * 100, 100, 100));
-        this.lstComponente.add(new Componente(this.idContador++, 4, "../ImgComponetes/4.png", this.x1Componente + 20, this.idContador * 100, 100, 100));
-        this.lstComponente.add(new Componente(this.idContador++, 0, "../ImgComponetes/0.png", this.x1Componente + 20, this.idContador * 100, 100, 100));
+        int auxAltura=this.altura/18;
+        this.lstComponente.add(new Componente(this.idContador++, 1, "../ImgComponetes/1.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
+        this.lstComponente.add(new Componente(this.idContador++, 2, "../ImgComponetes/2.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
+        this.lstComponente.add(new Componente(this.idContador++, 3, "../ImgComponetes/3.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
+        this.lstComponente.add(new Componente(this.idContador++, 4, "../ImgComponetes/4.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
+        this.lstComponente.add(new Componente(this.idContador++, 0, "../ImgComponetes/0.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
 
     }
 
@@ -193,6 +202,9 @@ public class pnlVentana extends javax.swing.JPanel {
 
     public void setCiudad(Ciudad ciudad) {
         this.ciudad = ciudad;
+        this.x2Ciudad = this.ciudad.anchoCampo * this.ciudad.n;
+        this.x1Componente = this.ciudad.anchoCampo * this.ciudad.n;
+        repaint();
     }
 
     private void pintarCiudad(Graphics g) {
