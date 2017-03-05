@@ -202,7 +202,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
             String [][] matriz = new String[this.nCiudad][this.mCiudad];
             for (int i = 0; i < this.nCiudad; i++) {
                 for (int j = 0; j < this.mCiudad; j++) {
-                    matriz[i][j] = "";
+                    matriz[i][j] = "0";
                 }
             }
 
