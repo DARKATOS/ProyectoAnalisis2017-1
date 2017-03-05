@@ -46,7 +46,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
         //pnlVentana1.setBounds(0, 0, (int) (this.getWidth() * 0.9), this.getHeight());
         pnlVentana1.setX2Ciudad((int) (this.getWidth() * 0.8));
         pnlVentana1.setX1Componente((int) (this.getWidth() * 0.8));
-        pnlVentana1.setX2Componete(this.getWidth() - (int) (this.getWidth() * 0.1));
+        pnlVentana1.setX2Componete(this.getWidth() - (int) (this.getWidth() * 0.05));
         pnlVentana1.setAltura(this.getHeight());
         pnlVentana1.crearComponentes();
         crearCiudad();
