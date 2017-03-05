@@ -42,6 +42,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
             cargarCiudad();
         } else {
             crearCiudad();
+            System.out.println("as");
         }
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
