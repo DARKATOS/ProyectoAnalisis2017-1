@@ -32,11 +32,17 @@ public class VentanaPrincial extends javax.swing.JFrame {
     Ciudad ciudad;
     int nCiudad;
     int mCiudad;
+    String matriz[][];
     GraphicsDevice grafica;
 
     public VentanaPrincial() {
         initComponents();
-        
+        int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
+        if (opcion == 1) {
+            cargarCiudad();
+        } else {
+            crearCiudad();
+        }
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
         setResizable(false);
@@ -49,8 +55,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
         pnlVentana1.setX2Componete(this.getWidth() - (int) (this.getWidth() * 0.1));
         pnlVentana1.setAltura(this.getHeight());
         pnlVentana1.crearComponentes();
-        crearCiudad();
-        
+        this.ciudad = new Ciudad(matriz, this.nCiudad, this.mCiudad, (int) ((this.getWidth() * 0.8) / this.mCiudad), (int) ((this.getHeight()) / this.nCiudad));
         pnlVentana1.setCiudad(ciudad);
     }
 
@@ -178,44 +183,40 @@ public class VentanaPrincial extends javax.swing.JFrame {
         oos.writeObject(objeto);
         oos.close();
     }
-
-    private void LeerCiudad(String nombre) throws FileNotFoundException, IOException, ClassNotFoundException {
-        ObjectInputStream ois = null;
-        File f = new File(nombre);
-        FileInputStream fis = new FileInputStream(f);
-        ois = new ObjectInputStream(fis);
-        this.ciudad = (Ciudad) ois.readObject();
-       
-        this.ciudad.anchoCampo=(int) (this.getWidth()*0.8/this.ciudad.m);
-        this.ciudad.altoCampo=this.getHeight()/this.ciudad.n;
-        this.pnlVentana1.setCiudad(ciudad);
-        ois.close();
+    
+    private void cargarCiudad() {
+        FileInputStream fis = null;
+        try {
+            String nombre = JOptionPane.showInputDialog("Ingresar nombre");
+            ObjectInputStream ois;
+            File f = new File(nombre);
+            fis = new FileInputStream(f);
+            ois = new ObjectInputStream(fis);
+            this.ciudad = (Ciudad) ois.readObject();
+            ois.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error no se encontro el archivo");
+        } catch (IOException ex) {
+            System.out.println("Error en el archivo de entrada");
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Error no se encontro la clase");
+        } finally {
+            try {
+                fis.close();
+            } catch (IOException ex) {
+                System.out.println("Error al cerrar el archivo");
+            }
+        }
     }
 
     private void crearCiudad() {
-
-        int option = Integer.parseInt(JOptionPane.showInputDialog("Ingese \n 1 para cargar \n 2 para crear nueva ciudad", this));
-        if (option == 2) {
-
-            this.nCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese n"));
-            this.mCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese m"));
-            String [][] matriz = new String[this.nCiudad][this.mCiudad];
-            for (int i = 0; i < this.nCiudad; i++) {
-                for (int j = 0; j < this.mCiudad; j++) {
-                    matriz[i][j] = "0";
-                }
-            }
-
-            this.ciudad = new Ciudad(matriz, this.nCiudad, this.mCiudad, (int) ((this.getWidth() * 0.8) / this.mCiudad), (int) ((this.getHeight()) / this.nCiudad));
-        } else if (option == 1) {
-            try {
-                LeerCiudad(JOptionPane.showInputDialog("Ingresar nombre"));
-            } catch (IOException ex) {
-                Logger.getLogger(VentanaPrincial.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(VentanaPrincial.class.getName()).log(Level.SEVERE, null, ex);
+        this.nCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese n"));
+        this.mCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese m"));
+        matriz = new String[this.nCiudad][this.mCiudad];
+        for (int i = 0; i < this.nCiudad; i++) {
+            for (int j = 0; j < this.mCiudad; j++) {
+                matriz[i][j] = "";
             }
         }
-
     }
 }
