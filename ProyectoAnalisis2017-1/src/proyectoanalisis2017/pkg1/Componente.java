@@ -5,26 +5,21 @@
  */
 package proyectoanalisis2017.pkg1;
 
-import java.awt.Rectangle;
-
 /**
  *
- * @author Gianka
+ * @author root
  */
 public class Componente {
-    int id;
-    int tipo;
+    String tipo;
+    //String nombre;
     String ruta;
-    Rectangle area;
 
     public Componente() {
     }
 
-    public Componente(int id, int tipo, String ruta, int x, int y,int ancho,int alto) {
-        this.id = id;
+    public Componente(String tipo) {
         this.tipo = tipo;
-        this.ruta = ruta;
-        this.area= new Rectangle(x, y, ancho,alto);
+        this.ruta = "../ImgComponentes/"+this.tipo+".png";
     }
     
 }

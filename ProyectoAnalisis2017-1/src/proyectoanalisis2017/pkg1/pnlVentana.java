@@ -9,6 +9,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashMap;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
@@ -16,7 +19,7 @@ import javax.swing.ImageIcon;
  *
  * @author Gianka
  */
-public class pnlVentana extends javax.swing.JPanel {
+public class pnlVentana extends javax.swing.JPanel implements KeyListener{
 
     /**
      * Creates new form pnlCiudad
@@ -26,26 +29,29 @@ public class pnlVentana extends javax.swing.JPanel {
     private int x1Componente;
     private int x2Componete;
     private int altura;
-    private Boolean estaSelecionadoComponente;
-    LinkedList<Componente> lstComponente;
     Ciudad ciudad;
-    private int idContador;
-    private int tipoSeleccionado;
+    private Boolean estaSelecionadoComponente;
+    
+    LinkedList<Item> lstItems;
+    
+  
+    private Item itemSeleccionado;
     private int xImgSelecionada;
     private int yImgSelecionada;
 
     public pnlVentana() {
         initComponents();
-        this.idContador = -1;
-        this.lstComponente = new LinkedList<>();
+        
+        this.lstItems = new LinkedList<>();
         this.xImgSelecionada = 0;
         this.yImgSelecionada = 0;
-        this.tipoSeleccionado = 1;
+        this.itemSeleccionado = new Item();
         this.estaSelecionadoComponente = false;
+        //crearComponentes();
         // crearComponentes();        
         //this.setBackground(Color.BLACK);
     }
-
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -62,17 +68,22 @@ public class pnlVentana extends javax.swing.JPanel {
             }
         });
         addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                formMouseReleased(evt);
+            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 formMouseEntered(evt);
             }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                formMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                formMouseReleased(evt);
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
             }
         });
 
@@ -95,10 +106,11 @@ public class pnlVentana extends javax.swing.JPanel {
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
 
         if (evt.getX() > this.x1Componente && evt.getX() < this.x2Componete) {
-            for (int i = 0; i < this.lstComponente.size(); i++) {
-                if (this.lstComponente.get(i).area.contains(new Point(evt.getX(), evt.getY()))) {
+            for (int i = 0; i < this.lstItems.size(); i++) {
+                if (this.lstItems.get(i).area.contains(new Point(evt.getX(), evt.getY()))) {
                     this.estaSelecionadoComponente = true;
-                    this.tipoSeleccionado = this.lstComponente.get(i).tipo;
+                    this.lstItems.get(i).contador=0;
+                    this.itemSeleccionado = this.lstItems.get(i);
                 }
             }
         }
@@ -106,6 +118,7 @@ public class pnlVentana extends javax.swing.JPanel {
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         if (this.estaSelecionadoComponente) {
+
             this.xImgSelecionada = evt.getX();
             this.yImgSelecionada = evt.getY();
             repaint();
@@ -121,8 +134,8 @@ public class pnlVentana extends javax.swing.JPanel {
                 this.yImgSelecionada = 0;
                 int auxN = evt.getY() / this.ciudad.altoCampo;
                 int auxM = evt.getX() / this.ciudad.anchoCampo;
-                this.ciudad.matrizCiudad[auxN][auxM] = this.tipoSeleccionado;
-                this.tipoSeleccionado = 1;///__________________________________________________________asAsdasd
+                this.ciudad.matrizCiudad[auxN][auxM] = this.itemSeleccionado.lstComponentes.get(this.itemSeleccionado.contador).tipo;
+                //this.tipoSeleccionado = new c;///__________________________________________________________asAsdasd
 
             } catch (Exception e) {
 
@@ -135,10 +148,21 @@ public class pnlVentana extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_formMouseEntered
 
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_formKeyPressed
+    
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
-         pintarComponentes(g);
+        System.out.println((x2Ciudad));
+        g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/Fondo.jpg")).getImage(), 0, 0, this.x2Ciudad, this.altura, this);
+        g.setColor(Color.decode("#FC4600"));
+        g.fillRect(this.x1Componente, 0, (this.x2Componete - this.x2Ciudad) * 2, this.altura);
+        g.setColor(Color.BLACK);
+        pintarComponentes(g);
         if (ciudad != null) {
             // lineas de referencia de las areas de la aplicacion
             g.drawRect(0, 0, this.x2Ciudad, this.altura);
@@ -146,13 +170,12 @@ public class pnlVentana extends javax.swing.JPanel {
             // g.drawRect(this.x1Componente, 0, this.x2Componete - this.x1Componente, this.altura);
             //------Pintar componentes--------
 
-           
-
             pintarCiudad(g);
 
             //pinta la anamiacion de colocar imagen en el tablero
             if (this.estaSelecionadoComponente && this.xImgSelecionada > this.x1Ciudad && this.xImgSelecionada < this.x2Ciudad && this.yImgSelecionada > 0 && this.yImgSelecionada < this.altura) {
-                g.drawImage(new ImageIcon(getClass().getResource("../ImgComponetes/" + this.tipoSeleccionado + ".png")).getImage(), this.xImgSelecionada, this.yImgSelecionada, 100, 100, this);
+
+                g.drawImage(new ImageIcon(getClass().getResource(this.itemSeleccionado.lstComponentes.get(this.itemSeleccionado.contador).ruta)).getImage(), this.xImgSelecionada, this.yImgSelecionada, 100, 100, this);
                 int auxN = this.yImgSelecionada / this.ciudad.altoCampo;
                 int auxM = this.xImgSelecionada / this.ciudad.anchoCampo;
                 System.out.println(auxN + "--" + auxM);
@@ -162,13 +185,30 @@ public class pnlVentana extends javax.swing.JPanel {
     }
 
     public void crearComponentes() {
-        System.out.println(this.x1Componente);
-        int auxAltura=this.altura/18;
-        this.lstComponente.add(new Componente(this.idContador++, 1, "../ImgComponetes/1.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
-        this.lstComponente.add(new Componente(this.idContador++, 2, "../ImgComponetes/2.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
-        this.lstComponente.add(new Componente(this.idContador++, 3, "../ImgComponetes/3.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
-        this.lstComponente.add(new Componente(this.idContador++, 4, "../ImgComponetes/4.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
-        this.lstComponente.add(new Componente(this.idContador++, 0, "../ImgComponetes/0.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
+        int auxAltura = 100;
+        //this.lstComponente.add(new Item(this.idContador++, "4.1", "../ImgComponentes/4.1.png", ));
+        LinkedList<Componente> auxLista= new LinkedList<>();
+        auxLista.add(new Componente("4.1"));
+        auxLista.add(new Componente("4.2"));
+        auxLista.add(new Componente("4.3"));
+        auxLista.add(new Componente("4.4"));
+  
+        this.lstItems.add(new Item(0, auxLista, this.x1Componente + 20, 0 * auxAltura, 100, 100));
+        auxLista= new LinkedList<>();
+        auxLista.add(new Componente("1.1"));
+        auxLista.add(new Componente("1.2"));
+        this.lstItems.add(new Item(1, auxLista, this.x1Componente + 20, 1 * auxAltura+10, 100, 100));
+        auxLista= new LinkedList<>();
+        auxLista.add(new Componente("2.1"));
+        auxLista.add(new Componente("2.2"));
+        auxLista.add(new Componente("2.3"));
+        auxLista.add(new Componente("2.4"));
+        this.lstItems.add(new Item(2, auxLista, this.x1Componente + 20, 2 * auxAltura+20, 100, 100));
+       
+// this.lstComponente.add(new Item(this.idContador++, 2, "../ImgComponentes/2.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
+        //this.lstComponente.add(new Item(this.idContador++, 3, "../ImgComponentes/3.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
+        //this.lstComponentipote.add(new Item(this.idContador++, 4, "../ImgComponentes/4.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
+        //this.lstComponente.add(new Item(this.idContador++, 0, "../ImgComponentes/0.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
 
     }
 
@@ -193,29 +233,53 @@ public class pnlVentana extends javax.swing.JPanel {
     }
 
     private void pintarComponentes(Graphics g) {
-        for (int i = 0; i < this.lstComponente.size(); i++) {
-            Componente auxComponente = new Componente();
-            auxComponente = this.lstComponente.get(i);
-            g.drawImage(new ImageIcon(getClass().getResource(auxComponente.ruta)).getImage(), auxComponente.area.x, auxComponente.area.y, auxComponente.area.width, auxComponente.area.height, this);
+        for (int i = 0; i < this.lstItems.size(); i++) {
+            Item auxComponente = new Item();
+            auxComponente = this.lstItems.get(i);
+            g.drawImage(new ImageIcon(getClass().getResource(auxComponente.lstComponentes.getFirst().ruta)).getImage(), auxComponente.area.x, auxComponente.area.y, auxComponente.area.width, auxComponente.area.height, this);
         }
     }
 
     public void setCiudad(Ciudad ciudad) {
         this.ciudad = ciudad;
-        this.x2Ciudad = this.ciudad.anchoCampo * this.ciudad.n;
-        this.x1Componente = this.ciudad.anchoCampo * this.ciudad.n;
+        this.x2Ciudad = this.ciudad.anchoCampo * this.ciudad.m;
+        this.x1Componente = this.ciudad.anchoCampo * this.ciudad.m;
         repaint();
     }
 
     private void pintarCiudad(Graphics g) {
         for (int i = 0; i < this.ciudad.n; i++) {
             for (int j = 0; j < this.ciudad.m; j++) {
-                if (this.ciudad.matrizCiudad[i][j] != 0) {
-                    g.drawImage(new ImageIcon(getClass().getResource("../ImgComponetes/" + this.ciudad.matrizCiudad[i][j] + ".png")).getImage(), this.ciudad.anchoCampo * j, this.ciudad.altoCampo * i, this.ciudad.anchoCampo, this.ciudad.altoCampo, this);
+                if (!this.ciudad.matrizCiudad[i][j].equals("")) {
+                    g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/" + this.ciudad.matrizCiudad[i][j] + ".png")).getImage(), this.ciudad.anchoCampo * j, this.ciudad.altoCampo * i, this.ciudad.anchoCampo, this.ciudad.altoCampo, this);
                 }
             }
         }
     }
+
+    @Override
+    public void keyTyped(KeyEvent ke) {
+       }
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+        if(this.itemSeleccionado.contador==this.itemSeleccionado.lstComponentes.size()-1)
+        {
+            this.itemSeleccionado.contador=0;
+        }else 
+        {
+            this.itemSeleccionado.contador++;
+        }
+        repaint();
+// throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+
+    @Override
+    public void keyReleased(KeyEvent ke) {
+    }
+
+ 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

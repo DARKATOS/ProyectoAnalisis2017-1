@@ -8,6 +8,7 @@ package proyectoanalisis2017.pkg1;
 //import com.sun.webkit.CursorManager;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,11 +36,14 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     public VentanaPrincial() {
         initComponents();
+        
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
         setResizable(false);
         setVisible(true);
-        pnlVentana1.setBounds(0, 0, (int) (this.getWidth() * 0.9), this.getHeight());
+        this.pnlVentana1.addKeyListener(this.pnlVentana1);
+        this.pnlVentana1.setFocusable(true);
+        //pnlVentana1.setBounds(0, 0, (int) (this.getWidth() * 0.9), this.getHeight());
         pnlVentana1.setX2Ciudad((int) (this.getWidth() * 0.8));
         pnlVentana1.setX1Componente((int) (this.getWidth() * 0.8));
         pnlVentana1.setX2Componete(this.getWidth() - (int) (this.getWidth() * 0.1));
@@ -65,6 +69,9 @@ public class VentanaPrincial extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         pnlVentana1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                pnlVentana1KeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 pnlVentana1KeyReleased(evt);
             }
@@ -118,6 +125,10 @@ public class VentanaPrincial extends javax.swing.JFrame {
     private void pnlVentana1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnlVentana1KeyReleased
         // TODO add your handling code here:sd
     }//GEN-LAST:event_pnlVentana1KeyReleased
+
+    private void pnlVentana1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnlVentana1KeyPressed
+        // TODO add your handling code   here:
+    }//GEN-LAST:event_pnlVentana1KeyPressed
 
     /**
      * @param args the command line arguments
@@ -184,10 +195,10 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
             this.nCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese n"));
             this.mCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese m"));
-            int[][] matriz = new int[this.nCiudad][this.mCiudad];
+            String [][] matriz = new String[this.nCiudad][this.mCiudad];
             for (int i = 0; i < this.nCiudad; i++) {
                 for (int j = 0; j < this.mCiudad; j++) {
-                    matriz[i][j] = 0;
+                    matriz[i][j] = "";
                 }
             }
 
