@@ -185,6 +185,10 @@ public class VentanaPrincial extends javax.swing.JFrame {
         FileInputStream fis = new FileInputStream(f);
         ois = new ObjectInputStream(fis);
         this.ciudad = (Ciudad) ois.readObject();
+       
+        this.ciudad.anchoCampo=(int) (this.getWidth()*0.8/this.ciudad.m);
+        this.ciudad.altoCampo=this.getHeight()/this.ciudad.n;
+        this.pnlVentana1.setCiudad(ciudad);
         ois.close();
     }
 
