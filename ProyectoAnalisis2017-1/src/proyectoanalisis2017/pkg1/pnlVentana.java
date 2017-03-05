@@ -238,18 +238,13 @@ public class pnlVentana extends javax.swing.JPanel implements KeyListener{
         auxLista.add(new Componente("9.3"));
         auxLista.add(new Componente("9.4"));
         this.lstItems.add(new Item(8, auxLista, this.x1Componente + 30+80, 2 * auxAltura, 70, 100));
-        auxLista= new LinkedList<>();
-        auxLista.add(new Componente("10.1"));
-        auxLista.add(new Componente("10.2"));
-        auxLista.add(new Componente("10.3"));
-        auxLista.add(new Componente("10.4"));
-        this.lstItems.add(new Item(9, auxLista, this.x1Componente + 30+80, 3* auxAltura, 70, 100));
+       
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("11.1"));
         auxLista.add(new Componente("11.2"));
         auxLista.add(new Componente("11.3"));
         auxLista.add(new Componente("11.4"));
-        this.lstItems.add(new Item(10, auxLista, this.x1Componente + 30+80, 4 * auxAltura, 70, 100));
+        this.lstItems.add(new Item(9, auxLista, this.x1Componente + 30+80, 3 * auxAltura, 70, 100));
 // this.lstComponente.add(new Item(this.idContador++, 2, "../ImgComponentes/2.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
         //this.lstComponente.add(new Item(this.idContador++, 3, "../ImgComponentes/3.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
         //this.lstComponentipote.add(new Item(this.idContador++, 4, "../ImgComponentes/4.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
