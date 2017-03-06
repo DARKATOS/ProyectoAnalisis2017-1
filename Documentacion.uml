@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<XPD:PROJECT xmlns:XPD="http://www.staruml.com" version="1">
+<XPD:HEADER>
+<XPD:SUBUNITS>
+</XPD:SUBUNITS>
+<XPD:PROFILES>
+</XPD:PROFILES>
+</XPD:HEADER>
+<XPD:BODY>
+<XPD:OBJ name="DocumentElement" type="UMLProject" guid="e31pNOxKKEmFC+j+YACuHAAA">
+<XPD:ATTR name="Title" type="string">Untitled</XPD:ATTR>
+<XPD:ATTR name="#OwnedElements" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedElements[0]" type="UMLPackage" guid="ZNeaOC6Fm0mWf+JtFTT7BgAA">
+<XPD:ATTR name="Name" type="string">ProyectoAnalisis</XPD:ATTR>
+<XPD:REF name="Namespace">e31pNOxKKEmFC+j+YACuHAAA</XPD:REF>
+<XPD:ATTR name="#OwnedElements" type="integer">3</XPD:ATTR>
+<XPD:OBJ name="OwnedElements[0]" type="UMLPackage" guid="ApMhtiVn6EO7x3PS2Uk/wwAA">
+<XPD:ATTR name="Name" type="string">DiagramaCasoUso</XPD:ATTR>
+<XPD:REF name="Namespace">ZNeaOC6Fm0mWf+JtFTT7BgAA</XPD:REF>
+<XPD:ATTR name="#OwnedDiagrams" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedDiagrams[0]" type="UMLUseCaseDiagram" guid="14YNUt317kSc/RKlEk4a0gAA">
+<XPD:ATTR name="Name" type="string">UseCaseDiagram1</XPD:ATTR>
+<XPD:REF name="DiagramOwner">ApMhtiVn6EO7x3PS2Uk/wwAA</XPD:REF>
+<XPD:OBJ name="DiagramView" type="UMLUseCaseDiagramView" guid="r0lzY9HqY0qpzgFD0JrX3AAA">
+<XPD:REF name="Diagram">14YNUt317kSc/RKlEk4a0gAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="OwnedElements[1]" type="UMLPackage" guid="5t3h2Oj/kECasn/sdT9+oQAA">
+<XPD:ATTR name="Name" type="string">DiagramaClase</XPD:ATTR>
+<XPD:REF name="Namespace">ZNeaOC6Fm0mWf+JtFTT7BgAA</XPD:REF>
+<XPD:ATTR name="#OwnedDiagrams" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedDiagrams[0]" type="UMLClassDiagram" guid="/71IC+TlVkq0utIO6pN6WwAA">
+<XPD:ATTR name="Name" type="string">ClassDiagram1</XPD:ATTR>
+<XPD:REF name="DiagramOwner">5t3h2Oj/kECasn/sdT9+oQAA</XPD:REF>
+<XPD:OBJ name="DiagramView" type="UMLClassDiagramView" guid="oK3IVig1k0amViF3mQvHwgAA">
+<XPD:REF name="Diagram">/71IC+TlVkq0utIO6pN6WwAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="OwnedElements[2]" type="UMLPackage" guid="nzJH4+DJjkeONB1ZlI64wQAA">
+<XPD:ATTR name="Name" type="string">DiagramaSecuencia</XPD:ATTR>
+<XPD:REF name="Namespace">ZNeaOC6Fm0mWf+JtFTT7BgAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:BODY>
+</XPD:PROJECT>
