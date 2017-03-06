@@ -37,26 +37,29 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     public VentanaPrincial() {
         initComponents();
+          grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        grafica.setFullScreenWindow(this);
+       
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
         if (opcion == 1) {
             cargarCiudad();
+             this.ciudad.anchoCampo=(int) ((this.getWidth()*0.8)/this.ciudad.m);
+            this.ciudad.altoCampo=(this.getHeight()-100)/this.ciudad.n;
         } else {
             crearCiudad();
+           
         }
-        grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        grafica.setFullScreenWindow(this);
-        setResizable(false);
+       setResizable(false);
         setVisible(true);
         this.pnlVentana1.addKeyListener(this.pnlVentana1);
         this.pnlVentana1.setFocusable(true);
         //pnlVentana1.setBounds(0, 0, (int) (this.getWidth() * 0.9), this.getHeight());
-        pnlVentana1.setX2Ciudad((int) (this.getWidth() * 0.8));
-        pnlVentana1.setX1Componente((int) (this.getWidth() * 0.8));
+        pnlVentana1.setX2Ciudad(this.ciudad.m*this.ciudad.anchoCampo);
+        pnlVentana1.setX1Componente(this.ciudad.m*this.ciudad.anchoCampo);
         pnlVentana1.setX2Componete(this.getWidth() - (int) (this.getWidth() * 0.05));
-        pnlVentana1.setAltura(this.getHeight());
+        pnlVentana1.setAltura(this.ciudad.altoCampo*this.ciudad.n);
         pnlVentana1.crearComponentes();
-        this.ciudad = new Ciudad(matriz, this.nCiudad, this.mCiudad, (int) ((this.getWidth() * 0.8) / this.mCiudad), (int) ((this.getHeight()) / this.nCiudad));
-        pnlVentana1.setCiudad(ciudad);
+          pnlVentana1.setCiudad(ciudad);
     }
 
     /**
@@ -218,5 +221,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
                 matriz[i][j] = "";
             }
         }
+         this.ciudad = new Ciudad(matriz, this.nCiudad, this.mCiudad, (int) ((this.getWidth() * 0.8) / this.mCiudad), (int) ((this.getHeight()-100) / this.nCiudad));
+     
     }
 }
