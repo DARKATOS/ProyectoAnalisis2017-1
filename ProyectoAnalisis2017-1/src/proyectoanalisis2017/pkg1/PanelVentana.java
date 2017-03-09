@@ -19,7 +19,7 @@ import javax.swing.ImageIcon;
  *
  * @author Gianka
  */
-public class pnlVentana extends javax.swing.JPanel implements KeyListener{
+public class PanelVentana extends javax.swing.JPanel implements KeyListener{
 
     /**
      * Creates new form pnlCiudad
@@ -39,7 +39,7 @@ public class pnlVentana extends javax.swing.JPanel implements KeyListener{
     private int xImgSelecionada;
     private int yImgSelecionada;
 
-    public pnlVentana() {
+    public PanelVentana() {
         initComponents();
         
         this.lstItems = new LinkedList<>();
@@ -186,7 +186,6 @@ public class pnlVentana extends javax.swing.JPanel implements KeyListener{
 
     public void crearComponentes() {
         int auxAltura = 100;
-        //this.lstComponente.add(new Item(this.idContador++, "4.1", "../ImgComponentes/4.1.png", ));
         LinkedList<Componente> auxLista= new LinkedList<>();
         auxLista.add(new Componente("4.1"));
         auxLista.add(new Componente("4.2"));

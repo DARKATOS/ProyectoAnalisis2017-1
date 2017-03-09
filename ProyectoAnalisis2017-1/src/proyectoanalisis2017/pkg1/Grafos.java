@@ -7,18 +7,8 @@ package proyectoanalisis2017.pkg1;
 
 /**
  *
- * @author root
+ * @author JORGE_ALEJANDRO
  */
-public class Componente {
-    String tipo;
-    String ruta;
-
-    public Componente() {
-    }
-
-    public Componente(String tipo) {
-        this.tipo = tipo;
-        this.ruta = "../ImgComponentes/"+this.tipo+".png";
-    }
+public class Grafos {
     
 }

@@ -17,6 +17,7 @@ public class Ciudad implements Serializable{
     int m; //indica la cantidad de filas 
     int anchoCampo;
     int altoCampo;
+    
     public Ciudad() {
     }
 
@@ -27,9 +28,6 @@ public class Ciudad implements Serializable{
         this.anchoCampo = anchoCampo;
         this.altoCampo = altoCampo;
     }
-
-    
-    
 }
 
   
