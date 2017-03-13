@@ -19,7 +19,7 @@ import javax.swing.ImageIcon;
  *
  * @author Gianka
  */
-public class pnlVentana extends javax.swing.JPanel implements KeyListener{
+public class PanelVentana extends javax.swing.JPanel implements KeyListener{
 
     /**
      * Creates new form pnlCiudad
@@ -39,7 +39,7 @@ public class pnlVentana extends javax.swing.JPanel implements KeyListener{
     private int xImgSelecionada;
     private int yImgSelecionada;
 
-    public pnlVentana() {
+    public PanelVentana() {
         initComponents();
         
         this.lstItems = new LinkedList<>();
@@ -186,25 +186,67 @@ public class pnlVentana extends javax.swing.JPanel implements KeyListener{
 
     public void crearComponentes() {
         int auxAltura = 100;
-        //this.lstComponente.add(new Item(this.idContador++, "4.1", "../ImgComponentes/4.1.png", ));
         LinkedList<Componente> auxLista= new LinkedList<>();
         auxLista.add(new Componente("4.1"));
         auxLista.add(new Componente("4.2"));
         auxLista.add(new Componente("4.3"));
         auxLista.add(new Componente("4.4"));
   
-        this.lstItems.add(new Item(0, auxLista, this.x1Componente + 20, 0 * auxAltura, 100, 100));
+        this.lstItems.add(new Item(0, auxLista, this.x1Componente + 20, 0 * auxAltura, 70, 100));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("1.1"));
         auxLista.add(new Componente("1.2"));
-        this.lstItems.add(new Item(1, auxLista, this.x1Componente + 20, 1 * auxAltura+10, 100, 100));
+        this.lstItems.add(new Item(1, auxLista, this.x1Componente + 20, 1 * auxAltura+10, 70, 100));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("2.1"));
         auxLista.add(new Componente("2.2"));
         auxLista.add(new Componente("2.3"));
         auxLista.add(new Componente("2.4"));
-        this.lstItems.add(new Item(2, auxLista, this.x1Componente + 20, 2 * auxAltura+20, 100, 100));
+        this.lstItems.add(new Item(2, auxLista, this.x1Componente + 20, 2 * auxAltura+20, 70, 100));
+        auxLista= new LinkedList<>();
+        auxLista.add(new Componente("3.1"));
+        auxLista.add(new Componente("3.2"));
+        this.lstItems.add(new Item(3, auxLista, this.x1Componente + 20, 3 * auxAltura+30, 70, 100));
+        auxLista= new LinkedList<>();
+        auxLista.add(new Componente("5.1"));
+        auxLista.add(new Componente("5.2"));
+        auxLista.add(new Componente("5.3"));
+        auxLista.add(new Componente("5.4"));
+        this.lstItems.add(new Item(4, auxLista, this.x1Componente + 20, 4 * auxAltura+40, 70, 100));
+        auxLista= new LinkedList<>();
+        auxLista.add(new Componente("6.1"));
+        auxLista.add(new Componente("6.2"));
+        auxLista.add(new Componente("6.3"));
+        auxLista.add(new Componente("6.4"));
+        this.lstItems.add(new Item(4, auxLista, this.x1Componente + 20, 5 * auxAltura+50, 70, 100));
+        auxLista= new LinkedList<>();
+        auxLista.add(new Componente("7.1"));
+        auxLista.add(new Componente("7.2"));
+        auxLista.add(new Componente("7.3"));
+        auxLista.add(new Componente("7.4"));
+        this.lstItems.add(new Item(6, auxLista, this.x1Componente + 20+80, 0 * auxAltura, 70, 100));
+        auxLista= new LinkedList<>();
+        auxLista.add(new Componente("8.1"));
+        auxLista.add(new Componente("8.2"));
+        auxLista.add(new Componente("8.3"));
+        auxLista.add(new Componente("8.4"));
+        this.lstItems.add(new Item(7, auxLista, this.x1Componente + 30+80, 1 * auxAltura, 70, 100));
+        auxLista= new LinkedList<>();
+        auxLista.add(new Componente("9.1"));
+        auxLista.add(new Componente("9.2"));
+        auxLista.add(new Componente("9.3"));
+        auxLista.add(new Componente("9.4"));
+        this.lstItems.add(new Item(8, auxLista, this.x1Componente + 30+80, 2 * auxAltura, 70, 100));
        
+        auxLista= new LinkedList<>();
+        auxLista.add(new Componente("11.1"));
+        auxLista.add(new Componente("11.2"));
+        auxLista.add(new Componente("11.3"));
+        auxLista.add(new Componente("11.4"));
+        this.lstItems.add(new Item(9, auxLista, this.x1Componente + 30+80, 3 * auxAltura, 70, 100));
+         auxLista= new LinkedList<>();
+        auxLista.add(new Componente("0"));
+        this.lstItems.add(new Item(10, auxLista, this.x1Componente + 30+80, 4 * auxAltura, 70, 100));
 // this.lstComponente.add(new Item(this.idContador++, 2, "../ImgComponentes/2.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
         //this.lstComponente.add(new Item(this.idContador++, 3, "../ImgComponentes/3.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
         //this.lstComponentipote.add(new Item(this.idContador++, 4, "../ImgComponentes/4.png", this.x1Componente + 20, this.idContador * auxAltura, 100, auxAltura));
@@ -250,7 +292,7 @@ public class pnlVentana extends javax.swing.JPanel implements KeyListener{
     private void pintarCiudad(Graphics g) {
         for (int i = 0; i < this.ciudad.n; i++) {
             for (int j = 0; j < this.ciudad.m; j++) {
-                if (!this.ciudad.matrizCiudad[i][j].equals("")) {
+                if (!this.ciudad.matrizCiudad[i][j].equals("0")&&!this.ciudad.matrizCiudad[i][j].equals("")) {
                     g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/" + this.ciudad.matrizCiudad[i][j] + ".png")).getImage(), this.ciudad.anchoCampo * j, this.ciudad.altoCampo * i, this.ciudad.anchoCampo, this.ciudad.altoCampo, this);
                 }
             }

@@ -29,28 +29,37 @@ public class VentanaPrincial extends javax.swing.JFrame {
     /**
      * Creates new form VentanaPrincial
      */
+    //Objeto ciudad:
     Ciudad ciudad;
     int nCiudad;
     int mCiudad;
+    String matriz[][];
     GraphicsDevice grafica;
 
     public VentanaPrincial() {
         initComponents();
-        
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
+
+        int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
+        if (opcion == 1) {
+            cargarCiudad();
+            this.ciudad.anchoCampo = (int) ((this.getWidth() * 0.8) / this.ciudad.m);
+            this.ciudad.altoCampo = (this.getHeight() - 100) / this.ciudad.n;
+        } else {
+            crearCiudad();
+
+        }
         setResizable(false);
         setVisible(true);
         this.pnlVentana1.addKeyListener(this.pnlVentana1);
         this.pnlVentana1.setFocusable(true);
         //pnlVentana1.setBounds(0, 0, (int) (this.getWidth() * 0.9), this.getHeight());
-        pnlVentana1.setX2Ciudad((int) (this.getWidth() * 0.8));
-        pnlVentana1.setX1Componente((int) (this.getWidth() * 0.8));
-        pnlVentana1.setX2Componete(this.getWidth() - (int) (this.getWidth() * 0.1));
-        pnlVentana1.setAltura(this.getHeight());
+        pnlVentana1.setX2Ciudad(this.ciudad.m * this.ciudad.anchoCampo);
+        pnlVentana1.setX1Componente(this.ciudad.m * this.ciudad.anchoCampo);
+        pnlVentana1.setX2Componete(this.getWidth() - (int) (this.getWidth() * 0.05));
+        pnlVentana1.setAltura(this.ciudad.altoCampo * this.ciudad.n);
         pnlVentana1.crearComponentes();
-        crearCiudad();
-        
         pnlVentana1.setCiudad(ciudad);
     }
 
@@ -63,7 +72,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlVentana1 = new proyectoanalisis2017.pkg1.pnlVentana();
+        pnlVentana1 = new proyectoanalisis2017.pkg1.PanelVentana();
         btnGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -168,7 +177,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
-    private proyectoanalisis2017.pkg1.pnlVentana pnlVentana1;
+    private proyectoanalisis2017.pkg1.PanelVentana pnlVentana1;
     // End of variables declaration//GEN-END:variables
 
     private void GuardarCiudad(String nombre, Ciudad objeto) throws FileNotFoundException, IOException {
@@ -179,39 +188,41 @@ public class VentanaPrincial extends javax.swing.JFrame {
         oos.close();
     }
 
-    private void LeerCiudad(String nombre) throws FileNotFoundException, IOException, ClassNotFoundException {
-        ObjectInputStream ois = null;
-        File f = new File(nombre);
-        FileInputStream fis = new FileInputStream(f);
-        ois = new ObjectInputStream(fis);
-        this.ciudad = (Ciudad) ois.readObject();
-        ois.close();
+    private void cargarCiudad() {
+        FileInputStream fis = null;
+        try {
+            String nombre = JOptionPane.showInputDialog("Ingresar nombre");
+            ObjectInputStream ois;
+            File f = new File(nombre);
+            fis = new FileInputStream(f);
+            ois = new ObjectInputStream(fis);
+            this.ciudad = (Ciudad) ois.readObject();
+            ois.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error no se encontro el archivo");
+        } catch (IOException ex) {
+            System.out.println("Error en el archivo de entrada");
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Error no se encontro la clase");
+        } finally {
+            try {
+                fis.close();
+            } catch (IOException ex) {
+                System.out.println("Error al cerrar el archivo");
+            }
+        }
     }
 
     private void crearCiudad() {
-
-        int option = Integer.parseInt(JOptionPane.showInputDialog("Ingese \n 1 para cargar \n 2 para crear nueva ciudad", this));
-        if (option == 2) {
-
-            this.nCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese n"));
-            this.mCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese m"));
-            String [][] matriz = new String[this.nCiudad][this.mCiudad];
-            for (int i = 0; i < this.nCiudad; i++) {
-                for (int j = 0; j < this.mCiudad; j++) {
-                    matriz[i][j] = "";
-                }
-            }
-
-            this.ciudad = new Ciudad(matriz, this.nCiudad, this.mCiudad, (int) ((this.getWidth() * 0.8) / this.mCiudad), (int) ((this.getHeight()) / this.nCiudad));
-        } else if (option == 1) {
-            try {
-                LeerCiudad(JOptionPane.showInputDialog("Ingresar nombre"));
-            } catch (IOException ex) {
-                Logger.getLogger(VentanaPrincial.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(VentanaPrincial.class.getName()).log(Level.SEVERE, null, ex);
+        this.nCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese n"));
+        this.mCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese m"));
+        matriz = new String[this.nCiudad][this.mCiudad];
+        for (int i = 0; i < this.nCiudad; i++) {
+            for (int j = 0; j < this.mCiudad; j++) {
+                matriz[i][j] = "";
             }
         }
+        this.ciudad = new Ciudad(matriz, this.nCiudad, this.mCiudad, (int) ((this.getWidth() * 0.8) / this.mCiudad), (int) ((this.getHeight() - 100) / this.nCiudad));
 
     }
 }
