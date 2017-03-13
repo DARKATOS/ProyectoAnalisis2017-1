@@ -41,6 +41,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
         grafica.setFullScreenWindow(this);
         setResizable(false);
         setVisible(true);
+        System.out.println("proyectoanalisis2017.pkg1.VentanaPrincial.<init>()");
         this.pnlVentana1.addKeyListener(this.pnlVentana1);
         this.pnlVentana1.setFocusable(true);
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
