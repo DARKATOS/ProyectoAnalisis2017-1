@@ -7,11 +7,9 @@ package proyectoanalisis2017.pkg1;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashMap;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
@@ -24,16 +22,11 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
     /**
      * Creates new form pnlCiudad
      */
-    private int x1Ciudad;
-    private int x2Ciudad;
-    private int x1Componente;
-    private int x2Componete;
-    private int altura;
     Ciudad ciudad;
     AreaItems areaItems;
     private Boolean estaSelecionadoComponente;
     
-    LinkedList<Item> lstItems;
+    //LinkedList<Item> lstItems;
     
   
     private Item itemSeleccionado;
@@ -43,7 +36,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
     public PanelVentana() {
         initComponents();
         
-        this.lstItems = new LinkedList<>();
+        //this.lstItems = new LinkedList<>();
         this.xImgSelecionada = 0;
         this.yImgSelecionada = 0;
         this.itemSeleccionado = new Item();
@@ -103,12 +96,12 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
 
-        if (evt.getX() > this.x1Componente && evt.getX() < this.x2Componete) {
-            for (int i = 0; i < this.lstItems.size(); i++) {
-                if (this.lstItems.get(i).area.contains(new Point(evt.getX(), evt.getY()))) {
+        if (evt.getX() > areaItems.getAnchoListaComponentesX1() && evt.getX() < areaItems.getAnchoListaComponentesX2()) {
+            for (int i = 0; i < areaItems.getListaItems().size(); i++) {
+                if (areaItems.getListaItems().get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
                     this.estaSelecionadoComponente = true;
-                    this.lstItems.get(i).contador=0;
-                    this.itemSeleccionado = this.lstItems.get(i);
+                    areaItems.getListaItems().get(i).setContador(0);
+                    this.itemSeleccionado = areaItems.getListaItems().get(i);
                 }
             }
         }
@@ -126,15 +119,12 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
         if (this.estaSelecionadoComponente) {
             try {
-
                 this.estaSelecionadoComponente = false;
                 this.xImgSelecionada = 0;
                 this.yImgSelecionada = 0;
-                int auxN = evt.getY() / this.ciudad.altoCampo;
-                int auxM = evt.getX() / this.ciudad.anchoCampo;
-                this.ciudad.matrizCiudad[auxN][auxM] = this.itemSeleccionado.lstComponentes.get(this.itemSeleccionado.contador).tipo;
-                //this.tipoSeleccionado = new c;///__________________________________________________________asAsdasd
-
+                int auxN = evt.getY() / ciudad.getAltoCampo();
+                int auxM = evt.getX() / ciudad.getAnchoCampo();
+                ciudad.getMatrizCiudad()[auxN][auxM] = itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getTipo();
             } catch (Exception e) {
 
             }
@@ -155,15 +145,16 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
-        System.out.println((x2Ciudad));
-        g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/Fondo.jpg")).getImage(), 0, 0, this.x2Ciudad, this.altura, this);
+
+        g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/Fondo.jpg")).getImage(), 0, 0, ciudad.getAnchoCiudad(), ciudad.getLargoCiudad(), this);
         g.setColor(Color.decode("#FC4600"));
-        g.fillRect(this.x1Componente, 0, (this.x2Componete - this.x2Ciudad) * 2, this.altura);
+        //g.fillRect(this.x1Componente, 0, (this.x2Componete - this.x2Ciudad) * 2, this.altura);
+        g.fillRect(areaItems.getAnchoListaComponentesX1(), 0, (areaItems.getAnchoListaComponentesX2() - ciudad.getAnchoCiudad()) * 2, ciudad.getLargoCiudad());
         g.setColor(Color.BLACK);
         pintarComponentes(g);
         if (ciudad != null) {
             // lineas de referencia de las areas de la aplicacion
-            g.drawRect(0, 0, this.x2Ciudad, this.altura);
+            g.drawRect(0, 0, ciudad.getAnchoCiudad(), ciudad.getLargoCiudad());
             //g.setColor(Color.red);
             // g.drawRect(this.x1Componente, 0, this.x2Componete - this.x1Componente, this.altura);
             //------Pintar componentes--------
@@ -171,61 +162,40 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
             pintarCiudad(g);
 
             //pinta la anamiacion de colocar imagen en el tablero
-            if (this.estaSelecionadoComponente && this.xImgSelecionada > this.x1Ciudad && this.xImgSelecionada < this.x2Ciudad && this.yImgSelecionada > 0 && this.yImgSelecionada < this.altura) {
+            //El 0 es el X1 de la ciudad.
+            if (this.estaSelecionadoComponente && this.xImgSelecionada > 0 && this.xImgSelecionada < ciudad.getAnchoCiudad() && this.yImgSelecionada > 0 && this.yImgSelecionada < ciudad.getLargoCiudad()) {
 
-                g.drawImage(new ImageIcon(getClass().getResource(this.itemSeleccionado.lstComponentes.get(this.itemSeleccionado.contador).ruta)).getImage(), this.xImgSelecionada, this.yImgSelecionada, 100, 100, this);
-                int auxN = this.yImgSelecionada / this.ciudad.altoCampo;
-                int auxM = this.xImgSelecionada / this.ciudad.anchoCampo;
+                g.drawImage(new ImageIcon(getClass().getResource(itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getRuta())).getImage(), this.xImgSelecionada, this.yImgSelecionada, 100, 100, this);
+                int auxN = yImgSelecionada / ciudad.getAltoCampo();
+                int auxM = xImgSelecionada / ciudad.getAnchoCampo();
                 System.out.println(auxN + "--" + auxM);
-                g.drawRect(auxM * this.ciudad.anchoCampo, auxN * this.ciudad.altoCampo, this.ciudad.anchoCampo, this.ciudad.altoCampo);
+                g.drawRect(auxM * ciudad.getAnchoCampo(), auxN * ciudad.getAltoCampo(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
             }
         }
     }
 
-    public void setX1Ciudad(int x1Ciudad) {
-        this.x1Ciudad = x1Ciudad;
-    }
-
-    public void setX2Ciudad(int x2Ciudad) {
-        this.x2Ciudad = x2Ciudad;
-    }
-
-    public void setX1Componente(int x1Componente) {
-        this.x1Componente = x1Componente;
-    }
-
-    public void setX2Componete(int x2Componete) {
-        this.x2Componete = x2Componete;
-    }
-
-    public void setAltura(int altura) {
-        this.altura = altura;
-    }
-
     private void pintarComponentes(Graphics g) {
-        for (int i = 0; i < this.lstItems.size(); i++) {
+        for (int i = 0; i < areaItems.getListaItems().size(); i++) {
             Item auxComponente = new Item();
-            auxComponente = this.lstItems.get(i);
-            g.drawImage(new ImageIcon(getClass().getResource(auxComponente.lstComponentes.getFirst().ruta)).getImage(), auxComponente.area.x, auxComponente.area.y, auxComponente.area.width, auxComponente.area.height, this);
+            auxComponente = areaItems.getListaItems().get(i);
+            g.drawImage(new ImageIcon(getClass().getResource(auxComponente.getLstComponentes().getFirst().getRuta())).getImage(), auxComponente.getArea().x, auxComponente.getArea().y, auxComponente.getArea().width, auxComponente.getArea().height, this);
         }
     }
 
     public void setCiudad(Ciudad ciudad) {
         this.ciudad = ciudad;
-        this.x2Ciudad = this.ciudad.anchoCampo * this.ciudad.m;
-        this.x1Componente = this.ciudad.anchoCampo * this.ciudad.m;
-        repaint();
     }
 
+    
     public void setAreaItems(AreaItems areaItems) {
         this.areaItems = areaItems;
     }
 
     private void pintarCiudad(Graphics g) {
-        for (int i = 0; i < this.ciudad.n; i++) {
-            for (int j = 0; j < this.ciudad.m; j++) {
-                if (!this.ciudad.matrizCiudad[i][j].equals("0")&&!this.ciudad.matrizCiudad[i][j].equals("")) {
-                    g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/" + this.ciudad.matrizCiudad[i][j] + ".png")).getImage(), this.ciudad.anchoCampo * j, this.ciudad.altoCampo * i, this.ciudad.anchoCampo, this.ciudad.altoCampo, this);
+        for (int i = 0; i < this.ciudad.getN(); i++) {
+            for (int j = 0; j < this.ciudad.getM(); j++) {
+                if (!ciudad.getMatrizCiudad()[i][j].equals("0")&&!ciudad.getMatrizCiudad()[i][j].equals("")) {
+                    g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/" + ciudad.getMatrizCiudad()[i][j] + ".png")).getImage(), ciudad.getAnchoCampo() * j, ciudad.getAltoCampo() * i, ciudad.getAnchoCampo(), this.ciudad.getAltoCampo(), this);
                 }
             }
         }
@@ -237,15 +207,14 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent ke) {
-        if(this.itemSeleccionado.contador==this.itemSeleccionado.lstComponentes.size()-1)
+        if(itemSeleccionado.getContador()==itemSeleccionado.getLstComponentes().size()-1)
         {
-            this.itemSeleccionado.contador=0;
+            this.itemSeleccionado.setContador(0);
         }else 
         {
-            this.itemSeleccionado.contador++;
+            itemSeleccionado.setContador(itemSeleccionado.getContador()+1);
         }
         repaint();
-// throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 

@@ -44,12 +44,14 @@ public class VentanaPrincial extends javax.swing.JFrame {
         } else {
             crearCiudad();
         }
-        setResizable(false);
-        setVisible(true);
-        pnlVentana1.addKeyListener(pnlVentana1);
-        pnlVentana1.setFocusable(true);
         pnlVentana1.setCiudad(ciudad);
         pnlVentana1.setAreaItems(areaItems);
+        pnlVentana1.addKeyListener(pnlVentana1);
+        pnlVentana1.setFocusable(true);
+        setResizable(false);
+        setVisible(true);
+        
+        
     }
 
     /**
@@ -114,7 +116,8 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
-            GuardarCiudad(JOptionPane.showInputDialog("iingrese nombre archivo"), ciudad);
+            String nombreArchivo=JOptionPane.showInputDialog("iingrese nombre archivo");
+            GuardarCiudad(nombreArchivo, ciudad);
         } catch (IOException ex) {
             Logger.getLogger(VentanaPrincial.class.getName()).log(Level.SEVERE, null, ex);
         }

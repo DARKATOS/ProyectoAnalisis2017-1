@@ -13,9 +13,9 @@ import java.util.LinkedList;
  * @author JORGE_ALEJANDRO
  */
 public class AreaItems {
-    ArrayList<Item>listaItems;
-    int anchoListaComponentesX1;
-    int anchoListaComponentesX2;
+    private ArrayList<Item>listaItems;
+    private int anchoListaComponentesX1;
+    private int anchoListaComponentesX2;
 
     public AreaItems(ArrayList<Item> listaItems, int anchoListaComponentesX1, int anchoListaComponentesX2) {
         this.listaItems = listaItems;
@@ -23,6 +23,20 @@ public class AreaItems {
         this.anchoListaComponentesX2 = anchoListaComponentesX2;
         cargarComponentes();
     }
+
+    public int getAnchoListaComponentesX1() {
+        return anchoListaComponentesX1;
+    }
+
+    public int getAnchoListaComponentesX2() {
+        return anchoListaComponentesX2;
+    }
+
+    public ArrayList<Item> getListaItems() {
+        return listaItems;
+    }
+    
+    
     
     private void cargarComponentes() {
         int auxAltura = 100;
