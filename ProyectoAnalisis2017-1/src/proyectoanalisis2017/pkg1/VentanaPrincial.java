@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -29,38 +30,28 @@ public class VentanaPrincial extends javax.swing.JFrame {
     /**
      * Creates new form VentanaPrincial
      */
-    //Objeto ciudad:
     Ciudad ciudad;
-    int nCiudad;
-    int mCiudad;
-    String matriz[][];
+    AreaItems areaItems;
     GraphicsDevice grafica;
 
     public VentanaPrincial() {
         initComponents();
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
-
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
         if (opcion == 1) {
-            cargarCiudad();
-            this.ciudad.anchoCampo = (int) ((this.getWidth() * 0.8) / this.ciudad.m);
-            this.ciudad.altoCampo = (this.getHeight() - 100) / this.ciudad.n;
+            cargarCiudad();         
         } else {
             crearCiudad();
-
         }
+        pnlVentana1.setCiudad(ciudad);
+        pnlVentana1.setAreaItems(areaItems);
+        pnlVentana1.addKeyListener(pnlVentana1);
+        pnlVentana1.setFocusable(true);
         setResizable(false);
         setVisible(true);
-        this.pnlVentana1.addKeyListener(this.pnlVentana1);
-        this.pnlVentana1.setFocusable(true);
-        //pnlVentana1.setBounds(0, 0, (int) (this.getWidth() * 0.9), this.getHeight());
-        pnlVentana1.setX2Ciudad(this.ciudad.m * this.ciudad.anchoCampo);
-        pnlVentana1.setX1Componente(this.ciudad.m * this.ciudad.anchoCampo);
-        pnlVentana1.setX2Componete(this.getWidth() - (int) (this.getWidth() * 0.05));
-        pnlVentana1.setAltura(this.ciudad.altoCampo * this.ciudad.n);
-        pnlVentana1.crearComponentes();
-        pnlVentana1.setCiudad(ciudad);
+        
+        
     }
 
     /**
@@ -125,7 +116,8 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
-            GuardarCiudad(JOptionPane.showInputDialog("iingrese nombre archivo"), ciudad);
+            String nombreArchivo=JOptionPane.showInputDialog("ingrese nombre archivo");
+            GuardarCiudad(nombreArchivo, ciudad);
         } catch (IOException ex) {
             Logger.getLogger(VentanaPrincial.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -196,8 +188,9 @@ public class VentanaPrincial extends javax.swing.JFrame {
             File f = new File(nombre);
             fis = new FileInputStream(f);
             ois = new ObjectInputStream(fis);
-            this.ciudad = (Ciudad) ois.readObject();
+            ciudad = (Ciudad) ois.readObject();
             ois.close();
+            pnlVentana1.repaint();
         } catch (FileNotFoundException ex) {
             System.out.println("Error no se encontro el archivo");
         } catch (IOException ex) {
@@ -214,15 +207,20 @@ public class VentanaPrincial extends javax.swing.JFrame {
     }
 
     private void crearCiudad() {
-        this.nCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese n"));
-        this.mCiudad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese m"));
-        matriz = new String[this.nCiudad][this.mCiudad];
-        for (int i = 0; i < this.nCiudad; i++) {
-            for (int j = 0; j < this.mCiudad; j++) {
-                matriz[i][j] = "";
+        int n = Integer.parseInt(JOptionPane.showInputDialog("Ingrese n"));
+        int m = Integer.parseInt(JOptionPane.showInputDialog("Ingrese m"));
+        Componente matriz[][] = new Componente[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                matriz[i][j] = null;
             }
         }
-        this.ciudad = new Ciudad(matriz, this.nCiudad, this.mCiudad, (int) ((this.getWidth() * 0.8) / this.mCiudad), (int) ((this.getHeight() - 100) / this.nCiudad));
-
+        int anchoCampo=(int) ((this.getWidth() * 0.8) / m);
+        int altoCampo=(int) ((this.getHeight() - 100) / n);
+        int anchoAreaItemsX1=n*anchoCampo;
+        int anchoAreaItemsX2=this.getWidth() - (int) (this.getWidth() * 0.05);
+        ciudad = new Ciudad(matriz, n, m,anchoCampo, altoCampo);
+        areaItems=new AreaItems(new ArrayList<>(), anchoAreaItemsX1, anchoAreaItemsX2);
+        pnlVentana1.repaint();
     }
 }

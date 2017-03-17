@@ -10,8 +10,8 @@ package proyectoanalisis2017.pkg1;
  * @author root
  */
 public class Componente {
-    String tipo;
-    String ruta;
+    private String tipo;
+    private String ruta;
 
     public Componente() {
     }
@@ -20,5 +20,15 @@ public class Componente {
         this.tipo = tipo;
         this.ruta = "../ImgComponentes/"+this.tipo+".png";
     }
+
+    public String getRuta() {
+        return ruta;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+    
+    
     
 }

@@ -12,22 +12,59 @@ import java.io.Serializable;
  * @author Gianka
  */
 public class Ciudad implements Serializable{
-    String [][] matrizCiudad;
-    int n;//indica la canidad de columnas 
-    int m; //indica la cantidad de filas 
-    int anchoCampo;
-    int altoCampo;
+    private Componente [][] matrizCiudad;
+    private int n;//indica la canidad de columnas 
+    private int m; //indica la cantidad de filas 
+    private int anchoCampo;
+    private int altoCampo;
+    private int anchoCiudad;
+    private int largoCiudad;
+    
     
     public Ciudad() {
     }
 
-    public Ciudad(String [][] matrizCiudad, int n, int m, int anchoCampo, int altoCampo) {
+    public Ciudad(Componente [][] matrizCiudad, int n, int m, int anchoCampo, int altoCampo) {
         this.matrizCiudad = matrizCiudad;
         this.n = n;
         this.m = m;
         this.anchoCampo = anchoCampo;
         this.altoCampo = altoCampo;
+        this.anchoCiudad=this.n*this.anchoCampo;
+        this.largoCiudad=this.altoCampo * this.n;
     }
+
+    public int getAltoCampo() {
+        return altoCampo;
+    }
+
+    public int getAnchoCampo() {
+        return anchoCampo;
+    }
+
+    public int getAnchoCiudad() {
+        return anchoCiudad;
+    }
+
+    public int getLargoCiudad() {
+        return largoCiudad;
+    }
+
+    public Componente[][] getMatrizCiudad() {
+        return matrizCiudad;
+    }
+
+    
+
+    public int getM() {
+        return m;
+    }
+
+    public int getN() {
+        return n;
+    }
+    
+    
 }
 
   

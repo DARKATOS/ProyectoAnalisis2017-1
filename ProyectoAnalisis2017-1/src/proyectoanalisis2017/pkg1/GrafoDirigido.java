@@ -46,6 +46,6 @@ public class GrafoDirigido {
      */
     public void añadirAdyacencia(Item a, Item  b, Arista arista)
     {
-        grafo[a.id][b.id]=arista;
+        grafo[a.getId()][b.getId()]=arista;
     }
 }

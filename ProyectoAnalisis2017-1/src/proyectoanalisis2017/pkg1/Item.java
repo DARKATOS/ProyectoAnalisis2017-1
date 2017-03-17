@@ -13,11 +13,12 @@ import java.util.LinkedList;
  * @author Gianka
  */
 public class Item {
-    int id;
+    private int id;
     //String tipo;
-    LinkedList<Componente> lstComponentes ;
-    Rectangle area;
-    int contador;
+    private LinkedList<Componente> lstComponentes ;
+    private Rectangle area;
+    private int contador;
+    
     public Item() {
     }
 
@@ -27,6 +28,29 @@ public class Item {
         this.area = new Rectangle(x,y,ancho,alto);
         this.contador=1;
     }
+
+    public Rectangle getArea() {
+        return area;
+    }
+
+    public int getContador() {
+        return contador;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public LinkedList<Componente> getLstComponentes() {
+        return lstComponentes;
+    }
+
+    public void setContador(int contador) {
+        this.contador = contador;
+    }
+    
+    
+    
 
     
 
