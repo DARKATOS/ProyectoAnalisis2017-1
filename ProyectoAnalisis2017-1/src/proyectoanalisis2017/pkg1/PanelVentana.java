@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
 /**
@@ -25,16 +24,12 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     Ciudad ciudad;
     AreaItems areaItems;
     private Boolean estaSelecionadoComponente;
-
-    //LinkedList<Item> lstItems;
     private Item itemSeleccionado;
     private int xImgSelecionada;
     private int yImgSelecionada;
 
     public PanelVentana() {
         initComponents();
-
-        //this.lstItems = new LinkedList<>();
         this.xImgSelecionada = 0;
         this.yImgSelecionada = 0;
         this.itemSeleccionado = new Item();
@@ -142,7 +137,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
-        if (ciudad != null) {
+        if (ciudad != null && areaItems!=null) {
             g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/Fondo.jpg")).getImage(), 0, 0, ciudad.getAnchoCiudad(), ciudad.getLargoCiudad(), this);
             g.setColor(Color.decode("#FC4600"));
             g.fillRect(areaItems.getAnchoListaComponentesX1(), 0, (areaItems.getAnchoListaComponentesX2() - ciudad.getAnchoCiudad()) * 2, ciudad.getLargoCiudad());

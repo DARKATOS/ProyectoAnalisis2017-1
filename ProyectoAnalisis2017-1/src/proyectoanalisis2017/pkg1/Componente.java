@@ -5,11 +5,13 @@
  */
 package proyectoanalisis2017.pkg1;
 
+import java.io.Serializable;
+
 /**
  *
  * @author root
  */
-public class Componente {
+public class Componente implements Serializable{
     private String tipo;
     private String ruta;
 
