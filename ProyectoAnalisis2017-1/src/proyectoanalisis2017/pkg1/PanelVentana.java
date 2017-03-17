@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
  *
  * @author Gianka
  */
-public class PanelVentana extends javax.swing.JPanel implements KeyListener{
+public class PanelVentana extends javax.swing.JPanel implements KeyListener {
 
     /**
      * Creates new form pnlCiudad
@@ -25,24 +25,22 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
     Ciudad ciudad;
     AreaItems areaItems;
     private Boolean estaSelecionadoComponente;
-    
+
     //LinkedList<Item> lstItems;
-    
-  
     private Item itemSeleccionado;
     private int xImgSelecionada;
     private int yImgSelecionada;
 
     public PanelVentana() {
         initComponents();
-        
+
         //this.lstItems = new LinkedList<>();
         this.xImgSelecionada = 0;
         this.yImgSelecionada = 0;
         this.itemSeleccionado = new Item();
         this.estaSelecionadoComponente = false;
     }
-   
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -124,7 +122,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
                 this.yImgSelecionada = 0;
                 int auxN = evt.getY() / ciudad.getAltoCampo();
                 int auxM = evt.getX() / ciudad.getAnchoCampo();
-                ciudad.getMatrizCiudad()[auxN][auxM] = itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getTipo();
+                ciudad.getMatrizCiudad()[auxN][auxM] = itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador());
             } catch (Exception e) {
 
             }
@@ -140,43 +138,34 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
         // TODO add your handling code here:
 
     }//GEN-LAST:event_formKeyPressed
-    
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
-
-        g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/Fondo.jpg")).getImage(), 0, 0, ciudad.getAnchoCiudad(), ciudad.getLargoCiudad(), this);
-        g.setColor(Color.decode("#FC4600"));
-        //g.fillRect(this.x1Componente, 0, (this.x2Componete - this.x2Ciudad) * 2, this.altura);
-        g.fillRect(areaItems.getAnchoListaComponentesX1(), 0, (areaItems.getAnchoListaComponentesX2() - ciudad.getAnchoCiudad()) * 2, ciudad.getLargoCiudad());
-        g.setColor(Color.BLACK);
-        pintarComponentes(g);
         if (ciudad != null) {
+            g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/Fondo.jpg")).getImage(), 0, 0, ciudad.getAnchoCiudad(), ciudad.getLargoCiudad(), this);
+            g.setColor(Color.decode("#FC4600"));
+            g.fillRect(areaItems.getAnchoListaComponentesX1(), 0, (areaItems.getAnchoListaComponentesX2() - ciudad.getAnchoCiudad()) * 2, ciudad.getLargoCiudad());
+            g.setColor(Color.BLACK);
+            pintarComponentes(g);
             // lineas de referencia de las areas de la aplicacion
             g.drawRect(0, 0, ciudad.getAnchoCiudad(), ciudad.getLargoCiudad());
-            //g.setColor(Color.red);
-            // g.drawRect(this.x1Componente, 0, this.x2Componete - this.x1Componente, this.altura);
-            //------Pintar componentes--------
-
             pintarCiudad(g);
-
             //pinta la anamiacion de colocar imagen en el tablero
             //El 0 es el X1 de la ciudad.
             if (this.estaSelecionadoComponente && this.xImgSelecionada > 0 && this.xImgSelecionada < ciudad.getAnchoCiudad() && this.yImgSelecionada > 0 && this.yImgSelecionada < ciudad.getLargoCiudad()) {
-
                 g.drawImage(new ImageIcon(getClass().getResource(itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getRuta())).getImage(), this.xImgSelecionada, this.yImgSelecionada, 100, 100, this);
                 int auxN = yImgSelecionada / ciudad.getAltoCampo();
                 int auxM = xImgSelecionada / ciudad.getAnchoCampo();
-                System.out.println(auxN + "--" + auxM);
                 g.drawRect(auxM * ciudad.getAnchoCampo(), auxN * ciudad.getAltoCampo(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
             }
         }
+
     }
 
     private void pintarComponentes(Graphics g) {
         for (int i = 0; i < areaItems.getListaItems().size(); i++) {
-            Item auxComponente = new Item();
+            Item auxComponente;
             auxComponente = areaItems.getListaItems().get(i);
             g.drawImage(new ImageIcon(getClass().getResource(auxComponente.getLstComponentes().getFirst().getRuta())).getImage(), auxComponente.getArea().x, auxComponente.getArea().y, auxComponente.getArea().width, auxComponente.getArea().height, this);
         }
@@ -186,7 +175,6 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
         this.ciudad = ciudad;
     }
 
-    
     public void setAreaItems(AreaItems areaItems) {
         this.areaItems = areaItems;
     }
@@ -194,8 +182,8 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
     private void pintarCiudad(Graphics g) {
         for (int i = 0; i < this.ciudad.getN(); i++) {
             for (int j = 0; j < this.ciudad.getM(); j++) {
-                if (!ciudad.getMatrizCiudad()[i][j].equals("0")&&!ciudad.getMatrizCiudad()[i][j].equals("")) {
-                    g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/" + ciudad.getMatrizCiudad()[i][j] + ".png")).getImage(), ciudad.getAnchoCampo() * j, ciudad.getAltoCampo() * i, ciudad.getAnchoCampo(), this.ciudad.getAltoCampo(), this);
+                if (ciudad.getMatrizCiudad()[i][j] != null) {
+                    g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/" + ciudad.getMatrizCiudad()[i][j].getTipo() + ".png")).getImage(), ciudad.getAnchoCampo() * j, ciudad.getAltoCampo() * i, ciudad.getAnchoCampo(), this.ciudad.getAltoCampo(), this);
                 }
             }
         }
@@ -203,26 +191,21 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener{
 
     @Override
     public void keyTyped(KeyEvent ke) {
-       }
+    }
 
     @Override
     public void keyPressed(KeyEvent ke) {
-        if(itemSeleccionado.getContador()==itemSeleccionado.getLstComponentes().size()-1)
-        {
+        if (itemSeleccionado.getContador() == itemSeleccionado.getLstComponentes().size() - 1) {
             this.itemSeleccionado.setContador(0);
-        }else 
-        {
-            itemSeleccionado.setContador(itemSeleccionado.getContador()+1);
+        } else {
+            itemSeleccionado.setContador(itemSeleccionado.getContador() + 1);
         }
         repaint();
     }
-    
 
     @Override
     public void keyReleased(KeyEvent ke) {
     }
-
- 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -116,7 +116,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
-            String nombreArchivo=JOptionPane.showInputDialog("iingrese nombre archivo");
+            String nombreArchivo=JOptionPane.showInputDialog("ingrese nombre archivo");
             GuardarCiudad(nombreArchivo, ciudad);
         } catch (IOException ex) {
             Logger.getLogger(VentanaPrincial.class.getName()).log(Level.SEVERE, null, ex);
@@ -190,8 +190,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
             ois = new ObjectInputStream(fis);
             ciudad = (Ciudad) ois.readObject();
             ois.close();
-            //ciudad.anchoCampo = (int) ((this.getWidth() * 0.8) / ciudad.m);
-            //ciudad.altoCampo = (this.getHeight() - 100) / ciudad.n;
+            pnlVentana1.repaint();
         } catch (FileNotFoundException ex) {
             System.out.println("Error no se encontro el archivo");
         } catch (IOException ex) {
@@ -210,10 +209,10 @@ public class VentanaPrincial extends javax.swing.JFrame {
     private void crearCiudad() {
         int n = Integer.parseInt(JOptionPane.showInputDialog("Ingrese n"));
         int m = Integer.parseInt(JOptionPane.showInputDialog("Ingrese m"));
-        String matriz[][] = new String[n][m];
+        Componente matriz[][] = new Componente[n][m];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                matriz[i][j] = "";
+                matriz[i][j] = null;
             }
         }
         int anchoCampo=(int) ((this.getWidth() * 0.8) / m);
@@ -222,6 +221,6 @@ public class VentanaPrincial extends javax.swing.JFrame {
         int anchoAreaItemsX2=this.getWidth() - (int) (this.getWidth() * 0.05);
         ciudad = new Ciudad(matriz, n, m,anchoCampo, altoCampo);
         areaItems=new AreaItems(new ArrayList<>(), anchoAreaItemsX1, anchoAreaItemsX2);
-        
+        pnlVentana1.repaint();
     }
 }
