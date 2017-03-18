@@ -86,7 +86,13 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
 
     }//GEN-LAST:event_formMouseClicked
-
+ /**
+  * Evaluamos si el puntero del mouse esta en los limites del areaItem
+  * y si presiona el click activamos la bandera estaSelecionadoComponente
+  * para decir que ya estamos selecionado un item,seteamos el contador a cero
+  * para que nos meustra la primera imagen de la lista de compoentes del item 
+  * @param evt 
+  */
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
 
         if (evt.getX() > areaItems.getAnchoListaComponentesX1() && evt.getX() < areaItems.getAnchoListaComponentesX2()) {
@@ -99,7 +105,12 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
             }
         }
     }//GEN-LAST:event_formMousePressed
-
+/**
+ * Cuando se halla activado la bandera estaSelecionadoComponentes que es cuando 
+ * se preciona un item y ya cambiamos el X y Y de la imagen selecionada
+ * para que la pinte de acuerdo donde va el puntero del mouse
+ * @param evt 
+ */
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         if (this.estaSelecionadoComponente) {
 
@@ -108,7 +119,12 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
             repaint();
         }
     }//GEN-LAST:event_formMouseDragged
-
+/**
+ * Cuando se suelta el click y adeas se tiene selecionado un item lo que hace el release 
+ * es que desactiva la bandera y posedemos a ubicar el componente que se seleciono
+ * y ubicarlo en la matriz de la Ciudad 
+ * @param evt 
+ */
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
         if (this.estaSelecionadoComponente) {
             try {
@@ -158,7 +174,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
 
     }
     /**
-     * 
+     * pintamos la lista de los item que podemos selecionar y poner en la ciudad
      * @param g grafico del panel que sirve como lienzo 
      */
     private void pintarComponentes(Graphics g) {
@@ -176,7 +192,12 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     public void setAreaItems(AreaItems areaItems) {
         this.areaItems = areaItems;
     }
-
+ /**
+  * Este metodos esta enfocado en recorrer la matriz de componentes y pintar 
+  * las difrentes imagenes asociadas ala posicion de la matriz en caso de que sea 
+  * null es que no hay ningun componentes entonces no se pinta nada
+  * @param g grafico del panel que sirve como lienzo 
+  */
     private void pintarCiudad(Graphics g) {
         for (int i = 0; i < this.ciudad.getN(); i++) {
             for (int j = 0; j < this.ciudad.getM(); j++) {
@@ -190,7 +211,12 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     @Override
     public void keyTyped(KeyEvent ke) {
     }
-
+    /**
+     * detectamos que si se preciona las teclas -----
+     * aumentamos el contador del item para que cambie el componente y lo logre
+     * ubicar en la matriz de la ciudad
+     * @param ke 
+     */
     @Override
     public void keyPressed(KeyEvent ke) {
         if (itemSeleccionado.getContador() == itemSeleccionado.getLstComponentes().size() - 1) {
