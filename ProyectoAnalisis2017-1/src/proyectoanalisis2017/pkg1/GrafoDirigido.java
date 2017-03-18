@@ -47,17 +47,18 @@ public class GrafoDirigido {
         for (int i = 0; i < matrizCiudad.length; i++) {
             for (int j = 0; j < matrizCiudad[i].length; j++) {
                 if (matrizCiudad[i][j] != null) {
-                    if (matrizCiudad[i][j].getEsCruce()) {
-                        if (matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getEsCalle() || matrizCiudad[i][j - 1].getEsCarretera())) {
+                    if (matrizCiudad[i][j].getIdNodo() != -1) {
+                        if (j-1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getEsCalle() || matrizCiudad[i][j - 1].getEsCarretera())) {
                             verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 2);
                         }
-                        if (matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getEsCalle() || matrizCiudad[i][j + 1].getEsCarretera())) {
+                        if (j+1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getEsCalle() || matrizCiudad[i][j + 1].getEsCarretera())) {
+
                             verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 1);
                         }
-                        if (matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getEsCalle() || matrizCiudad[i - 1][j].getEsCarretera())) {
+                        if (i-1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getEsCalle() || matrizCiudad[i - 1][j].getEsCarretera())) {
                             verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 3);
                         }
-                        if (matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getEsCalle() || matrizCiudad[i + 1][j].getEsCarretera())) {
+                        if (i+1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getEsCalle() || matrizCiudad[i + 1][j].getEsCarretera())) {
                             verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 4);
                         }
 
@@ -99,6 +100,7 @@ public class GrafoDirigido {
             if (x < y) {
                 this.grafo[x][y] = arista;
             } else {
+                System.out.println(x + "-" + y);
                 this.grafo[y][x] = arista;
             }
         } else if (arista.getDireccion() == 4) {
@@ -125,7 +127,7 @@ public class GrafoDirigido {
         Arista auxArista = new Arista();
         Boolean bandera = false;
 
-        while (!matrizCiudad[i][j].getEsCruce()) {
+        while (matrizCiudad[i][j].getIdNodo() == -1) {
             bandera = true;
             auxListaComponentes.add(matrizCiudad[i][j]);
             matrizCiudad[i][j] = null;

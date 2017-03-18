@@ -109,19 +109,62 @@ public class Ciudad implements Serializable {
         for (int i = 0; i < this.n; i++) {
             for (int j = 0; j < this.m; j++) {
                 if (this.matrizCiudad[i][j] != null) {
+
                     if (esCruce(this.matrizCiudad[i][j])) {
                         matrizCiudad[i][j].setEsCruce(true);
-                        matrizCiudad[i][j].setIdNodo(this.cantidadCruces);
-                        this.cantidadCruces++;
-                    } else if (esCalle(this.matrizCiudad[i][j])) {
-                        matrizCiudad[i][j].setEsCalle(true);
-
-                    } else if (esCarretera(this.matrizCiudad[i][j])) {
-                        matrizCiudad[i][j].setEsCarretera(true);
+                        marcarNodo(matrizCiudad[i][j]);
+                    } else {
+                        if (esCalle(this.matrizCiudad[i][j])) {
+                            matrizCiudad[i][j].setEsCalle(true);
+                        } else if (esCarretera(this.matrizCiudad[i][j])) {
+                            matrizCiudad[i][j].setEsCarretera(true);
+                        }
+                        if (esViaCortada(i, j)) {
+                            marcarNodo(matrizCiudad[i][j]);
+                        }
                     }
                 }
             }
         }
+    }
+
+    private Boolean esVia(Componente componente) {
+        Boolean resultado = false;
+        if (esCalle(componente) || esCarretera(componente) || esCruce(componente)) {
+            resultado = true;
+        }
+        return resultado;
+    }
+
+    private Boolean esViaCortada(int i, int j) {
+        Boolean resultado = false;
+        int contador = 0;
+
+        if (j + 1 < m && this.matrizCiudad[i][j + 1] != null && esVia(this.matrizCiudad[i][j + 1])) {
+            contador++;
+        }
+
+        if (j - 1 >= 0 && this.matrizCiudad[i][j - 1] != null && esVia(this.matrizCiudad[i][j - 1])) {
+            contador++;
+        }
+
+        if (i + 1 < n && this.matrizCiudad[i + 1][j] != null && esVia(this.matrizCiudad[i + 1][j])) {
+            contador++;
+        }
+
+        if (i - 1 >= 0 && this.matrizCiudad[i - 1][j] != null && esVia(this.matrizCiudad[i - 1][j])) {
+            contador++;
+        }
+
+        if (contador == 1) {
+            resultado = true;
+        }
+        return resultado;
+    }
+
+    private void marcarNodo(Componente componente) {
+        componente.setIdNodo(this.cantidadCruces);
+        this.cantidadCruces++;
     }
 
     private boolean esCruce(Componente componente) {

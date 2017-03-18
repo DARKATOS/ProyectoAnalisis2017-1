@@ -19,7 +19,7 @@ public class Componente implements Serializable {
     private Boolean esCalle;
     private Boolean esCarretera;
     private String nombre;
-    private int idNodo;
+    private int idNodo;//si es -1 no es nodo
 
     public Componente() {
     }
@@ -86,5 +86,7 @@ public class Componente implements Serializable {
     public Boolean getEsCruce() {
         return esCruce;
     }
+
+   
 
 }
