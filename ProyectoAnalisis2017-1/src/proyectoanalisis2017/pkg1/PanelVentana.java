@@ -157,7 +157,10 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         }
 
     }
-
+    /**
+     * 
+     * @param g grafico del panel que sirve como lienzo 
+     */
     private void pintarComponentes(Graphics g) {
         for (int i = 0; i < areaItems.getListaItems().size(); i++) {
             Item auxComponente;

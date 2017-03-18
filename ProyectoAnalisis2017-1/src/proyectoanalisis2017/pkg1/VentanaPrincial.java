@@ -8,7 +8,6 @@ package proyectoanalisis2017.pkg1;
 //import com.sun.webkit.CursorManager;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
