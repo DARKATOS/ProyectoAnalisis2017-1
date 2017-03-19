@@ -27,11 +27,11 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     private Item itemSeleccionado;
     private int xImgSelecionada;
     private int yImgSelecionada;
-
     public PanelVentana() {
         initComponents();
         this.xImgSelecionada = 0;
         this.yImgSelecionada = 0;
+      
         this.itemSeleccionado = new Item();
         this.estaSelecionadoComponente = false;
     }
@@ -202,7 +202,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         for (int i = 0; i < this.ciudad.getN(); i++) {
             for (int j = 0; j < this.ciudad.getM(); j++) {
                 if (ciudad.getMatrizCiudad()[i][j] != null) {
-                    g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/" + ciudad.getMatrizCiudad()[i][j].getTipo() + ".png")).getImage(), ciudad.getAnchoCampo() * j, ciudad.getAltoCampo() * i, ciudad.getAnchoCampo(), this.ciudad.getAltoCampo(), this);
+                    g.drawImage(new ImageIcon(getClass().getResource(ciudad.getMatrizCiudad()[i][j].getRuta())).getImage(), ciudad.getAnchoCampo() * j, ciudad.getAltoCampo() * i, ciudad.getAnchoCampo(), this.ciudad.getAltoCampo(), this);
                 }
             }
         }
@@ -230,6 +230,12 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent ke) {
     }
+    /**
+     * mira si el componente es un cruce
+     * @param componente
+     * @return true si es cruce o false si no lo es 
+     */
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
