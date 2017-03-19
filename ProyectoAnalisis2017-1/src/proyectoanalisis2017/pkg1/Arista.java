@@ -17,8 +17,8 @@ public class Arista {
     private int x2;
     private int y1;
     private int y2;
-    private int velocidad;
-    private int longitud;
+    private int velocidad;//depende del tipo de la via si es carretera o calle
+    private int longitud;//tamaño de desplazamiento de un nodo al otro
     private int direccion;////1 abajo-arriba;2arriba-abajo;3izq-Der;4der-izq;5doblehorizontal;6doblevertical
     private LinkedList<Componente> lstComponentes;
 
@@ -49,15 +49,6 @@ public class Arista {
         this.direccion = direccion;
         this.lstComponentes = lstComponentes;
     }
-
-    public Arista(int velocidad, int longitud, int direccion, LinkedList<Componente> lstComponentes) {
-
-        this.velocidad = velocidad;
-        this.longitud = longitud;
-        this.direccion = direccion;
-        this.lstComponentes = lstComponentes;
-    }
-
     public int getDireccion() {
         return direccion;
     }

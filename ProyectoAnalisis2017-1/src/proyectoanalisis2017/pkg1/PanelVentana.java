@@ -159,17 +159,17 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
         if (ciudad != null && areaItems != null) {
-            g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/Fondo.jpg")).getImage(), 0, 0, ciudad.getAnchoCiudad(), ciudad.getLargoCiudad(), this);
+            g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/Fondo.jpg")).getImage(), 0, 0, ciudad.getAnchoCiudad(), ciudad.getAltoCiudad(), this);
             g.setColor(Color.decode("#FC4600"));
-            g.fillRect(areaItems.getAnchoListaComponentesX1(), 0, (areaItems.getAnchoListaComponentesX2() - ciudad.getAnchoCiudad()) * 2, ciudad.getLargoCiudad());
+            g.fillRect(areaItems.getAnchoListaComponentesX1(), 0, (areaItems.getAnchoListaComponentesX2() - ciudad.getAnchoCiudad()) * 2, ciudad.getAltoCiudad());
             g.setColor(Color.BLACK);
             pintarComponentes(g);
             // lineas de referencia de las areas de la aplicacion
-            g.drawRect(0, 0, ciudad.getAnchoCiudad(), ciudad.getLargoCiudad());
+            g.drawRect(0, 0, ciudad.getAnchoCiudad(), ciudad.getAltoCiudad());
             pintarCiudad(g);
             //pinta la anamiacion de colocar imagen en el tablero
             //El 0 es el X1 de la ciudad.
-            if (this.estaSelecionadoComponente && this.xImgSelecionada > 0 && this.xImgSelecionada < ciudad.getAnchoCiudad() && this.yImgSelecionada > 0 && this.yImgSelecionada < ciudad.getLargoCiudad()) {
+            if (this.estaSelecionadoComponente && this.xImgSelecionada > 0 && this.xImgSelecionada < ciudad.getAnchoCiudad() && this.yImgSelecionada > 0 && this.yImgSelecionada < ciudad.getAltoCiudad()) {
                 g.drawImage(new ImageIcon(getClass().getResource(itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getRuta())).getImage(), this.xImgSelecionada, this.yImgSelecionada, 100, 100, this);
                 int auxN = yImgSelecionada / ciudad.getAltoCampo();
                 int auxM = xImgSelecionada / ciudad.getAnchoCampo();

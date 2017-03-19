@@ -14,12 +14,12 @@ import java.io.Serializable;
 public class Componente implements Serializable {
 
     private int tipo;//1 abajo-arriba;2arriba-abajo;3izq-Der;4der-izq;5doblehorizontal;6doblevertical
-    private String ruta;
-    private Boolean esCruce;
-    private Boolean esCalle;
-    private Boolean esCarretera;
-    private String nombre;
-    private int idNodo;//si es -1 no es nodo
+    private String ruta; //nos indica donde esta la imagen para pintarla en el panel    
+    private Boolean esCruce;//nos indica si es cruce o no
+    private Boolean esCalle;//nos indica si es calle o no
+    private Boolean esCarretera;// nos indica si es carretera o no
+    private String nombre;// nos indica el nombre del compoente 
+    private int idNodo;//si es -1 no es nodo y >=0 si es un nodo y el valor es el identificador del nodo
 
     public Componente() {
     }

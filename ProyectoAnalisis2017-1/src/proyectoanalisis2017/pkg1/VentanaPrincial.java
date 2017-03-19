@@ -263,7 +263,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     private void crearGrafo() {
         ciudad.actualizarCiudad();
-        grafo = new GrafoDirigido(ciudad.getCantidadCruces());
+        grafo = new GrafoDirigido(ciudad.getCantidadNodos());
         Componente[][] matrizCopia = new Componente[ciudad.getN()][ciudad.getM()];
         for (int i = 0; i < ciudad.getN(); i++) {
             for (int j = 0; j < ciudad.getM(); j++) {

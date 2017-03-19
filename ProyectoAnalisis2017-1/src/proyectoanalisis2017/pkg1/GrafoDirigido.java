@@ -39,7 +39,10 @@ public class GrafoDirigido {
 
     /**
      * Vamos ha representar el grafo mendiantes una matriz de adyasiencias
-     * dependiendo de la matriz de componentes de la ciudad
+     * dependiendo de la matriz de componentes de la ciudad mirando si es nodo y que tenga via  
+     * recoriendo hacia arriba,hacia abajo, hacia la derecha y hacia la izquerda
+     * buscado un nodo y ahi se crea la arista y volviendo null ese recorrido para que no se
+     * vuelva a repetir
      *
      * @param matrizCiudad matriz de la ciudad que tenemos diseñada
      */
@@ -67,7 +70,16 @@ public class GrafoDirigido {
             }
         }
     }
-
+    /**
+     * Procedemos a crear la arista que se va asignar al grafo validado si es carretera 
+     * o caller para la velocidad 
+     * @param x1 inicio de arista en x
+     * @param y1  incio de arista en y 
+     * @param x2 fin de arrista en x
+     * @param y2 fin de arista en y
+     * @param lstComponentes los componente que contiene esa arista
+     * @return  arista creada con los todos sus paramentros
+     */
     private Arista crearArista(int x1, int y1, int x2, int y2, LinkedList<Componente> lstComponentes) {
         Arista auxArista;
         if (lstComponentes.getFirst().getEsCarretera()) {
@@ -78,7 +90,13 @@ public class GrafoDirigido {
 
         return auxArista;
     }
-
+    /**
+     * Añade la arista al grafo dependiendo la direccion del de la arista se agrega en la matriz 
+     * del grafo 
+     * @param x identificador del primero nodo
+     * @param y identidicador del segundo nodo
+     * @param arista arista a asignar
+     */
     private void añadirArista(int x, int y, Arista arista) {
         System.out.println(arista.getDireccion());
         if (arista.getDireccion() == 5 || arista.getDireccion() == 6) {
@@ -113,12 +131,14 @@ public class GrafoDirigido {
     }
 
     /**
-     *
-     * @param matrizCiudad
-     * @param i
-     * @param j
-     * @param origen
-     * @param tamaño
+     *Aqui es el recorrido buscando el otro nodo para hacer la arista y cada que va encontrando
+     * un componen via y que nos es nodo va agregando en un lista de componente 
+     * y cuanod ya encuentra un nodo crea la arista y luego añade al grafo
+     * @param matrizCiudad Matriz de la cidudad
+     * @param i indice de fila donde empieza el recorrido no es del nodo si no del  siguente
+     * @param j indice de columna  donde empieza el recorrido no es del nodo si no del siguente
+     * @param origen indice de fila del nodo que se le va hacer el recorrido
+     * @param tamaño indice de columna del nodo que se lava hacer el recorrido
      * @param opcion si es 1 busca hacia la derecha si es 2 busca a izquierda 3
      * busca hacia arriba y 4 busca hacia arriba
      */
