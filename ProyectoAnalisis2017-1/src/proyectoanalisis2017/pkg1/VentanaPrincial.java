@@ -8,7 +8,6 @@ package proyectoanalisis2017.pkg1;
 //import com.sun.webkit.CursorManager;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,25 +32,27 @@ public class VentanaPrincial extends javax.swing.JFrame {
     Ciudad ciudad;
     AreaItems areaItems;
     GraphicsDevice grafica;
+    GrafoDirigido grafo;
 
     public VentanaPrincial() {
         initComponents();
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
+        pnlVentana1.setFocusable(true);
+        pnlVentana1.addKeyListener(pnlVentana1);
+
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
         if (opcion == 1) {
-            cargarCiudad();         
+            cargarCiudad();
         } else {
             crearCiudad();
         }
         pnlVentana1.setCiudad(ciudad);
+        crearAreaItem(ciudad);
         pnlVentana1.setAreaItems(areaItems);
-        pnlVentana1.addKeyListener(pnlVentana1);
-        pnlVentana1.setFocusable(true);
         setResizable(false);
         setVisible(true);
-        
-        
+
     }
 
     /**
@@ -65,6 +66,8 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
         pnlVentana1 = new proyectoanalisis2017.pkg1.PanelVentana();
         btnGuardar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,20 +87,42 @@ public class VentanaPrincial extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Crear Grafo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Ver Grafo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlVentana1Layout = new javax.swing.GroupLayout(pnlVentana1);
         pnlVentana1.setLayout(pnlVentana1Layout);
         pnlVentana1Layout.setHorizontalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
-                .addGap(0, 798, Short.MAX_VALUE)
-                .addComponent(btnGuardar))
+                .addGap(0, 775, Short.MAX_VALUE)
+                .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2)
+                    .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))))
         );
         pnlVentana1Layout.setVerticalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlVentana1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnGuardar)
-                .addContainerGap(591, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addContainerGap(519, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -116,7 +141,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
-            String nombreArchivo=JOptionPane.showInputDialog("ingrese nombre archivo");
+            String nombreArchivo = JOptionPane.showInputDialog("ingrese nombre archivo");
             GuardarCiudad(nombreArchivo, ciudad);
         } catch (IOException ex) {
             Logger.getLogger(VentanaPrincial.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,6 +155,14 @@ public class VentanaPrincial extends javax.swing.JFrame {
     private void pnlVentana1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnlVentana1KeyPressed
         // TODO add your handling code   here:
     }//GEN-LAST:event_pnlVentana1KeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        crearGrafo();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        grafo.verGrafo();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,6 +202,8 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private proyectoanalisis2017.pkg1.PanelVentana pnlVentana1;
     // End of variables declaration//GEN-END:variables
 
@@ -190,7 +225,6 @@ public class VentanaPrincial extends javax.swing.JFrame {
             ois = new ObjectInputStream(fis);
             ciudad = (Ciudad) ois.readObject();
             ois.close();
-            pnlVentana1.repaint();
         } catch (FileNotFoundException ex) {
             System.out.println("Error no se encontro el archivo");
         } catch (IOException ex) {
@@ -215,12 +249,38 @@ public class VentanaPrincial extends javax.swing.JFrame {
                 matriz[i][j] = null;
             }
         }
-        int anchoCampo=(int) ((this.getWidth() * 0.8) / m);
-        int altoCampo=(int) ((this.getHeight() - 100) / n);
-        int anchoAreaItemsX1=n*anchoCampo;
-        int anchoAreaItemsX2=this.getWidth() - (int) (this.getWidth() * 0.05);
-        ciudad = new Ciudad(matriz, n, m,anchoCampo, altoCampo);
-        areaItems=new AreaItems(new ArrayList<>(), anchoAreaItemsX1, anchoAreaItemsX2);
-        pnlVentana1.repaint();
+        int anchoCampo = (int) ((this.getWidth() * 0.8) / m);
+        int altoCampo = (int) ((this.getHeight() - 100) / n);
+        ciudad = new Ciudad(matriz, n, m, anchoCampo, altoCampo);
+
+    }
+
+    private void crearAreaItem(Ciudad ciudad) {
+        int anchoAreaItemsX1 = ciudad.getN() * this.ciudad.getAnchoCampo();
+        int anchoAreaItemsX2 = this.getWidth() - (int) (this.getWidth() * 0.05);
+        areaItems = new AreaItems(new ArrayList<>(), anchoAreaItemsX1, anchoAreaItemsX2);
+    }
+
+    private void crearGrafo() {
+        ciudad.actualizarCiudad();
+        grafo = new GrafoDirigido(ciudad.getCantidadNodos());
+        Componente[][] matrizCopia = new Componente[ciudad.getN()][ciudad.getM()];
+        for (int i = 0; i < ciudad.getN(); i++) {
+            for (int j = 0; j < ciudad.getM(); j++) {
+                matrizCopia[i][j]=ciudad.getMatrizCiudad()[i][j];
+            }
+        }
+        System.out.println(ciudad.getAnchoCampo()+"---"+ ciudad.getAltoCampo());
+        grafo.crearGrafo(matrizCopia, ciudad.getAnchoCampo(), ciudad.getAltoCampo());
+    }
+
+    private void mostrarMatrizCiudad() {
+        for (int i = 0; i < ciudad.getN(); i++) {
+            for (int j = 0; j < ciudad.getM(); j++) {
+                if (ciudad.getMatrizCiudad()[i][j] != null) {
+                    System.out.println(ciudad.getMatrizCiudad()[i][j].getIdNodo());
+                }
+            }
+        }
     }
 }
