@@ -24,21 +24,27 @@ public class Ciudad implements Serializable {
 
     public Ciudad() {
     }
-
-    public Ciudad(Componente[][] matrizCiudad, int n, int m, int anchoCampo, int altoCampo) {
+    
+    public Ciudad(Componente[][] matrizCiudad, int n, int m) {
         this.matrizCiudad = matrizCiudad;
         this.n = n;
         this.m = m;
         this.cantidadNodos = 0;
-        this.anchoCampo = anchoCampo;
-        this.altoCampo = altoCampo;
-        this.anchoCiudad = this.n * this.anchoCampo;
-        this.altoCiudad = this.altoCampo * this.n;
+        this.anchoCampo = 0;
+        this.altoCampo = 0;
+        this.anchoCiudad = 0;
+        this.altoCiudad = 0;
     }
 
     public int getAltoCampo() {
         return altoCampo;
     }
+
+    public void setAltoCiudad(int altoCiudad) {
+        this.altoCiudad = altoCiudad;
+    }
+    
+    
 
     public int getAnchoCampo() {
         return anchoCampo;
@@ -51,6 +57,20 @@ public class Ciudad implements Serializable {
     public int getAltoCiudad() {
         return altoCiudad;
     }
+
+    public void setAnchoCampo(int anchoCampo) {
+        this.anchoCampo = anchoCampo;
+    }
+
+    public void setAnchoCiudad(int anchoCiudad) {
+        this.anchoCiudad = anchoCiudad;
+    }
+
+    public void setAltoCampo(int altoCampo) {
+        this.altoCampo = altoCampo;
+    }
+    
+    
 
     
 

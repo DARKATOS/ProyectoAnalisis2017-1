@@ -159,7 +159,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
         if (ciudad != null && areaItems != null) {
+            System.out.println("Entre a pintar");
             g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/Fondo.jpg")).getImage(), 0, 0, ciudad.getAnchoCiudad(), ciudad.getAltoCiudad(), this);
+            System.out.println("");
             g.setColor(Color.decode("#FC4600"));
             g.fillRect(areaItems.getAnchoListaComponentesX1(), 0, (areaItems.getAnchoListaComponentesX2() - ciudad.getAnchoCiudad()) * 2, ciudad.getAltoCiudad());
             g.setColor(Color.BLACK);

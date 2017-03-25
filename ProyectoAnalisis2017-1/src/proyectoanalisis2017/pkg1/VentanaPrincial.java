@@ -47,12 +47,24 @@ public class VentanaPrincial extends javax.swing.JFrame {
         } else {
             crearCiudad();
         }
-        pnlVentana1.setCiudad(ciudad);
-        crearAreaItem(ciudad);
-        pnlVentana1.setAreaItems(areaItems);
+
+        redimensionar();
         setResizable(false);
         setVisible(true);
 
+    }
+
+    private void redimensionar() {
+        int anchoCampo = (int) ((this.getWidth() * 0.8) / ciudad.getM());
+        int altoCampo = (int) ((this.getHeight() - 100) / ciudad.getN());
+        ciudad.setAnchoCampo(anchoCampo);
+        ciudad.setAltoCampo(altoCampo);
+        ciudad.setAnchoCiudad(ciudad.getM()*ciudad.getAnchoCampo());
+        ciudad.setAltoCiudad(ciudad.getAltoCampo()*ciudad.getN());
+        crearAreaItem();
+        pnlVentana1.setAreaItems(areaItems);
+        pnlVentana1.setCiudad(ciudad);
+        
     }
 
     /**
@@ -249,14 +261,12 @@ public class VentanaPrincial extends javax.swing.JFrame {
                 matriz[i][j] = null;
             }
         }
-        int anchoCampo = (int) ((this.getWidth() * 0.8) / m);
-        int altoCampo = (int) ((this.getHeight() - 100) / n);
-        ciudad = new Ciudad(matriz, n, m, anchoCampo, altoCampo);
+        ciudad = new Ciudad(matriz, n, m);
 
     }
 
-    private void crearAreaItem(Ciudad ciudad) {
-        int anchoAreaItemsX1 = ciudad.getN() * this.ciudad.getAnchoCampo();
+    private void crearAreaItem() {
+        int anchoAreaItemsX1 = ciudad.getN() * ciudad.getAnchoCampo();
         int anchoAreaItemsX2 = this.getWidth() - (int) (this.getWidth() * 0.05);
         areaItems = new AreaItems(new ArrayList<>(), anchoAreaItemsX1, anchoAreaItemsX2);
     }
@@ -267,10 +277,10 @@ public class VentanaPrincial extends javax.swing.JFrame {
         Componente[][] matrizCopia = new Componente[ciudad.getN()][ciudad.getM()];
         for (int i = 0; i < ciudad.getN(); i++) {
             for (int j = 0; j < ciudad.getM(); j++) {
-                matrizCopia[i][j]=ciudad.getMatrizCiudad()[i][j];
+                matrizCopia[i][j] = ciudad.getMatrizCiudad()[i][j];
             }
         }
-        System.out.println(ciudad.getAnchoCampo()+"---"+ ciudad.getAltoCampo());
+        System.out.println(ciudad.getAnchoCampo() + "---" + ciudad.getAltoCampo());
         grafo.crearGrafo(matrizCopia, ciudad.getAnchoCampo(), ciudad.getAltoCampo());
     }
 
