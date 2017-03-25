@@ -142,7 +142,6 @@ public class Ciudad implements Serializable {
         for (int i = 0; i < this.n; i++) {
             for (int j = 0; j < this.m; j++) {
                 if (this.matrizCiudad[i][j] != null) {
-
                     if (esCruce(this.matrizCiudad[i][j])) {
                         matrizCiudad[i][j].setTipoVia("cruce");
                         marcarNodo(matrizCiudad[i][j]);
@@ -152,10 +151,11 @@ public class Ciudad implements Serializable {
                         } else if (esCarretera(this.matrizCiudad[i][j])) {
                             matrizCiudad[i][j].setTipoVia("carretera");
                         }
-                    }
-                    if (esViaCortada(i, j)) {
+                        if (esViaCortada(i, j)) {
                             marcarNodo(matrizCiudad[i][j]);
                         }
+                    }
+                    
                 }
             }
         }
