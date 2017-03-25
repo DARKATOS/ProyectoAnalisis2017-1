@@ -39,50 +39,49 @@ public class GrafoDirigido {
 
     /**
      * Vamos ha representar el grafo mendiantes una matriz de adyasiencias
-     * dependiendo de la matriz de componentes de la ciudad mirando si es nodo y que tenga via  
-     * recoriendo hacia arriba,hacia abajo, hacia la derecha y hacia la izquerda
-     * buscado un nodo y ahi se crea la arista y volviendo null ese recorrido para que no se
-     * vuelva a repetir
+     * dependiendo de la matriz de componentes de la ciudad mirando si es nodo y
+     * que tenga via recoriendo hacia arriba,hacia abajo, hacia la derecha y
+     * hacia la izquerda buscado un nodo y ahi se crea la arista y volviendo
+     * null ese recorrido para que no se vuelva a repetir
      *
      * @param matrizCiudad matriz de la ciudad que tenemos diseñada
      */
     public void crearGrafo(Componente[][] matrizCiudad, int anchoCuadroCiudad, int altoCuadroCiudad) {
         for (int i = 0; i < matrizCiudad.length; i++) {
             for (int j = 0; j < matrizCiudad[i].length; j++) {
-                if (matrizCiudad[i][j] != null) {
-                    if (matrizCiudad[i][j].getIdNodo() != -1) {
-                        if (j-1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getEsCalle() || matrizCiudad[i][j - 1].getEsCarretera())) {
-                            verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 2);
-                        }
-                        if (j+1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getEsCalle() || matrizCiudad[i][j + 1].getEsCarretera())) {
+                if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1) {
+                    if (j - 1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getTipoVia().equals("calle") || matrizCiudad[i][j - 1].getTipoVia().equals("carretera"))) {
+                        verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 2);
+                    }
+                    if (j + 1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getTipoVia().equals("calle") || matrizCiudad[i][j + 1].getTipoVia().equals("carretera"))) {
 
-                            verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 1);
-                        }
-                        if (i-1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getEsCalle() || matrizCiudad[i - 1][j].getEsCarretera())) {
-                            verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 3);
-                        }
-                        if (i+1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getEsCalle() || matrizCiudad[i + 1][j].getEsCarretera())) {
-                            verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 4);
-                        }
-
+                        verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 1);
+                    }
+                    if (i - 1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getTipoVia().equals("calle") || matrizCiudad[i - 1][j].getTipoVia().equals("carretera"))) {
+                        verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 3);
+                    }
+                    if (i + 1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getTipoVia().equals("calle") || matrizCiudad[i + 1][j].getTipoVia().equals("carretera"))) {
+                        verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 4);
                     }
                 }
             }
         }
     }
+
     /**
-     * Procedemos a crear la arista que se va asignar al grafo validado si es carretera 
-     * o caller para la velocidad 
+     * Procedemos a crear la arista que se va asignar al grafo validado si es
+     * carretera o caller para la velocidad
+     *
      * @param x1 inicio de arista en x
-     * @param y1  incio de arista en y 
+     * @param y1 incio de arista en y
      * @param x2 fin de arrista en x
      * @param y2 fin de arista en y
      * @param lstComponentes los componente que contiene esa arista
-     * @return  arista creada con los todos sus paramentros
+     * @return arista creada con los todos sus paramentros
      */
     private Arista crearArista(int x1, int y1, int x2, int y2, LinkedList<Componente> lstComponentes) {
         Arista auxArista;
-        if (lstComponentes.getFirst().getEsCarretera()) {
+        if (lstComponentes.getFirst().getTipoVia().equals("carretera")) {
             auxArista = new Arista(x1, x2, y1, y2, 80, lstComponentes.getFirst().getTipo(), lstComponentes);
         } else {
             auxArista = new Arista(x1, x2, y1, y2, 60, lstComponentes.getFirst().getTipo(), lstComponentes);
@@ -90,9 +89,11 @@ public class GrafoDirigido {
 
         return auxArista;
     }
+
     /**
-     * Añade la arista al grafo dependiendo la direccion del de la arista se agrega en la matriz 
-     * del grafo 
+     * Añade la arista al grafo dependiendo la direccion del de la arista se
+     * agrega en la matriz del grafo
+     *
      * @param x identificador del primero nodo
      * @param y identidicador del segundo nodo
      * @param arista arista a asignar
@@ -131,12 +132,16 @@ public class GrafoDirigido {
     }
 
     /**
-     *Aqui es el recorrido buscando el otro nodo para hacer la arista y cada que va encontrando
-     * un componen via y que nos es nodo va agregando en un lista de componente 
-     * y cuanod ya encuentra un nodo crea la arista y luego añade al grafo
+     * Aqui es el recorrido buscando el otro nodo para hacer la arista y cada
+     * que va encontrando un componen via y que nos es nodo va agregando en un
+     * lista de componente y cuanod ya encuentra un nodo crea la arista y luego
+     * añade al grafo
+     *
      * @param matrizCiudad Matriz de la cidudad
-     * @param i indice de fila donde empieza el recorrido no es del nodo si no del  siguente
-     * @param j indice de columna  donde empieza el recorrido no es del nodo si no del siguente
+     * @param i indice de fila donde empieza el recorrido no es del nodo si no
+     * del siguente
+     * @param j indice de columna donde empieza el recorrido no es del nodo si
+     * no del siguente
      * @param origen indice de fila del nodo que se le va hacer el recorrido
      * @param tamaño indice de columna del nodo que se lava hacer el recorrido
      * @param opcion si es 1 busca hacia la derecha si es 2 busca a izquierda 3

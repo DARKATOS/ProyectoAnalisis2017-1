@@ -124,18 +124,18 @@ public class Ciudad implements Serializable {
                 if (this.matrizCiudad[i][j] != null) {
 
                     if (esCruce(this.matrizCiudad[i][j])) {
-                        matrizCiudad[i][j].setEsCruce(true);
+                        matrizCiudad[i][j].setTipoVia("cruce");
                         marcarNodo(matrizCiudad[i][j]);
                     } else {
                         if (esCalle(this.matrizCiudad[i][j])) {
-                            matrizCiudad[i][j].setEsCalle(true);
+                            matrizCiudad[i][j].setTipoVia("calle");
                         } else if (esCarretera(this.matrizCiudad[i][j])) {
-                            matrizCiudad[i][j].setEsCarretera(true);
-                        }
-                        if (esViaCortada(i, j)) {
-                            marcarNodo(matrizCiudad[i][j]);
+                            matrizCiudad[i][j].setTipoVia("carretera");
                         }
                     }
+                    if (esViaCortada(i, j)) {
+                            marcarNodo(matrizCiudad[i][j]);
+                        }
                 }
             }
         }
@@ -147,7 +147,7 @@ public class Ciudad implements Serializable {
   */
     private Boolean esVia(Componente componente) {
         Boolean resultado = false;
-        if (esCalle(componente) || esCarretera(componente) || esCruce(componente)) {
+        if (componente.getTipoVia().equals("calle") || componente.getTipoVia().equals("carretera") || componente.getTipoVia().equals("cruce")) {
             resultado = true;
         }
         return resultado;
