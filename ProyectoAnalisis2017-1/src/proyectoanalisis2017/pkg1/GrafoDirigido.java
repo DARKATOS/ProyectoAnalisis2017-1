@@ -151,8 +151,7 @@ public class GrafoDirigido {
         LinkedList<Componente> auxListaComponentes = new LinkedList<>();
         Arista auxArista = new Arista();
         Boolean bandera = false;
-
-        while (matrizCiudad[i][j].getIdNodo() == -1) {
+        while (i >= 0 && i <= matrizCiudad.length-1 && j >= 0 && j < matrizCiudad[0].length-1 && matrizCiudad[i][j].getIdNodo() == -1) {
             bandera = true;
             auxListaComponentes.add(matrizCiudad[i][j]);
             matrizCiudad[i][j] = null;
@@ -171,6 +170,15 @@ public class GrafoDirigido {
                     break;
             }
 
+        }
+        if (i < 0) {
+            i=0;
+        } else if (i >matrizCiudad.length-1) {
+            i=matrizCiudad.length-1;
+        } else if (j < 0) {
+            j=0;
+        } else if (j> matrizCiudad[0].length-1) {
+            j=matrizCiudad[0].length-1;
         }
         if (bandera == false) {
             auxListaComponentes.add(matrizCiudad[i][j]);

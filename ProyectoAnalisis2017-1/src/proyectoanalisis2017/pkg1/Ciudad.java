@@ -167,7 +167,7 @@ public class Ciudad implements Serializable {
   */
     private Boolean esVia(Componente componente) {
         Boolean resultado = false;
-        if (componente.getTipoVia().equals("calle") || componente.getTipoVia().equals("carretera") || componente.getTipoVia().equals("cruce")) {
+        if (esCarretera(componente)|| esCalle(componente) ||esCruce(componente)) {
             resultado = true;
         }
         return resultado;
