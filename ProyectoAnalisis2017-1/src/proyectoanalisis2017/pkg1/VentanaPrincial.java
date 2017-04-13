@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -40,18 +41,15 @@ public class VentanaPrincial extends javax.swing.JFrame {
         grafica.setFullScreenWindow(this);
         pnlVentana1.setFocusable(true);
         pnlVentana1.addKeyListener(pnlVentana1);
-
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
         if (opcion == 1) {
             cargarCiudad();
         } else {
             crearCiudad();
         }
-
         redimensionar();
         setResizable(false);
         setVisible(true);
-
     }
 
     private void redimensionar() {
@@ -59,12 +57,12 @@ public class VentanaPrincial extends javax.swing.JFrame {
         int altoCampo = (int) ((this.getHeight() - 100) / ciudad.getN());
         ciudad.setAnchoCampo(anchoCampo);
         ciudad.setAltoCampo(altoCampo);
-        ciudad.setAnchoCiudad(ciudad.getM()*ciudad.getAnchoCampo());
-        ciudad.setAltoCiudad(ciudad.getAltoCampo()*ciudad.getN());
+        ciudad.setAnchoCiudad(ciudad.getM() * ciudad.getAnchoCampo());
+        ciudad.setAltoCiudad(ciudad.getAltoCampo() * ciudad.getN());
         crearAreaItem();
         pnlVentana1.setAreaItems(areaItems);
         pnlVentana1.setCiudad(ciudad);
-        
+
     }
 
     /**
@@ -80,6 +78,8 @@ public class VentanaPrincial extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,17 +113,36 @@ public class VentanaPrincial extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("Ingresar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Inciar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlVentana1Layout = new javax.swing.GroupLayout(pnlVentana1);
         pnlVentana1.setLayout(pnlVentana1Layout);
         pnlVentana1Layout.setHorizontalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
-                .addGap(0, 775, Short.MAX_VALUE)
+            .addGroup(pnlVentana1Layout.createSequentialGroup()
+                .addGap(23, 775, Short.MAX_VALUE)
                 .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jButton1)
+                        .addComponent(btnGuardar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
+                        .addComponent(jButton4)
+                        .addGap(35, 35, 35))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jButton2)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         pnlVentana1Layout.setVerticalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +153,11 @@ public class VentanaPrincial extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addContainerGap(519, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
+                .addContainerGap(447, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -176,6 +199,25 @@ public class VentanaPrincial extends javax.swing.JFrame {
         grafo.verGrafo();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        LinkedList<Arista> cami = new LinkedList<>();
+        LinkedList<Arista> cami2 = new LinkedList<>();
+        cami.add(grafo.getGrafo()[0][1]);
+        cami.add(grafo.getGrafo()[1][2]);
+        cami.add(grafo.getGrafo()[2][3]);
+        cami.add(grafo.getGrafo()[3][2]);
+        cami.add(grafo.getGrafo()[2][1]);
+        cami2.add(grafo.getGrafo()[0][1]);
+        cami2.add(grafo.getGrafo()[1][4]);
+        cami2.add(grafo.getGrafo()[4][5]);
+        ciudad.ingresarCarro(new Carro(1, 0, 140, cami));
+        ciudad.ingresarCarro(new Carro(2, 0, 140, cami2));
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        ciudad.iniciar();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -216,6 +258,8 @@ public class VentanaPrincial extends javax.swing.JFrame {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private proyectoanalisis2017.pkg1.PanelVentana pnlVentana1;
     // End of variables declaration//GEN-END:variables
 

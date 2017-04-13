@@ -99,7 +99,6 @@ public class GrafoDirigido {
      * @param arista arista a asignar
      */
     private void añadirArista(int x, int y, Arista arista) {
-        System.out.println(arista.getDireccion());
         if (arista.getDireccion() == 5 || arista.getDireccion() == 6) {
             this.grafo[x][y] = arista;
             this.grafo[y][x] = arista;
@@ -151,7 +150,7 @@ public class GrafoDirigido {
         LinkedList<Componente> auxListaComponentes = new LinkedList<>();
         Arista auxArista = new Arista();
         Boolean bandera = false;
-        while (i >= 0 && i <= matrizCiudad.length-1 && j >= 0 && j < matrizCiudad[0].length-1 && matrizCiudad[i][j].getIdNodo() == -1) {
+        while (i >= 0 && i <= matrizCiudad.length - 1 && j >= 0 && j < matrizCiudad[0].length - 1 && matrizCiudad[i][j].getIdNodo() == -1) {
             bandera = true;
             auxListaComponentes.add(matrizCiudad[i][j]);
             matrizCiudad[i][j] = null;
@@ -169,21 +168,20 @@ public class GrafoDirigido {
                     i++;
                     break;
             }
-
         }
         if (i < 0) {
-            i=0;
-        } else if (i >matrizCiudad.length-1) {
-            i=matrizCiudad.length-1;
+            i = 0;
+        } else if (i > matrizCiudad.length - 1) {
+            i = matrizCiudad.length - 1;
         } else if (j < 0) {
-            j=0;
-        } else if (j> matrizCiudad[0].length-1) {
-            j=matrizCiudad[0].length-1;
+            j = 0;
+        } else if (j > matrizCiudad[0].length - 1) {
+            j = matrizCiudad[0].length - 1;
         }
         if (bandera == false) {
             auxListaComponentes.add(matrizCiudad[i][j]);
         }
-        auxArista = crearArista(xOrigen * alto, yOrigen * ancho, i * alto, j * ancho, auxListaComponentes);
+        auxArista = crearArista(yOrigen * ancho, xOrigen * alto, j * ancho, i * alto, auxListaComponentes);
         añadirArista(idNodoorigen, matrizCiudad[i][j].getIdNodo(), auxArista);
     }
 
@@ -193,11 +191,15 @@ public class GrafoDirigido {
                 if (grafo[i][j] == null) {
                     System.out.print("-");
                 } else {
-                    System.out.print(this.grafo[i][j].getLongitud());
+                    System.out.print(this.grafo[i][j].getX1() + "," + this.grafo[i][j].getY1() + "," + this.grafo[i][j].getX2() + "," + this.grafo[i][j].getY2());
                 }
             }
             System.out.println("");
         }
+    }
+
+    public Arista[][] getGrafo() {
+        return grafo;
     }
 
 }

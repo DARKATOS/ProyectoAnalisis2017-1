@@ -21,7 +21,7 @@ public class Ciudad implements Serializable {
     private int anchoCiudad;//indica el ancho del area de la ciudad 
     private int altoCiudad;//indica el alto del area de la ciudad
     private int cantidadNodos;//contiene la cantidad de nodos que tiene la ciudad
-
+    private ControlCarros carros;
     public Ciudad() {
     }
     
@@ -34,8 +34,17 @@ public class Ciudad implements Serializable {
         this.altoCampo = 0;
         this.anchoCiudad = 0;
         this.altoCiudad = 0;
+        this.carros=  new ControlCarros();
     }
-
+    public void ingresarCarro(Carro carro)
+    {
+        this.carros.getCarros().add(carro);
+        
+    }
+    public void iniciar()
+    {
+        this.carros.start();
+    }
     public int getAltoCampo() {
         return altoCampo;
     }
@@ -237,6 +246,10 @@ public class Ciudad implements Serializable {
 
     public int getCantidadNodos() {
         return cantidadNodos;
+    }
+
+    public ControlCarros getCarros() {
+        return carros;
     }
 
    

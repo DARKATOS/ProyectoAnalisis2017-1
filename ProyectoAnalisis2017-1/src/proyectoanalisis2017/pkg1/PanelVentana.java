@@ -167,6 +167,11 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
             // lineas de referencia de las areas de la aplicacion
             g.drawRect(0, 0, ciudad.getAnchoCiudad(), ciudad.getAltoCiudad());
             pintarCiudad(g);
+            for (int i = 0; i < ciudad.getCarros().getCarros().size(); i++) {
+                g.drawImage(new ImageIcon(getClass().getResource(ciudad.getCarros().getCarros().get(i).getRuta())).getImage(), ciudad.getCarros().getCarros().get(i).getX(), ciudad.getCarros().getCarros().get(i).getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), this);
+
+            }
+
             //pinta la anamiacion de colocar imagen en el tablero
             //El 0 es el X1 de la ciudad.
             if (this.estaSelecionadoComponente && this.xImgSelecionada > 0 && this.xImgSelecionada < ciudad.getAnchoCiudad() && this.yImgSelecionada > 0 && this.yImgSelecionada < ciudad.getAltoCiudad()) {
@@ -176,7 +181,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                 g.drawRect(auxM * ciudad.getAnchoCampo(), auxN * ciudad.getAltoCampo(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
             }
         }
-
+        repaint();
     }
 
     /**
