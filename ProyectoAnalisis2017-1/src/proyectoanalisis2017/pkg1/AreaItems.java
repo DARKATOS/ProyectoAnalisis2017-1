@@ -5,6 +5,7 @@
  */
 package proyectoanalisis2017.pkg1;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -12,7 +13,7 @@ import java.util.LinkedList;
  *
  * @author JORGE_ALEJANDRO
  */
-public class AreaItems {
+public class AreaItems implements Serializable{
     private ArrayList<Item>listaItems;
     private int anchoListaComponentesX1;
     private int anchoListaComponentesX2;

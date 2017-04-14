@@ -18,6 +18,7 @@ public class ControlCarros implements Runnable, Serializable {
 
     private LinkedList<Carro> carros;
     private Thread hiloCarros;
+    private PanelVentana panel;
 
     public ControlCarros() {
         this.carros = new LinkedList<>();
@@ -43,7 +44,7 @@ public class ControlCarros implements Runnable, Serializable {
                         } else {
                             auxY = this.carros.get(i).getCamino().getFirst().getY1();
                         }
-                        if(this.carros.get(i).getY() < auxY) {
+                        if (this.carros.get(i).getY() < auxY) {
                             sentido = true;//incrementar
                         } else {
                             sentido = false;
@@ -56,8 +57,10 @@ public class ControlCarros implements Runnable, Serializable {
                                 } catch (InterruptedException ex) {
                                     Logger.getLogger(ControlCarros.class.getName()).log(Level.SEVERE, null, ex);
                                 }
+                                panel.repaint();
                             }
                             this.carros.get(i).setY(auxY);
+                            panel.repaint();
                         } else {
                             while (this.carros.get(i).getY() > auxY) {
                                 try {
@@ -66,8 +69,10 @@ public class ControlCarros implements Runnable, Serializable {
                                 } catch (InterruptedException ex) {
                                     Logger.getLogger(ControlCarros.class.getName()).log(Level.SEVERE, null, ex);
                                 }
+                                panel.repaint();
                             }
                             this.carros.get(i).setY(auxY);
+                            panel.repaint();
                         }
                     } else {
                         int auxX = 0;
@@ -91,8 +96,10 @@ public class ControlCarros implements Runnable, Serializable {
                                 } catch (InterruptedException ex) {
                                     Logger.getLogger(ControlCarros.class.getName()).log(Level.SEVERE, null, ex);
                                 }
+                                panel.repaint();
                             }
                             this.carros.get(i).setX(auxX);
+                            panel.repaint();
                         } else {
                             while (this.carros.get(i).getX() > auxX) {
                                 try {
@@ -101,10 +108,13 @@ public class ControlCarros implements Runnable, Serializable {
                                 } catch (InterruptedException ex) {
                                     Logger.getLogger(ControlCarros.class.getName()).log(Level.SEVERE, null, ex);
                                 }
+                                panel.repaint();
                             }
                             this.carros.get(i).setX(auxX);
+                            panel.repaint();
                         }
                     }
+
                     this.carros.get(i).getCamino().removeFirst();
                 }
             }
@@ -113,6 +123,14 @@ public class ControlCarros implements Runnable, Serializable {
 
     public void setCarros(LinkedList<Carro> carros) {
         this.carros = carros;
+    }
+
+    public void setPanel(PanelVentana panel) {
+        this.panel = panel;
+    }
+
+    public PanelVentana getPanel() {
+        return panel;
     }
 
     public LinkedList<Carro> getCarros() {

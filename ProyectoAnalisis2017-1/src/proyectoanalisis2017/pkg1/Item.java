@@ -6,13 +6,14 @@
 package proyectoanalisis2017.pkg1;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author Gianka
  */
-public class Item {
+public class Item implements Serializable{
     private int id;
     //String tipo;
     private LinkedList<Componente> lstComponentes ;

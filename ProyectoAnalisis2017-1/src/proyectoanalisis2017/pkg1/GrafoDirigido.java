@@ -5,13 +5,14 @@
  */
 package proyectoanalisis2017.pkg1;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author JORGE_ALEJANDRO
  */
-public class GrafoDirigido {
+public class GrafoDirigido implements Serializable {
 
     //Matriz grafo de tipo arista, cada una de las filas representa un id de alguno de los cruces.
     Arista grafo[][];
@@ -29,6 +30,10 @@ public class GrafoDirigido {
     /**
      * Inicializo la matriz del grafo en nulos.
      */
+    
+    public GrafoDirigido() {
+    }
+
     public void iniciarlizarGrafo() {
         for (int i = 0; i < grafo.length; i++) {
             for (int j = 0; j < grafo.length; j++) {
@@ -100,31 +105,52 @@ public class GrafoDirigido {
      */
     private void añadirArista(int x, int y, Arista arista) {
         if (arista.getDireccion() == 5 || arista.getDireccion() == 6) {
+            arista.setX(x);
+            arista.setY(y);
             this.grafo[x][y] = arista;
-            this.grafo[y][x] = arista;
+            Arista aris=(Arista) arista.clone();
+            aris.setX(y);
+            aris.setY(x);
+            this.grafo[y][x] = aris;
         } else if (arista.getDireccion() == 1) {
             if (x < y) {
+                arista.setX(y);
+                arista.setY(x);
                 this.grafo[y][x] = arista;
+
             } else {
+                arista.setX(x);
+                arista.setY(y);
                 this.grafo[x][y] = arista;
             }
         } else if (arista.getDireccion() == 2) {
             if (x < y) {
+                arista.setX(x);
+                arista.setY(y);
                 this.grafo[x][y] = arista;
             } else {
+                arista.setX(y);
+                arista.setY(x);
                 this.grafo[y][x] = arista;
             }
         } else if (arista.getDireccion() == 3) {
             if (x < y) {
+                arista.setX(x);
+                arista.setY(y);
                 this.grafo[x][y] = arista;
             } else {
-                System.out.println(x + "-" + y);
+                arista.setX(y);
+                arista.setY(x);
                 this.grafo[y][x] = arista;
             }
         } else if (arista.getDireccion() == 4) {
             if (x < y) {
+                arista.setX(y);
+                arista.setY(x);
                 this.grafo[y][x] = arista;
             } else {
+                arista.setX(x);
+                arista.setY(y);
                 this.grafo[x][y] = arista;
             }
         }

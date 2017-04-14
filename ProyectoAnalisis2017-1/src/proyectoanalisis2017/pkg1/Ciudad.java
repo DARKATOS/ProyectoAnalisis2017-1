@@ -21,10 +21,10 @@ public class Ciudad implements Serializable {
     private int anchoCiudad;//indica el ancho del area de la ciudad 
     private int altoCiudad;//indica el alto del area de la ciudad
     private int cantidadNodos;//contiene la cantidad de nodos que tiene la ciudad
-    private ControlCarros carros;
+
     public Ciudad() {
     }
-    
+
     public Ciudad(Componente[][] matrizCiudad, int n, int m) {
         this.matrizCiudad = matrizCiudad;
         this.n = n;
@@ -34,17 +34,9 @@ public class Ciudad implements Serializable {
         this.altoCampo = 0;
         this.anchoCiudad = 0;
         this.altoCiudad = 0;
-        this.carros=  new ControlCarros();
+        //this.carros=  new ControlCarros();
     }
-    public void ingresarCarro(Carro carro)
-    {
-        this.carros.getCarros().add(carro);
-        
-    }
-    public void iniciar()
-    {
-        this.carros.start();
-    }
+
     public int getAltoCampo() {
         return altoCampo;
     }
@@ -52,8 +44,6 @@ public class Ciudad implements Serializable {
     public void setAltoCiudad(int altoCiudad) {
         this.altoCiudad = altoCiudad;
     }
-    
-    
 
     public int getAnchoCampo() {
         return anchoCampo;
@@ -78,16 +68,14 @@ public class Ciudad implements Serializable {
     public void setAltoCampo(int altoCampo) {
         this.altoCampo = altoCampo;
     }
-    
-    
-
-    
 
     public Componente[][] getMatrizCiudad() {
         return matrizCiudad;
     }
+
     /**
-     * Nos indica si el componente es una calle quqe validamos con el nombre 
+     * Nos indica si el componente es una calle quqe validamos con el nombre
+     *
      * @param componente componente a verificar
      * @return resutaldo true es calle,false no es calle
      */
@@ -114,8 +102,10 @@ public class Ciudad implements Serializable {
         }
         return resultado;
     }
+
     /**
-     * Nos indica si el componente es una carretera que validamos con el nombre 
+     * Nos indica si el componente es una carretera que validamos con el nombre
+     *
      * @param componente componente a validar
      * @return true es carretera, false no es carretera
      */
@@ -142,10 +132,12 @@ public class Ciudad implements Serializable {
         }
         return resultado;
     }
-   /**
-    * Este metodo nos recorre toda la ciduad,marcando si es cruce,calle o carretera 
-    * ademas va asigandole si es es nodo el id del nodo que va tener en el grafo
-    */
+
+    /**
+     * Este metodo nos recorre toda la ciduad,marcando si es cruce,calle o
+     * carretera ademas va asigandole si es es nodo el id del nodo que va tener
+     * en el grafo
+     */
     public void actualizarCiudad() {
         this.cantidadNodos = 0;
         for (int i = 0; i < this.n; i++) {
@@ -157,36 +149,44 @@ public class Ciudad implements Serializable {
                     } else {
                         if (esCalle(this.matrizCiudad[i][j])) {
                             matrizCiudad[i][j].setTipoVia("calle");
+                            if (esViaCortada(i, j)) {
+                                marcarNodo(matrizCiudad[i][j]);
+                            }
                         } else if (esCarretera(this.matrizCiudad[i][j])) {
                             matrizCiudad[i][j].setTipoVia("carretera");
+                            if (esViaCortada(i, j)) {
+                                marcarNodo(matrizCiudad[i][j]);
+                            }
                         }
-                        if (esViaCortada(i, j)) {
-                            marcarNodo(matrizCiudad[i][j]);
-                        }
+
                     }
-                    
                 }
             }
         }
     }
- /**
-  * Analizamos si es l componente es via osea si es carretera,calle,o cruce
-  * @param componente componente a validar
-  * @return true es via,false no es via
-  */
+
+    /**
+     * Analizamos si es l componente es via osea si es carretera,calle,o cruce
+     *
+     * @param componente componente a validar
+     * @return true es via,false no es via
+     */
     private Boolean esVia(Componente componente) {
         Boolean resultado = false;
-        if (esCarretera(componente)|| esCalle(componente) ||esCruce(componente)) {
+        if (esCarretera(componente) || esCalle(componente) || esCruce(componente)) {
             resultado = true;
         }
         return resultado;
     }
+
     /**
-     * En este metodo validamos si es una via que no finaliza en un cruce o si esta al tope de la ciudad
-     * los componente que van a entrar es si son calle o carretera
+     * En este metodo validamos si es una via que no finaliza en un cruce o si
+     * esta al tope de la ciudad los componente que van a entrar es si son calle
+     * o carretera
+     *
      * @param i indice de fila donde esta el componente a validar
      * @param j indice de columna donde esta el componente a validar
-     * @return  true es via cortada, false no es via cortada
+     * @return true es via cortada, false no es via cortada
      */
     private Boolean esViaCortada(int i, int j) {
         Boolean resultado = false;
@@ -213,17 +213,22 @@ public class Ciudad implements Serializable {
         }
         return resultado;
     }
+
     /**
-     * Al componente que va se un nodo le asigna un id e incrimente la cantidad de nodos 
-     * de la ciudads
+     * Al componente que va se un nodo le asigna un id e incrimente la cantidad
+     * de nodos de la ciudads
+     *
      * @param componente componente a marcar
      */
     private void marcarNodo(Componente componente) {
         componente.setIdNodo(this.cantidadNodos);
         this.cantidadNodos++;
     }
+
     /**
-     * Validamos si el componente es una cruce que tambiem lo comprobamos con el nombre 
+     * Validamos si el componente es una cruce que tambiem lo comprobamos con el
+     * nombre
+     *
      * @param componente componente a verificar
      * @return true es cruce, false no es cruce
      */
@@ -247,11 +252,5 @@ public class Ciudad implements Serializable {
     public int getCantidadNodos() {
         return cantidadNodos;
     }
-
-    public ControlCarros getCarros() {
-        return carros;
-    }
-
-   
 
 }

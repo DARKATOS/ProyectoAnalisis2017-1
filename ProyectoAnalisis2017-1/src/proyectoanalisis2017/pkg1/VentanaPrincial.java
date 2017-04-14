@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -25,7 +26,7 @@ import javax.swing.JOptionPane;
  *
  * @author Gianka
  */
-public class VentanaPrincial extends javax.swing.JFrame {
+public class VentanaPrincial extends javax.swing.JFrame implements Serializable {
 
     /**
      * Creates new form VentanaPrincial
@@ -34,9 +35,11 @@ public class VentanaPrincial extends javax.swing.JFrame {
     AreaItems areaItems;
     GraphicsDevice grafica;
     GrafoDirigido grafo;
+    int contCarrosAuto;
 
     public VentanaPrincial() {
         initComponents();
+        this.contCarrosAuto = 0;
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
         pnlVentana1.setFocusable(true);
@@ -47,6 +50,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
         } else {
             crearCiudad();
         }
+
         redimensionar();
         setResizable(false);
         setVisible(true);
@@ -80,6 +84,8 @@ public class VentanaPrincial extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -127,22 +133,41 @@ public class VentanaPrincial extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setText("IngresarC");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Iniciar1");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlVentana1Layout = new javax.swing.GroupLayout(pnlVentana1);
         pnlVentana1.setLayout(pnlVentana1Layout);
         pnlVentana1Layout.setHorizontalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlVentana1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
                 .addGap(23, 775, Short.MAX_VALUE)
                 .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButton1)
-                        .addComponent(btnGuardar))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addGap(35, 35, 35))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButton2)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jButton6)
+                    .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(btnGuardar))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
+                            .addComponent(jButton4)
+                            .addGap(35, 35, 35))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
+                            .addComponent(jButton5)
+                            .addContainerGap()))))
         );
         pnlVentana1Layout.setVerticalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,7 +182,11 @@ public class VentanaPrincial extends javax.swing.JFrame {
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
-                .addContainerGap(447, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton6)
+                .addContainerGap(375, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -193,6 +222,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         crearGrafo();
+        pnlVentana1.setGrafo(grafo);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -204,19 +234,31 @@ public class VentanaPrincial extends javax.swing.JFrame {
         LinkedList<Arista> cami2 = new LinkedList<>();
         cami.add(grafo.getGrafo()[0][1]);
         cami.add(grafo.getGrafo()[1][2]);
-        cami.add(grafo.getGrafo()[2][3]);
-        cami.add(grafo.getGrafo()[3][2]);
         cami.add(grafo.getGrafo()[2][1]);
-        cami2.add(grafo.getGrafo()[0][1]);
-        cami2.add(grafo.getGrafo()[1][4]);
-        cami2.add(grafo.getGrafo()[4][5]);
-        ciudad.ingresarCarro(new Carro(1, 0, 140, cami));
-        ciudad.ingresarCarro(new Carro(2, 0, 140, cami2));
+        cami.add(grafo.getGrafo()[1][3]);
+        cami.add(grafo.getGrafo()[3][4]);
+        cami.add(grafo.getGrafo()[4][5]);
+        pnlVentana1.ingresarCarro(new Carro(1, 0, 140, cami));
+        pnlVentana1.ingresarCarro(new Carro(2, 0, 140, cami2));
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        ciudad.iniciar();
+        pnlVentana1.iniciar();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        LinkedList<Arista> cami = new LinkedList<>();
+        cami.add(grafo.getGrafo()[0][1]);
+        pnlVentana1.ingresarCarroAuto(new CarroAuto(this.contCarrosAuto, 0, 140, cami));
+        this.contCarrosAuto++;
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+//        for (int i = 0; i < pnlVentana1.getLstCarrosAuto().size(); i++) {
+//            pnlVentana1.getLstCarrosAuto().get(i).start();
+//        }
+         pnlVentana1.getLstCarrosAuto().getLast().start();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -260,6 +302,8 @@ public class VentanaPrincial extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private proyectoanalisis2017.pkg1.PanelVentana pnlVentana1;
     // End of variables declaration//GEN-END:variables
 
@@ -332,6 +376,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
         for (int i = 0; i < ciudad.getN(); i++) {
             for (int j = 0; j < ciudad.getM(); j++) {
                 if (ciudad.getMatrizCiudad()[i][j] != null) {
+
                     System.out.println(ciudad.getMatrizCiudad()[i][j].getIdNodo());
                 }
             }

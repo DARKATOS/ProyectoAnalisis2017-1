@@ -5,24 +5,37 @@
  */
 package proyectoanalisis2017.pkg1;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author JORGE_ALEJANDRO
  */
-public class Arista {
+public class Arista implements Serializable, Cloneable {
 
     private int x1;
     private int x2;
     private int y1;
     private int y2;
+    private int x;
+    private int y;
     private int velocidad;//depende del tipo de la via si es carretera o calle
     private int longitud;//tamaño de desplazamiento de un nodo al otro
     private int direccion;////1 abajo-arriba;2arriba-abajo;3izq-Der;4der-izq;5doblehorizontal;6doblevertical
     private LinkedList<Componente> lstComponentes;
 
     public Arista() {
+    }
+
+    public Object clone() {
+        Object obj = null;
+        try {
+            obj = super.clone();
+        } catch (CloneNotSupportedException ex) {
+            System.out.println("No se puede clonar");
+        }
+        return obj;
     }
 
     public Arista(int x1, int x2, int y1, int y2, int velocidad, int direccion, LinkedList<Componente> lstComponentes) {
@@ -49,6 +62,7 @@ public class Arista {
         this.direccion = direccion;
         this.lstComponentes = lstComponentes;
     }
+
     public int getDireccion() {
         return direccion;
     }
@@ -65,6 +79,22 @@ public class Arista {
         return y1;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public int getX2() {
         return x2;
     }
@@ -76,8 +106,5 @@ public class Arista {
     public int getVelocidad() {
         return velocidad;
     }
-    
-    
-    
 
 }
