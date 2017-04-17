@@ -30,6 +30,7 @@ public class Componente implements Serializable {
         this.tipo = 0;
         this.ruta = "../ImgComponentes/" + nombre + ".png";
         this.idNodo = -1;
+        this.tipoVia="";
 //        this.esCruce = false;
 //        this.esCalle = false;
 //        this.esCarretera = false;

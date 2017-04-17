@@ -10,13 +10,15 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.Serializable;
+import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
 /**
  *
  * @author Gianka
  */
-public class PanelVentana extends javax.swing.JPanel implements KeyListener {
+public class PanelVentana extends javax.swing.JPanel implements KeyListener, Serializable {
 
     /**
      * Creates new form pnlCiudad
@@ -27,9 +29,16 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     private Item itemSeleccionado;
     private int xImgSelecionada;
     private int yImgSelecionada;
-
+    private ControlCarros controlCarros;
+    private LinkedList<CarroAuto> lstCarrosAuto;
+    LinkedList<Arista> oe = new LinkedList<>();
+    private  GrafoDirigido grafo;
     public PanelVentana() {
         initComponents();
+        this.controlCarros = new ControlCarros();
+        this.controlCarros.setPanel(this);
+        this.lstCarrosAuto = new LinkedList<CarroAuto>();
+        this.grafo= new GrafoDirigido();
         this.xImgSelecionada = 0;
         this.yImgSelecionada = 0;
 
@@ -167,6 +176,17 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
             // lineas de referencia de las areas de la aplicacion
             g.drawRect(0, 0, ciudad.getAnchoCiudad(), ciudad.getAltoCiudad());
             pintarCiudad(g);
+            //pitnar carros automaticos
+            for (int i = 0; i < this.lstCarrosAuto.size(); i++) {
+                g.drawImage(new ImageIcon(getClass().getResource(this.lstCarrosAuto.get(i).getRuta())).getImage(), this.lstCarrosAuto.get(i).getX(), this.lstCarrosAuto.get(i).getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), this);
+
+            }
+            //pintar carro con su ruta establecidad
+            for (int i = 0; i < this.controlCarros.getCarros().size(); i++) {
+                g.drawImage(new ImageIcon(getClass().getResource(this.controlCarros.getCarros().get(i).getRuta())).getImage(), this.controlCarros.getCarros().get(i).getX(), this.controlCarros.getCarros().get(i).getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), this);
+
+            }
+
             //pinta la anamiacion de colocar imagen en el tablero
             //El 0 es el X1 de la ciudad.
             if (this.estaSelecionadoComponente && this.xImgSelecionada > 0 && this.xImgSelecionada < ciudad.getAnchoCiudad() && this.yImgSelecionada > 0 && this.yImgSelecionada < ciudad.getAltoCiudad()) {
@@ -176,7 +196,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                 g.drawRect(auxM * ciudad.getAnchoCampo(), auxN * ciudad.getAltoCampo(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
             }
         }
-
+        // repaint();
     }
 
     /**
@@ -217,6 +237,26 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         }
     }
 
+    public void ingresarCarroAuto(CarroAuto carroAuto) {
+        this.lstCarrosAuto.add(carroAuto);
+        this.lstCarrosAuto.getLast().setPanel(this);
+        this.lstCarrosAuto.getLast().setGrafo(this.grafo);
+
+    }
+
+    public void ingresarCarro(Carro carro) {
+        this.controlCarros.getCarros().add(carro);
+
+    }
+
+    public void iniciar() {
+        this.controlCarros.start();
+    }
+
+    public ControlCarros getControlCarros() {
+        return controlCarros;
+    }
+
     @Override
     public void keyTyped(KeyEvent ke) {
     }
@@ -238,16 +278,24 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         repaint();
     }
 
+    public LinkedList<CarroAuto> getLstCarrosAuto() {
+        return lstCarrosAuto;
+    }
+
     @Override
     public void keyReleased(KeyEvent ke) {
     }
+
+    public void setGrafo(GrafoDirigido grafo) {
+        this.grafo = grafo;
+    }
+
     /**
      * mira si el componente es un cruce
      *
      * @param componente
      * @return true si es cruce o false si no lo es
      */
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
