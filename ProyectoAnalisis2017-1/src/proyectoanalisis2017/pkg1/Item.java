@@ -6,16 +6,14 @@
 package proyectoanalisis2017.pkg1;
 
 import java.awt.Rectangle;
-import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author Gianka
  */
-public class Item implements Serializable{
+public class Item{
     private int id;
-    //String tipo;
     private LinkedList<Componente> lstComponentes ;
     private Rectangle area;
     private int contador;
@@ -49,11 +47,4 @@ public class Item implements Serializable{
     public void setContador(int contador) {
         this.contador = contador;
     }
-    
-    
-    
-
-    
-
-    
 }

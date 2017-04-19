@@ -7,21 +7,19 @@ package proyectoanalisis2017.pkg1;
 
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author root
  */
-public class CarroAuto extends Carro implements Runnable {
+public class CarroMovimiento extends Carro implements Runnable {
 
     private PanelVentana panel;
     private Thread hilo;
     private GrafoDirigido grafo;
 
-    public CarroAuto(int id, int x, int y, LinkedList<Arista> camino) {
-        super(id, x, y, camino);
+    public CarroMovimiento(int id, int x, int y, LinkedList<Arista> camino, int tipo) {
+        super(id, x, y, camino, tipo);
 
     }
 
@@ -30,7 +28,7 @@ public class CarroAuto extends Carro implements Runnable {
         this.hilo.start();
     }
 
-    public CarroAuto() {
+    public CarroMovimiento() {
     }
 
     public void setGrafo(GrafoDirigido grafo) {
@@ -66,7 +64,7 @@ public class CarroAuto extends Carro implements Runnable {
                                 setY(getY() + 10);
                                 Thread.sleep(velocidad);
                             } catch (InterruptedException ex) {
-                                Logger.getLogger(ControlCarros.class.getName()).log(Level.SEVERE, null, ex);
+                                System.out.println(ex.getMessage());
                             }
                             panel.repaint();
                         }
@@ -78,7 +76,7 @@ public class CarroAuto extends Carro implements Runnable {
                                 setY(getY() - 10);
                                 Thread.sleep(velocidad);
                             } catch (InterruptedException ex) {
-                                Logger.getLogger(ControlCarros.class.getName()).log(Level.SEVERE, null, ex);
+                                System.out.println(ex.getMessage());
                             }
                             panel.repaint();
                         }
@@ -86,7 +84,7 @@ public class CarroAuto extends Carro implements Runnable {
                         panel.repaint();
                     }
                 } else {
-                    int auxX = 0;
+                    int auxX;
 
                     if (getX() == getCamino().getFirst().getX1()) {
                         auxX = getCamino().getFirst().getX2();
@@ -105,7 +103,7 @@ public class CarroAuto extends Carro implements Runnable {
 
                                 Thread.sleep(velocidad);
                             } catch (InterruptedException ex) {
-                                Logger.getLogger(ControlCarros.class.getName()).log(Level.SEVERE, null, ex);
+                                System.out.println(ex.getMessage());
                             }
                             panel.repaint();
                         }
@@ -117,7 +115,7 @@ public class CarroAuto extends Carro implements Runnable {
                                 setX(getX() - 10);
                                 Thread.sleep(velocidad);
                             } catch (InterruptedException ex) {
-                                Logger.getLogger(ControlCarros.class.getName()).log(Level.SEVERE, null, ex);
+                                System.out.println(ex.getMessage());
                             }
                             panel.repaint();
                         }
@@ -128,24 +126,28 @@ public class CarroAuto extends Carro implements Runnable {
                 int n = getCamino().getFirst().getX();
                 int m = getCamino().getFirst().getY();
                 getCamino().removeFirst();
-                buscarCamino(n, m);
+
+                if (getTipo() == 1) {
+                    buscarCamino(n, m);
+                }
             }
         }
     }
 
     private void buscarCamino(int n, int m) {
-        LinkedList<Arista> posiblesCaminos = new LinkedList<>();
-        for (int i = 0; i < this.grafo.getGrafo()[m].length; i++) {
-            if (this.grafo.getGrafo()[m][i] != null) {
-                posiblesCaminos.add(this.grafo.getGrafo()[m][i]);
+        try {
+            LinkedList<Arista> posiblesCaminos = new LinkedList<>();
+            for (int i = 0; i < this.grafo.getGrafo()[m].length; i++) {
+                if (this.grafo.getGrafo()[m][i] != null) {
+                    posiblesCaminos.add(this.grafo.getGrafo()[m][i]);
+                }
             }
+            int numero = posiblesCaminos.size();
+            Random rnd = new Random();
+            int num = (int) (rnd.nextDouble() * numero + 0);
+            this.getCamino().add(posiblesCaminos.get(num));
+        } catch (Exception e) {
         }
-
-        int numero = posiblesCaminos.size();
-        Random rnd = new Random();
-        int num = (int) (rnd.nextDouble() * numero + 0);
-        this.getCamino().add(posiblesCaminos.get(num));
-
     }
 
 }

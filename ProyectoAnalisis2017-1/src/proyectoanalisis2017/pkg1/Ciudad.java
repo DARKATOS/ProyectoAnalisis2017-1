@@ -23,7 +23,8 @@ public class Ciudad implements Serializable {
     private int cantidadNodos;//contiene la cantidad de nodos que tiene la ciudad
 
     public Ciudad() {
-    }
+    }  
+  
 
     public Ciudad(Componente[][] matrizCiudad, int n, int m) {
         this.matrizCiudad = matrizCiudad;
@@ -34,7 +35,6 @@ public class Ciudad implements Serializable {
         this.altoCampo = 0;
         this.anchoCiudad = 0;
         this.altoCiudad = 0;
-        //this.carros=  new ControlCarros();
     }
 
     public int getAltoCampo() {
@@ -81,22 +81,22 @@ public class Ciudad implements Serializable {
      */
     public Boolean esCalle(Componente componente) {
         boolean resultado = false;
-        if (componente.getNombre().equals("1.1")) {
+        if (componente.getNombre().equals("V.1")) {
             componente.setTipo(6);
             resultado = true;
-        } else if (componente.getNombre().equals("1.2")) {
+        } else if (componente.getNombre().equals("V.2")) {
             componente.setTipo(5);
             resultado = true;
-        } else if (componente.getNombre().equals("2.1")) {
+        } else if (componente.getNombre().equals("R.1")) {
             componente.setTipo(1);
             resultado = true;
-        } else if (componente.getNombre().equals("2.2")) {
+        } else if (componente.getNombre().equals("R.2")) {
             componente.setTipo(3);
             resultado = true;
-        } else if (componente.getNombre().equals("2.3")) {
+        } else if (componente.getNombre().equals("R.3")) {
             componente.setTipo(2);
             resultado = true;
-        } else if (componente.getNombre().equals("2.4")) {
+        } else if (componente.getNombre().equals("R.4")) {
             componente.setTipo(4);
             resultado = true;
         }
@@ -105,28 +105,27 @@ public class Ciudad implements Serializable {
 
     /**
      * Nos indica si el componente es una carretera que validamos con el nombre
-     *
      * @param componente componente a validar
      * @return true es carretera, false no es carretera
      */
     public Boolean esCarretera(Componente componente) {
         boolean resultado = false;
-        if (componente.getNombre().equals("3.1")) {
+        if (componente.getNombre().equals("H.1")) {
             componente.setTipo(6);
             resultado = true;
-        } else if (componente.getNombre().equals("3.2")) {
+        } else if (componente.getNombre().equals("H.2")) {
             componente.setTipo(5);
             resultado = true;
-        } else if (componente.getNombre().equals("6.1")) {
+        } else if (componente.getNombre().equals("T.1")) {
             componente.setTipo(1);
             resultado = true;
-        } else if (componente.getNombre().equals("6.2")) {
+        } else if (componente.getNombre().equals("T.2")) {
             componente.setTipo(3);
             resultado = true;
-        } else if (componente.getNombre().equals("6.3")) {
+        } else if (componente.getNombre().equals("T.3")) {
             componente.setTipo(2);
             resultado = true;
-        } else if (componente.getNombre().equals("6.4")) {
+        } else if (componente.getNombre().equals("T.4")) {
             componente.setTipo(4);
             resultado = true;
         }
@@ -158,7 +157,6 @@ public class Ciudad implements Serializable {
                                 marcarNodo(matrizCiudad[i][j]);
                             }
                         }
-
                     }
                 }
             }
@@ -167,7 +165,6 @@ public class Ciudad implements Serializable {
 
     /**
      * Analizamos si es l componente es via osea si es carretera,calle,o cruce
-     *
      * @param componente componente a validar
      * @return true es via,false no es via
      */
@@ -215,9 +212,7 @@ public class Ciudad implements Serializable {
     }
 
     /**
-     * Al componente que va se un nodo le asigna un id e incrimente la cantidad
-     * de nodos de la ciudads
-     *
+     * Al componente que va a ser un nodo se le asigna un identificados y se incrementa el numero de nodos.
      * @param componente componente a marcar
      */
     private void marcarNodo(Componente componente) {
@@ -226,15 +221,13 @@ public class Ciudad implements Serializable {
     }
 
     /**
-     * Validamos si el componente es una cruce que tambiem lo comprobamos con el
-     * nombre
-     *
+     * Validamos si el componente es una cruce que lo comprobamos con el nombre del componente
      * @param componente componente a verificar
      * @return true es cruce, false no es cruce
      */
     private boolean esCruce(Componente componente) {
         Boolean resultado = false;
-        if (componente.getNombre().substring(0, 2).equals("4.") || componente.getNombre().substring(0, 2).equals("5.")) {
+        if (componente.getNombre().equals("X") || componente.getNombre().equals("Y")) {
             resultado = true;
         }
         return resultado;
@@ -252,5 +245,4 @@ public class Ciudad implements Serializable {
     public int getCantidadNodos() {
         return cantidadNodos;
     }
-
 }

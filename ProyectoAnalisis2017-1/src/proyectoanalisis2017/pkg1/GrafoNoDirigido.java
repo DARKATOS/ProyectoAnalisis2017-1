@@ -5,12 +5,10 @@
  */
 package proyectoanalisis2017.pkg1;
 
-import java.io.Serializable;
-
 /**
  *
  * @author JORGE_ALEJANDRO
  */
-public class GrafoNoDirigido implements Serializable{
+public class GrafoNoDirigido{
     
 }
