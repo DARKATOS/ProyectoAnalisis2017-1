@@ -5,6 +5,7 @@
  */
 package proyectoanalisis2017.pkg1;
 
+import java.awt.Rectangle;
 import java.io.Serializable;
 
 /**
@@ -40,13 +41,21 @@ public class Ciudad implements Serializable {
     public int getAltoCampo() {
         return altoCampo;
     }
+    
+    public int getAnchoCampo() {
+        return anchoCampo;
+    }
+    
+    public void setAltoCampo(int altoCampo) {
+        this.altoCampo = altoCampo;
+    }
+    
+    public void setAnchoCampo(int anchoCampo) {
+        this.anchoCampo = anchoCampo;
+    }
 
     public void setAltoCiudad(int altoCiudad) {
         this.altoCiudad = altoCiudad;
-    }
-
-    public int getAnchoCampo() {
-        return anchoCampo;
     }
 
     public int getAnchoCiudad() {
@@ -57,16 +66,10 @@ public class Ciudad implements Serializable {
         return altoCiudad;
     }
 
-    public void setAnchoCampo(int anchoCampo) {
-        this.anchoCampo = anchoCampo;
-    }
+    
 
     public void setAnchoCiudad(int anchoCiudad) {
         this.anchoCiudad = anchoCiudad;
-    }
-
-    public void setAltoCampo(int altoCampo) {
-        this.altoCampo = altoCampo;
     }
 
     public Componente[][] getMatrizCiudad() {
@@ -158,9 +161,12 @@ public class Ciudad implements Serializable {
                             }
                         }
                     }
+                    Rectangle area=new Rectangle(anchoCampo * j,altoCampo*i,anchoCampo,altoCampo);
+                    matrizCiudad[i][j].setArea(area);
                 }
             }
         }
+        
     }
 
     /**

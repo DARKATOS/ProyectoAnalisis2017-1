@@ -43,46 +43,46 @@ public class AreaItems implements Serializable{
         int auxAltura = 100;
         LinkedList<Componente> auxLista= new LinkedList<>();
         auxLista.add(new Componente("X"));
-        listaItems.add(new Item(0, auxLista, anchoListaComponentesX1 + 20, 0 * auxAltura, 70, 100));
+        listaItems.add(new Item(0, auxLista, anchoListaComponentesX1 + 20, 0 * auxAltura));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("V.1"));
         auxLista.add(new Componente("V.2"));
-        listaItems.add(new Item(1, auxLista, anchoListaComponentesX1 + 20, 1 * auxAltura+10, 70, 100));
+        listaItems.add(new Item(1, auxLista, anchoListaComponentesX1 + 20, 1 * auxAltura+10));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("R.1"));
         auxLista.add(new Componente("R.2"));
         auxLista.add(new Componente("R.3"));
         auxLista.add(new Componente("R.4"));
-        listaItems.add(new Item(2, auxLista, anchoListaComponentesX1 + 20, 2 * auxAltura+20, 70, 100));
+        listaItems.add(new Item(2, auxLista, anchoListaComponentesX1 + 20, 2 * auxAltura+20));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("H.1"));
         auxLista.add(new Componente("H.2"));
-        listaItems.add(new Item(3, auxLista, anchoListaComponentesX1 + 20, 3 * auxAltura+30, 70, 100));
+        listaItems.add(new Item(3, auxLista, anchoListaComponentesX1 + 20, 3 * auxAltura+30));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("Y"));
        
-        listaItems.add(new Item(4, auxLista, anchoListaComponentesX1 + 20, 4 * auxAltura+40, 70, 100));
+        listaItems.add(new Item(4, auxLista, anchoListaComponentesX1 + 20, 4 * auxAltura+40));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("T.1"));
         auxLista.add(new Componente("T.2"));
         auxLista.add(new Componente("T.3"));
         auxLista.add(new Componente("T.4"));
-        listaItems.add(new Item(4, auxLista, anchoListaComponentesX1 + 20, 5 * auxAltura+50, 70, 100));
+        listaItems.add(new Item(4, auxLista, anchoListaComponentesX1 + 20, 5 * auxAltura+50));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("U"));
-        listaItems.add(new Item(6, auxLista, anchoListaComponentesX1 + 20+80, 0 * auxAltura, 70, 100));
+        listaItems.add(new Item(6, auxLista, anchoListaComponentesX1 + 20+80, 0 * auxAltura));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("I"));
-        listaItems.add(new Item(7, auxLista, anchoListaComponentesX1 + 30+80, 1 * auxAltura, 70, 100));
+        listaItems.add(new Item(7, auxLista, anchoListaComponentesX1 + 30+80, 1 * auxAltura+10));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("C"));
-        listaItems.add(new Item(8, auxLista, anchoListaComponentesX1 + 30+80, 2 * auxAltura, 70, 100));       
+        listaItems.add(new Item(8, auxLista, anchoListaComponentesX1 + 30+80, 2 * auxAltura+20));       
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("A"));
-        listaItems.add(new Item(9, auxLista, anchoListaComponentesX1 + 30+80, 3 * auxAltura, 70, 100));
+        listaItems.add(new Item(9, auxLista, anchoListaComponentesX1 + 30+80, 3 * auxAltura+30));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("0"));
-        listaItems.add(new Item(10, auxLista, anchoListaComponentesX1 + 30+80, 4 * auxAltura, 70, 100));
+        listaItems.add(new Item(10, auxLista, anchoListaComponentesX1 + 30+80, 4 * auxAltura+40));
 
     }
 }

@@ -8,6 +8,7 @@ package proyectoanalisis2017.pkg1;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
@@ -27,6 +28,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     private int yImgSelecionada;
     private LinkedList<CarroMovimiento> carrosMovimiento;
     private GrafoDirigido grafo;
+    private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
     public PanelVentana() {
         initComponents();
         this.carrosMovimiento = new LinkedList<>();
@@ -35,6 +37,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         this.yImgSelecionada = 0;
         this.itemSeleccionado = new Item();
         this.estaSelecionadoComponente = false;
+        opciones=0;
     }
 
     /**
@@ -96,7 +99,41 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
      * @param evt
      */
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
-        if (evt.getX() > areaItems.getAnchoListaComponentesX1() && evt.getX() < areaItems.getAnchoListaComponentesX2()) {
+        if (opciones==1)
+        {
+            if (evt.getX()<ciudad.getAnchoCiudad() && evt.getY()<ciudad.getAltoCiudad())
+            {
+                Componente auxUbicacion=null;
+                Carro auxCarro=null;
+                for (int i=0; i<ciudad.getMatrizCiudad().length;i++)
+                {
+                    for (int j=0; j<ciudad.getMatrizCiudad().length;j++)
+                    {
+                        if(ciudad.getMatrizCiudad()[i][j].getArea().contains(new Point(evt.getX(), evt.getY())));
+                        {
+                            auxUbicacion=ciudad.getMatrizCiudad()[i][j];
+                        }
+                        if (carrosMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY())))
+                        {
+                            auxCarro=carrosMovimiento.get(i);
+                        }
+                    }
+                }
+                if (auxUbicacion!=null && auxCarro ==null)
+                {
+                    
+                }
+                else if(auxUbicacion!=null && auxCarro!=null)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+            }
+        }
+        else if (evt.getX() > areaItems.getAnchoListaComponentesX1() && evt.getX() < areaItems.getAnchoListaComponentesX2()) {
             for (int i = 0; i < areaItems.getListaItems().size(); i++) {
                 if (areaItems.getListaItems().get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
                     this.estaSelecionadoComponente = true;
@@ -105,6 +142,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                 }
             }
         }
+        
     }//GEN-LAST:event_formMousePressed
     /**
      * Cuando se halla activado la bandera estaSelecionadoComponentes que es
@@ -136,6 +174,8 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                 int auxN = evt.getY() / ciudad.getAltoCampo();
                 int auxM = evt.getX() / ciudad.getAnchoCampo();
                 Componente auxComponente = new Componente(itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getNombre());
+                Rectangle area=new Rectangle(evt.getX(), evt.getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
+                auxComponente.setArea(area);
                 ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
             } catch (Exception e) {
             }
@@ -187,9 +227,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
      */
     private void pintarComponentes(Graphics g) {
         for (int i = 0; i < areaItems.getListaItems().size(); i++) {
-            Item auxComponente;
-            auxComponente = areaItems.getListaItems().get(i);
-            g.drawImage(new ImageIcon(getClass().getResource(auxComponente.getLstComponentes().getFirst().getRuta())).getImage(), auxComponente.getArea().x, auxComponente.getArea().y, auxComponente.getArea().width, auxComponente.getArea().height, this);
+            Item auxItem;
+            auxItem = areaItems.getListaItems().get(i);
+            g.drawImage(new ImageIcon(getClass().getResource(auxItem.getLstComponentes().getFirst().getRuta())).getImage(), auxItem.getArea().x, auxItem.getArea().y, auxItem.getArea().width, auxItem.getArea().height, this);
         }
     }
 
@@ -217,7 +257,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         }
     }
 
-    public void ingresarCarroAuto(CarroMovimiento carroAuto) {
+    public void ingresarCarro(CarroMovimiento carroAuto) {
+        Rectangle area=new Rectangle(carroAuto.getX(), carroAuto.getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
+        carroAuto.setArea(area);
         this.carrosMovimiento.add(carroAuto);
         this.carrosMovimiento.getLast().setPanel(this);
         GrafoDirigido grafoAux=(GrafoDirigido) this.grafo.clone();
@@ -256,6 +298,12 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     public void setGrafo(GrafoDirigido grafo) {
         this.grafo = grafo;
     }
+
+    public void setOpciones(int opciones) {
+        this.opciones = opciones;
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

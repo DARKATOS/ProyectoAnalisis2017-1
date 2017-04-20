@@ -21,10 +21,10 @@ public class Item{
     public Item() {
     }
 
-    public Item(int id, LinkedList<Componente> lstComponentes,int x, int y,int ancho,int alto) {
+    public Item(int id, LinkedList<Componente> lstComponentes, int x, int y) {
         this.id = id;
         this.lstComponentes = lstComponentes;
-        this.area = new Rectangle(x,y,ancho,alto);
+        this.area = new Rectangle(x,y,70,100);
         this.contador=1;
     }
 

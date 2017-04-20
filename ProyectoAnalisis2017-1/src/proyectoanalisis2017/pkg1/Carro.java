@@ -5,6 +5,7 @@
  */
 package proyectoanalisis2017.pkg1;
 
+import java.awt.Rectangle;
 import java.util.LinkedList;
 
 /**
@@ -16,6 +17,7 @@ public class Carro  {
     private String ruta;
     private int x;
     private int y;
+    private Rectangle area;
     private LinkedList<Arista> camino;
     private int tipo;
     public Carro() {
@@ -28,6 +30,7 @@ public class Carro  {
         this.x = x;
         this.y = y;
         this.tipo=tipo;
+        this.area=null;
     }
 
     public LinkedList<Arista> getCamino() {
@@ -59,4 +62,14 @@ public class Carro  {
     public String getRuta() {
         return ruta;
     }
+
+    public void setArea(Rectangle area) {
+        this.area = area;
+    }
+
+    public Rectangle getArea() {
+        return area;
+    }
+    
+    
 }

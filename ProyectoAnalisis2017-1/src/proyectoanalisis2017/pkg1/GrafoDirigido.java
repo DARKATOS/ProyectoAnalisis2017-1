@@ -225,9 +225,10 @@ public class GrafoDirigido implements Serializable, Cloneable {
         for (int i = 0; i < grafo.length; i++) {
             for (int j = 0; j < grafo[i].length; j++) {
                 if (grafo[i][j] == null) {
-                    System.out.print("-");
+                    System.out.print(" - ");
                 } else {
-                    System.out.print(this.grafo[i][j].getX1() + "," + this.grafo[i][j].getY1() + "," + this.grafo[i][j].getX2() + "," + this.grafo[i][j].getY2());
+                    //System.out.print(this.grafo[i][j].getX1() + "," + this.grafo[i][j].getY1() + "," + this.grafo[i][j].getX2() + "," + this.grafo[i][j].getY2());
+                    System.out.print(i+":"+j+" , ");
                 }
             }
             System.out.println("");
