@@ -12,7 +12,7 @@ import java.util.LinkedList;
  *
  * @author JORGE_ALEJANDRO
  */
-public class GrafoDirigido implements Serializable {
+public class GrafoDirigido implements Serializable, Cloneable {
 
     //Matriz grafo de tipo arista, cada una de las filas representa un id de alguno de los cruces.
     Arista grafo[][];
@@ -27,10 +27,20 @@ public class GrafoDirigido implements Serializable {
         grafo = new Arista[numeroCruces][numeroCruces];
     }
 
+    public Object clone() {
+        Object obj = null;
+        try {
+            obj = super.clone();
+        } catch (CloneNotSupportedException ex) {
+            System.out.println("No se puede clonar");
+        }
+        return obj;
+    }
+
     /**
      * Inicializo la matriz del grafo en nulos.
      */
-    
+
     public GrafoDirigido() {
     }
 
@@ -43,7 +53,7 @@ public class GrafoDirigido implements Serializable {
     }
 
     /**
-     * Vamos ha representar el grafo mendiantes una matriz de adyasiencias
+     * Vamos ha representar el grafo mendiantes una matriz de adyacencias
      * dependiendo de la matriz de componentes de la ciudad mirando si es nodo y
      * que tenga via recoriendo hacia arriba,hacia abajo, hacia la derecha y
      * hacia la izquerda buscado un nodo y ahi se crea la arista y volviendo
@@ -108,7 +118,7 @@ public class GrafoDirigido implements Serializable {
             arista.setX(x);
             arista.setY(y);
             this.grafo[x][y] = arista;
-            Arista aris=(Arista) arista.clone();
+            Arista aris = (Arista) arista.clone();
             aris.setX(y);
             aris.setY(x);
             this.grafo[y][x] = aris;
@@ -174,7 +184,7 @@ public class GrafoDirigido implements Serializable {
      */
     private void verArista(Componente[][] matrizCiudad, int i, int j, int idNodoorigen, int xOrigen, int yOrigen, int ancho, int alto, int opcion) {
         LinkedList<Componente> auxListaComponentes = new LinkedList<>();
-        Arista auxArista = new Arista();
+        Arista auxArista;
         Boolean bandera = false;
         while (i >= 0 && i <= matrizCiudad.length - 1 && j >= 0 && j < matrizCiudad[0].length - 1 && matrizCiudad[i][j].getIdNodo() == -1) {
             bandera = true;
@@ -215,9 +225,10 @@ public class GrafoDirigido implements Serializable {
         for (int i = 0; i < grafo.length; i++) {
             for (int j = 0; j < grafo[i].length; j++) {
                 if (grafo[i][j] == null) {
-                    System.out.print("-");
+                    System.out.print(" - ");
                 } else {
-                    System.out.print(this.grafo[i][j].getX1() + "," + this.grafo[i][j].getY1() + "," + this.grafo[i][j].getX2() + "," + this.grafo[i][j].getY2());
+                    //System.out.print(this.grafo[i][j].getX1() + "," + this.grafo[i][j].getY1() + "," + this.grafo[i][j].getX2() + "," + this.grafo[i][j].getY2());
+                    System.out.print(i+":"+j+" , ");
                 }
             }
             System.out.println("");

@@ -5,23 +5,22 @@
  */
 package proyectoanalisis2017.pkg1;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.Serializable;
 
 /**
  *
  * @author root
  */
-public class Componente implements Serializable {
+public class Componente {
 
     private String tipoVia; //No sindica si es cruce, calle o carretera, null si no es ninguno.
     private int tipo;//1 abajo-arriba;2arriba-abajo;3izq-Der;4der-izq;5doblehorizontal;6doblevertical
     private String ruta; //nos indica donde esta la imagen para pintarla en el panel    
-//    private Boolean esCruce;//nos indica si es cruce o no
-//    private Boolean esCalle;//nos indica si es calle o no
-//    private Boolean esCarretera;// nos indica si es carretera o no
     private String nombre;// nos indica el nombre del compoente 
     private int idNodo;//si es -1 no es nodo y >=0 si es un nodo y el valor es el identificador del nodo
-
+    private Rectangle area;
     public Componente() {
     }
 
@@ -31,10 +30,7 @@ public class Componente implements Serializable {
         this.ruta = "../ImgComponentes/" + nombre + ".png";
         this.idNodo = -1;
         this.tipoVia="";
-//        this.esCruce = false;
-//        this.esCalle = false;
-//        this.esCarretera = false;
-
+        area=null;
     }
 
     public String getNombre() {
@@ -44,22 +40,6 @@ public class Componente implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-//
-//    public void setEsCarretera(Boolean esCarretera) {
-//        this.esCarretera = esCarretera;
-//    }
-//
-//    public Boolean getEsCarretera() {
-//        return esCarretera;
-//    }
-//
-//    public void setEsCalle(Boolean esCalle) {
-//        this.esCalle = esCalle;
-//    }
-//
-//    public Boolean getEsCalle() {
-//        return esCalle;
-//    }
 
     public String getRuta() {
         return ruta;
@@ -81,14 +61,6 @@ public class Componente implements Serializable {
         return idNodo;
     }
 
-//    public void setEsCruce(Boolean esCruce) {
-//        this.esCruce = esCruce;
-//    }
-//
-//    public Boolean getEsCruce() {
-//        return esCruce;
-//    }
-
     public String getTipoVia() {
         return tipoVia;
     }
@@ -96,9 +68,12 @@ public class Componente implements Serializable {
     public void setTipoVia(String tipoVia) {
         this.tipoVia = tipoVia;
     }
-    
-    
 
-   
+    public Rectangle getArea() {
+        return area;
+    }
 
+    public void setArea(Rectangle area) {
+        this.area = area;
+    }
 }

@@ -5,21 +5,17 @@
  */
 package proyectoanalisis2017.pkg1;
 
-//import com.sun.webkit.CursorManager;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -28,18 +24,18 @@ import javax.swing.JOptionPane;
  */
 public class VentanaPrincial extends javax.swing.JFrame implements Serializable {
 
-    /**
-     * Creates new form VentanaPrincial
-     */
     Ciudad ciudad;
     AreaItems areaItems;
     GraphicsDevice grafica;
     GrafoDirigido grafo;
-    int contCarrosAuto;
+    int cantidadCarros;
+    int opciones;
+    
 
     public VentanaPrincial() {
         initComponents();
-        this.contCarrosAuto = 0;
+        opciones=0;
+        this.cantidadCarros = 0;
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
         pnlVentana1.setFocusable(true);
@@ -82,10 +78,10 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         btnGuardar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,20 +115,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
             }
         });
 
-        jButton3.setText("Ingresar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jButton4.setText("Inciar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         jButton5.setText("IngresarC");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,10 +122,24 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
             }
         });
 
-        jButton6.setText("Iniciar1");
+        jButton6.setText("Iniciar");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Dijkstra");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jToggleButton1.setText("Camino");
+        jToggleButton1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jToggleButton1StateChanged(evt);
             }
         });
 
@@ -151,23 +147,22 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         pnlVentana1.setLayout(pnlVentana1Layout);
         pnlVentana1Layout.setHorizontalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
-                .addGap(23, 775, Short.MAX_VALUE)
+            .addGroup(pnlVentana1Layout.createSequentialGroup()
+                .addGap(52, 778, Short.MAX_VALUE)
                 .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6)
-                    .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(btnGuardar))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
-                            .addComponent(jButton4)
-                            .addGap(35, 35, 35))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
-                            .addComponent(jButton5)
-                            .addContainerGap()))))
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
+                        .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(pnlVentana1Layout.createSequentialGroup()
+                                    .addGap(2, 2, 2)
+                                    .addComponent(jButton2))
+                                .addComponent(jButton3))
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jToggleButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         pnlVentana1Layout.setVerticalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,13 +174,13 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToggleButton1)
                 .addContainerGap(375, Short.MAX_VALUE))
         );
 
@@ -204,12 +199,9 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        try {
-            String nombreArchivo = JOptionPane.showInputDialog("ingrese nombre archivo");
-            GuardarCiudad(nombreArchivo, ciudad);
-        } catch (IOException ex) {
-            Logger.getLogger(VentanaPrincial.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        mostrarMatrizCiudad();
+        String nombreArchivo = JOptionPane.showInputDialog("ingrese nombre archivo");
+        GuardarCiudad(nombreArchivo);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void pnlVentana1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnlVentana1KeyReleased
@@ -229,36 +221,56 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         grafo.verGrafo();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        LinkedList<Arista> cami = new LinkedList<>();
-        LinkedList<Arista> cami2 = new LinkedList<>();
-        cami.add(grafo.getGrafo()[0][1]);
-        cami.add(grafo.getGrafo()[1][2]);
-        cami.add(grafo.getGrafo()[2][1]);
-        cami.add(grafo.getGrafo()[1][3]);
-        cami.add(grafo.getGrafo()[3][4]);
-        cami.add(grafo.getGrafo()[4][5]);
-        pnlVentana1.ingresarCarro(new Carro(1, 0, 140, cami));
-        pnlVentana1.ingresarCarro(new Carro(2, 0, 140, cami2));
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        pnlVentana1.iniciar();
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        LinkedList<Arista> cami = new LinkedList<>();
-        cami.add(grafo.getGrafo()[0][1]);
-        pnlVentana1.ingresarCarroAuto(new CarroAuto(this.contCarrosAuto, 0, 140, cami));
-        this.contCarrosAuto++;
+        LinkedList<Arista> camino1 = new LinkedList<>();
+        boolean bandera = false;
+        for (int i = 0; i < grafo.getGrafo().length && !bandera; i++) {
+            for (int j = 0; j < grafo.getGrafo().length && !bandera; j++) {
+                if (grafo.getGrafo()[i][j] != null) {
+                    camino1.add(grafo.getGrafo()[i][j]);
+                    bandera = true;
+                }
+            }
+
+        }
+        pnlVentana1.ingresarCarro(new CarroMovimiento(this.cantidadCarros, camino1.getFirst().getX1(), camino1.getFirst().getY1(), camino1, 1));
+        this.cantidadCarros++;
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-//        for (int i = 0; i < pnlVentana1.getLstCarrosAuto().size(); i++) {
-//            pnlVentana1.getLstCarrosAuto().get(i).start();
-//        }
-         pnlVentana1.getLstCarrosAuto().getLast().start();
+        pnlVentana1.getCarrosMovimiento().getLast().start();
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        //int origen=Integer.parseInt(JOptionPane.showInputDialog(this,"Ingrese el nodo origen", "Informacion", JOptionPane.INFORMATION_MESSAGE));
+        int destino=Integer.parseInt(JOptionPane.showInputDialog(this,"Ingrese el nodo destino", "Informacion", JOptionPane.INFORMATION_MESSAGE));
+        int idcarro = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el ID del carro", "Informacion", JOptionPane.INFORMATION_MESSAGE));
+        if (idcarro < cantidadCarros) {
+            int cantidadNodos = ciudad.getCantidadNodos();
+            RutaCorta d = new RutaCorta();
+            d.llenarPesos(grafo);
+            d.caminosMinimos();
+            LinkedList<Arista> camino = d.convertirCamino(grafo, destino);
+        }
+        else
+        {
+            
+        }
+
+        //pnlVentana1.ingresarCarro(new CarroMovimiento(this.cantidadCarros, camino.getFirst().getX1(), camino.getFirst().getY1(), camino, 0));
+        //this.cantidadCarros++;
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jToggleButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jToggleButton1StateChanged
+        if (opciones==0)
+        {
+            opciones=1;
+        }
+        else if (opciones==1)
+        {
+            
+        }
+    }//GEN-LAST:event_jToggleButton1StateChanged
 
     /**
      * @param args the command line arguments
@@ -301,41 +313,87 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JToggleButton jToggleButton1;
     private proyectoanalisis2017.pkg1.PanelVentana pnlVentana1;
     // End of variables declaration//GEN-END:variables
 
-    private void GuardarCiudad(String nombre, Ciudad objeto) throws FileNotFoundException, IOException {
-        File archivo = new File(nombre);
-        FileOutputStream archivo1 = new FileOutputStream(archivo);
-        ObjectOutputStream oos = new ObjectOutputStream(archivo1);
-        oos.writeObject(objeto);
-        oos.close();
+    private void GuardarCiudad(String nombreArchivo) {
+        String linea;
+        FileWriter fichero = null;
+        PrintWriter pw;
+        try {
+            fichero = new FileWriter(nombreArchivo + ".txt");
+            pw = new PrintWriter(fichero);
+            linea = String.valueOf(ciudad.getMatrizCiudad().length);
+            pw.println(linea);
+            linea = String.valueOf(ciudad.getMatrizCiudad()[0].length);
+            pw.println(linea);
+            linea = "";
+            for (int i = 0; i < ciudad.getMatrizCiudad().length; i++) {
+                for (int j = 0; j < ciudad.getMatrizCiudad().length; j++) {
+                    if (ciudad.getMatrizCiudad()[i][j] == null) {
+                        linea = linea + "-,";
+                    } else {
+                        linea = linea + ciudad.getMatrizCiudad()[i][j].getNombre() + ",";
+                    }
+                }
+                linea = linea.substring(0, linea.length() - 1);
+                pw.println(linea);
+                linea = "";
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (null != fichero) {
+                    fichero.close();
+                }
+            } catch (IOException e2) {
+                System.out.println(e2.getMessage());
+            }
+        }
     }
 
     private void cargarCiudad() {
-        FileInputStream fis = null;
+        String nombreArchivo = JOptionPane.showInputDialog("ingrese nombre archivo");
+        File archivo;
+        FileReader fr = null;
+        BufferedReader br;
+        int filas = 0;
         try {
-            String nombre = JOptionPane.showInputDialog("Ingresar nombre");
-            ObjectInputStream ois;
-            File f = new File(nombre);
-            fis = new FileInputStream(f);
-            ois = new ObjectInputStream(fis);
-            ciudad = (Ciudad) ois.readObject();
-            ois.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("Error no se encontro el archivo");
-        } catch (IOException ex) {
-            System.out.println("Error en el archivo de entrada");
-        } catch (ClassNotFoundException ex) {
-            System.out.println("Error no se encontro la clase");
+            archivo = new File(nombreArchivo + ".txt");
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+            int n = Integer.parseInt(br.readLine());
+            int m = Integer.parseInt(br.readLine());
+            Componente matrizCiudad[][] = new Componente[n][m];
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String columnas[] = linea.split(",");
+                for (int i = 0; i < columnas.length; i++) {
+                    if ("-".equals(columnas[i])) {
+                        matrizCiudad[filas][i] = null;
+                    } else {
+                        matrizCiudad[filas][i] = new Componente(columnas[i]);
+                    }
+                }
+                filas++;
+            }
+            ciudad = new Ciudad(matrizCiudad, n, m);
+        } catch (IOException | NumberFormatException e) {
+            System.out.println(e.getMessage());
         } finally {
+            // En el finally cerramos el fichero, para asegurarnos
+            // que se cierra tanto si todo va bien como si salta 
+            // una excepcion.
             try {
-                fis.close();
-            } catch (IOException ex) {
-                System.out.println("Error al cerrar el archivo");
+                if (null != fr) {
+                    fr.close();
+                }
+            } catch (IOException e2) {
+                System.out.println(e2.getMessage());
             }
         }
     }
@@ -350,7 +408,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
             }
         }
         ciudad = new Ciudad(matriz, n, m);
-
     }
 
     private void crearAreaItem() {
@@ -368,7 +425,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
                 matrizCopia[i][j] = ciudad.getMatrizCiudad()[i][j];
             }
         }
-        System.out.println(ciudad.getAnchoCampo() + "---" + ciudad.getAltoCampo());
         grafo.crearGrafo(matrizCopia, ciudad.getAnchoCampo(), ciudad.getAltoCampo());
     }
 
@@ -376,7 +432,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         for (int i = 0; i < ciudad.getN(); i++) {
             for (int j = 0; j < ciudad.getM(); j++) {
                 if (ciudad.getMatrizCiudad()[i][j] != null) {
-
                     System.out.println(ciudad.getMatrizCiudad()[i][j].getIdNodo());
                 }
             }

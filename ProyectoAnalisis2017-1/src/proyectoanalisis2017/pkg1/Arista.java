@@ -5,14 +5,13 @@
  */
 package proyectoanalisis2017.pkg1;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author JORGE_ALEJANDRO
  */
-public class Arista implements Serializable, Cloneable {
+public class Arista implements Cloneable {
 
     private int x1;
     private int x2;
@@ -58,7 +57,6 @@ public class Arista implements Serializable, Cloneable {
                 this.longitud = x2 - x1;
             }
         }
-
         this.direccion = direccion;
         this.lstComponentes = lstComponentes;
     }
@@ -106,5 +104,4 @@ public class Arista implements Serializable, Cloneable {
     public int getVelocidad() {
         return velocidad;
     }
-
 }

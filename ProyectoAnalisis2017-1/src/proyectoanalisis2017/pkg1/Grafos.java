@@ -5,12 +5,10 @@
  */
 package proyectoanalisis2017.pkg1;
 
-import java.io.Serializable;
-
 /**
  *
  * @author JORGE_ALEJANDRO
  */
-public class Grafos implements Serializable{
+public class Grafos{
     
 }

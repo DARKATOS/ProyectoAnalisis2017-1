@@ -8,9 +8,9 @@ package proyectoanalisis2017.pkg1;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.Serializable;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
@@ -18,32 +18,27 @@ import javax.swing.ImageIcon;
  *
  * @author Gianka
  */
-public class PanelVentana extends javax.swing.JPanel implements KeyListener, Serializable {
+public class PanelVentana extends javax.swing.JPanel implements KeyListener {
 
-    /**
-     * Creates new form pnlCiudad
-     */
     Ciudad ciudad;
     AreaItems areaItems;
     private Boolean estaSelecionadoComponente;
     private Item itemSeleccionado;
     private int xImgSelecionada;
     private int yImgSelecionada;
-    private ControlCarros controlCarros;
-    private LinkedList<CarroAuto> lstCarrosAuto;
-    LinkedList<Arista> oe = new LinkedList<>();
-    private  GrafoDirigido grafo;
+    private LinkedList<CarroMovimiento> carrosMovimiento;
+    private GrafoDirigido grafo;
+    private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
+    AlgoritmosRuta rutaEspecifica;
     public PanelVentana() {
         initComponents();
-        this.controlCarros = new ControlCarros();
-        this.controlCarros.setPanel(this);
-        this.lstCarrosAuto = new LinkedList<CarroAuto>();
+        this.carrosMovimiento = new LinkedList<>();
         this.grafo= new GrafoDirigido();
         this.xImgSelecionada = 0;
         this.yImgSelecionada = 0;
-
         this.itemSeleccionado = new Item();
         this.estaSelecionadoComponente = false;
+        opciones=0;
     }
 
     /**
@@ -105,8 +100,47 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
      * @param evt
      */
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
-
-        if (evt.getX() > areaItems.getAnchoListaComponentesX1() && evt.getX() < areaItems.getAnchoListaComponentesX2()) {
+        if (opciones==1)
+        {
+            rutaEspecifica=new RutaCorta();
+            opciones=2;
+        }
+        if (opciones==2)
+        {
+            if (evt.getX()<ciudad.getAnchoCiudad() && evt.getY()<ciudad.getAltoCiudad())
+            {
+                Componente auxUbicacion=null;
+                CarroMovimiento auxCarro=null;
+                for (int i=0; i<ciudad.getMatrizCiudad().length;i++)
+                {
+                    for (int j=0; j<ciudad.getMatrizCiudad().length;j++)
+                    {
+                        if(ciudad.getMatrizCiudad()[i][j].getArea().contains(new Point(evt.getX(), evt.getY())));
+                        {
+                            auxUbicacion=ciudad.getMatrizCiudad()[i][j];
+                        }
+                        if (carrosMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY())))
+                        {
+                            auxCarro=carrosMovimiento.get(i);
+                        }
+                    }
+                }
+                if(auxUbicacion!=null && auxCarro!=null)
+                {
+                    rutaEspecifica.setComponenteOrigen(auxUbicacion);
+                    rutaEspecifica.setCarro(auxCarro);
+                }
+                else if (auxUbicacion!=null && auxCarro ==null)
+                {
+                    rutaEspecifica.setDestino(auxUbicacion);
+                }
+                else
+                {
+                    
+                }
+            }
+        }
+        else if (evt.getX() > areaItems.getAnchoListaComponentesX1() && evt.getX() < areaItems.getAnchoListaComponentesX2()) {
             for (int i = 0; i < areaItems.getListaItems().size(); i++) {
                 if (areaItems.getListaItems().get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
                     this.estaSelecionadoComponente = true;
@@ -115,6 +149,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
                 }
             }
         }
+        
     }//GEN-LAST:event_formMousePressed
     /**
      * Cuando se halla activado la bandera estaSelecionadoComponentes que es
@@ -125,7 +160,6 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
      */
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         if (this.estaSelecionadoComponente) {
-
             this.xImgSelecionada = evt.getX();
             this.yImgSelecionada = evt.getY();
             repaint();
@@ -147,9 +181,10 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
                 int auxN = evt.getY() / ciudad.getAltoCampo();
                 int auxM = evt.getX() / ciudad.getAnchoCampo();
                 Componente auxComponente = new Componente(itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getNombre());
+                Rectangle area=new Rectangle(evt.getX(), evt.getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
+                auxComponente.setArea(area);
                 ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
             } catch (Exception e) {
-
             }
             repaint();
         }
@@ -177,16 +212,10 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
             g.drawRect(0, 0, ciudad.getAnchoCiudad(), ciudad.getAltoCiudad());
             pintarCiudad(g);
             //pitnar carros automaticos
-            for (int i = 0; i < this.lstCarrosAuto.size(); i++) {
-                g.drawImage(new ImageIcon(getClass().getResource(this.lstCarrosAuto.get(i).getRuta())).getImage(), this.lstCarrosAuto.get(i).getX(), this.lstCarrosAuto.get(i).getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), this);
+            for (int i = 0; i < this.carrosMovimiento.size(); i++) {
+                g.drawImage(new ImageIcon(getClass().getResource(this.carrosMovimiento.get(i).getRuta())).getImage(), this.carrosMovimiento.get(i).getX(), this.carrosMovimiento.get(i).getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), this);
 
             }
-            //pintar carro con su ruta establecidad
-            for (int i = 0; i < this.controlCarros.getCarros().size(); i++) {
-                g.drawImage(new ImageIcon(getClass().getResource(this.controlCarros.getCarros().get(i).getRuta())).getImage(), this.controlCarros.getCarros().get(i).getX(), this.controlCarros.getCarros().get(i).getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), this);
-
-            }
-
             //pinta la anamiacion de colocar imagen en el tablero
             //El 0 es el X1 de la ciudad.
             if (this.estaSelecionadoComponente && this.xImgSelecionada > 0 && this.xImgSelecionada < ciudad.getAnchoCiudad() && this.yImgSelecionada > 0 && this.yImgSelecionada < ciudad.getAltoCiudad()) {
@@ -196,7 +225,6 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
                 g.drawRect(auxM * ciudad.getAnchoCampo(), auxN * ciudad.getAltoCampo(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
             }
         }
-        // repaint();
     }
 
     /**
@@ -206,9 +234,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
      */
     private void pintarComponentes(Graphics g) {
         for (int i = 0; i < areaItems.getListaItems().size(); i++) {
-            Item auxComponente;
-            auxComponente = areaItems.getListaItems().get(i);
-            g.drawImage(new ImageIcon(getClass().getResource(auxComponente.getLstComponentes().getFirst().getRuta())).getImage(), auxComponente.getArea().x, auxComponente.getArea().y, auxComponente.getArea().width, auxComponente.getArea().height, this);
+            Item auxItem;
+            auxItem = areaItems.getListaItems().get(i);
+            g.drawImage(new ImageIcon(getClass().getResource(auxItem.getLstComponentes().getFirst().getRuta())).getImage(), auxItem.getArea().x, auxItem.getArea().y, auxItem.getArea().width, auxItem.getArea().height, this);
         }
     }
 
@@ -224,7 +252,6 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
      * Este metodos esta enfocado en recorrer la matriz de componentes y pintar
      * las difrentes imagenes asociadas ala posicion de la matriz en caso de que
      * sea null es que no hay ningun componentes entonces no se pinta nada
-     *
      * @param g grafico del panel que sirve como lienzo
      */
     private void pintarCiudad(Graphics g) {
@@ -237,24 +264,13 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
         }
     }
 
-    public void ingresarCarroAuto(CarroAuto carroAuto) {
-        this.lstCarrosAuto.add(carroAuto);
-        this.lstCarrosAuto.getLast().setPanel(this);
-        this.lstCarrosAuto.getLast().setGrafo(this.grafo);
-
-    }
-
-    public void ingresarCarro(Carro carro) {
-        this.controlCarros.getCarros().add(carro);
-
-    }
-
-    public void iniciar() {
-        this.controlCarros.start();
-    }
-
-    public ControlCarros getControlCarros() {
-        return controlCarros;
+    public void ingresarCarro(CarroMovimiento carroAuto) {
+        Rectangle area=new Rectangle(carroAuto.getX(), carroAuto.getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
+        carroAuto.setArea(area);
+        this.carrosMovimiento.add(carroAuto);
+        this.carrosMovimiento.getLast().setPanel(this);
+        GrafoDirigido grafoAux=(GrafoDirigido) this.grafo.clone();
+        this.carrosMovimiento.getLast().setGrafo(grafoAux);
     }
 
     @Override
@@ -278,8 +294,8 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
         repaint();
     }
 
-    public LinkedList<CarroAuto> getLstCarrosAuto() {
-        return lstCarrosAuto;
+    public LinkedList<CarroMovimiento> getCarrosMovimiento() {
+        return carrosMovimiento;
     }
 
     @Override
@@ -290,12 +306,11 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener, Ser
         this.grafo = grafo;
     }
 
-    /**
-     * mira si el componente es un cruce
-     *
-     * @param componente
-     * @return true si es cruce o false si no lo es
-     */
+    public void setOpciones(int opciones) {
+        this.opciones = opciones;
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
