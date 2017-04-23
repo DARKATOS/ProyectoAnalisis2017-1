@@ -12,9 +12,6 @@ import java.util.LinkedList;
  * @author JORGE_ALEJANDRO
  */
 public abstract class AlgoritmosRuta {
-    private Componente componenteOrigen;
-    private CarroMovimiento carro;
-    private Componente destino;
     
     protected int pesos[][];
     private int[] ultimo;
@@ -23,9 +20,6 @@ public abstract class AlgoritmosRuta {
     private int origen, cantidadNodos; // vértice componenteOrigen y número de vértices
 
     public AlgoritmosRuta() {
-        this.componenteOrigen = null;
-        this.carro = null;
-        this.destino = null;
         
         this.origen=-1;
         this.cantidadNodos=-1;
@@ -110,34 +104,8 @@ public abstract class AlgoritmosRuta {
         return camino;
     }
 
-    public CarroMovimiento getCarro() {
-        return carro;
-    }
-
-    public Componente getDestino() {
-        return destino;
-    }
-
-    public Componente getComponenteOrigen() {
-        return componenteOrigen;
-    }
-
-    public void setCarro(CarroMovimiento carro) {
-        this.carro = carro;
-    }
-
-    public void setDestino(Componente destino) {
-        this.destino = destino;
-    }
-
-    public void setComponenteOrigen(Componente componenteOrigen) {
-        this.componenteOrigen = componenteOrigen;
-    }
-
     public void setOrigen(int origen) {
         this.origen = origen;
     }
     
-    
-      
 }

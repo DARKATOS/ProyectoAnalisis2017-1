@@ -5,9 +5,7 @@
  */
 package proyectoanalisis2017.pkg1;
 
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.io.Serializable;
 
 /**
  *
