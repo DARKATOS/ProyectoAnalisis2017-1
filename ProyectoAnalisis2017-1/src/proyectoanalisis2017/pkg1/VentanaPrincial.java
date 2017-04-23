@@ -30,6 +30,7 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     GrafoDirigido grafo;
     int cantidadCarros;
     int opciones;
+    
 
     public VentanaPrincial() {
         initComponents();
@@ -242,19 +243,14 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //int origen=Integer.parseInt(JOptionPane.showInputDialog(this,"Ingrese el nodo origen", "Informacion", JOptionPane.INFORMATION_MESSAGE));
-        //int destino=Integer.parseInt(JOptionPane.showInputDialog(this,"Ingrese el nodo destino", "Informacion", JOptionPane.INFORMATION_MESSAGE));
+        int destino=Integer.parseInt(JOptionPane.showInputDialog(this,"Ingrese el nodo destino", "Informacion", JOptionPane.INFORMATION_MESSAGE));
         int idcarro = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el ID del carro", "Informacion", JOptionPane.INFORMATION_MESSAGE));
         if (idcarro < cantidadCarros) {
             int cantidadNodos = ciudad.getCantidadNodos();
-            RutaCorta d = new RutaCorta(idcarro, cantidadNodos);
+            RutaCorta d = new RutaCorta();
             d.llenarPesos(grafo);
             d.caminosMinimos();
-            LinkedList<Integer> caminoNodos = d.obtenerCamino(idcarro);
-            System.out.println("Mostrar Camino");
-            for (int i = 0; i < caminoNodos.size(); i++) {
-                System.out.println(caminoNodos.get(i));
-            }
-            LinkedList<Arista> camino = d.convertirCamino(grafo, caminoNodos);
+            LinkedList<Arista> camino = d.convertirCamino(grafo, destino);
         }
         else
         {
@@ -266,7 +262,14 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jToggleButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jToggleButton1StateChanged
-        opciones=1;
+        if (opciones==0)
+        {
+            opciones=1;
+        }
+        else if (opciones==1)
+        {
+            
+        }
     }//GEN-LAST:event_jToggleButton1StateChanged
 
     /**

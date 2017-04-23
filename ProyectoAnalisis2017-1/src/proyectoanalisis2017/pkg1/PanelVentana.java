@@ -29,6 +29,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     private LinkedList<CarroMovimiento> carrosMovimiento;
     private GrafoDirigido grafo;
     private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
+    AlgoritmosRuta rutaEspecifica;
     public PanelVentana() {
         initComponents();
         this.carrosMovimiento = new LinkedList<>();
@@ -101,10 +102,15 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         if (opciones==1)
         {
+            rutaEspecifica=new RutaCorta();
+            opciones=2;
+        }
+        if (opciones==2)
+        {
             if (evt.getX()<ciudad.getAnchoCiudad() && evt.getY()<ciudad.getAltoCiudad())
             {
                 Componente auxUbicacion=null;
-                Carro auxCarro=null;
+                CarroMovimiento auxCarro=null;
                 for (int i=0; i<ciudad.getMatrizCiudad().length;i++)
                 {
                     for (int j=0; j<ciudad.getMatrizCiudad().length;j++)
@@ -119,13 +125,14 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                         }
                     }
                 }
-                if (auxUbicacion!=null && auxCarro ==null)
+                if(auxUbicacion!=null && auxCarro!=null)
                 {
-                    
+                    rutaEspecifica.setComponenteOrigen(auxUbicacion);
+                    rutaEspecifica.setCarro(auxCarro);
                 }
-                else if(auxUbicacion!=null && auxCarro!=null)
+                else if (auxUbicacion!=null && auxCarro ==null)
                 {
-                    
+                    rutaEspecifica.setDestino(auxUbicacion);
                 }
                 else
                 {
