@@ -18,14 +18,19 @@ public class CarroMovimiento extends Carro implements Runnable {
     private Thread hilo;
     private GrafoDirigido grafo;
 
-    public CarroMovimiento(int id, int x, int y, LinkedList<Arista> camino, int tipo) {
-        super(id, x, y, camino, tipo);
+    public CarroMovimiento(int id, int x, int y, int ancho, int alto, LinkedList<Arista> camino, int tipo) {
+        super(id, x, y, ancho, alto, camino, tipo);
+        
 
     }
 
     public void start() {
         this.hilo = new Thread(this);
         this.hilo.start();
+    }
+
+    public void pause() {
+        this.hilo.suspend();
     }
 
     public CarroMovimiento() {
@@ -48,58 +53,61 @@ public class CarroMovimiento extends Carro implements Runnable {
                 Boolean sentido = false;
                 if (getCamino().getFirst().getX1() == getCamino().getFirst().getX2()) {
                     int auxY = 0;
-                    if (getY() == getCamino().getFirst().getY1()) {
+                    if ((int) getArea().getY() == getCamino().getFirst().getY1()) {
                         auxY = getCamino().getFirst().getY2();
                     } else {
                         auxY = getCamino().getFirst().getY1();
                     }
-                    if (getY() < auxY) {
+                    if ((int) getArea().getY() < auxY) {
                         sentido = true;//incrementar
                     } else {
                         sentido = false;
                     }
                     if (sentido) {
-                        while (getY() < auxY) {
+                        while ((int) getArea().getY() < auxY) {
                             try {
-                                setY(getY() + 10);
+                                getArea().setLocation((int) getArea().getX(), (int) getArea().getY() + 10);
+
                                 Thread.sleep(velocidad);
                             } catch (InterruptedException ex) {
                                 System.out.println(ex.getMessage());
                             }
                             panel.repaint();
                         }
-                        setY(auxY);
+                        getArea().setLocation((int) getArea().getX(), auxY);
                         panel.repaint();
                     } else {
-                        while (getY() > auxY) {
+                        while ((int) getArea().getY() > auxY) {
                             try {
-                                setY(getY() - 10);
+                                getArea().setLocation((int) getArea().getX(), (int) getArea().getY() - 10);
+
                                 Thread.sleep(velocidad);
                             } catch (InterruptedException ex) {
                                 System.out.println(ex.getMessage());
                             }
                             panel.repaint();
                         }
-                        setY(auxY);
+                        getArea().setLocation((int) getArea().getX(), auxY);
+
                         panel.repaint();
                     }
                 } else {
                     int auxX;
 
-                    if (getX() == getCamino().getFirst().getX1()) {
+                    if ((int) getArea().getX() == getCamino().getFirst().getX1()) {
                         auxX = getCamino().getFirst().getX2();
                     } else {
                         auxX = getCamino().getFirst().getX1();
                     }
-                    if (getX() < auxX) {
+                    if ((int) getArea().getX() < auxX) {
                         sentido = true;// invrementar
                     } else {
                         sentido = false;
                     }
                     if (sentido) {
-                        while (getX() < auxX) {
+                        while ((int) getArea().getX() < auxX) {
                             try {
-                                setX(getX() + 10);
+                                getArea().setLocation((int) getArea().getX() + 10, (int) getArea().getY());
 
                                 Thread.sleep(velocidad);
                             } catch (InterruptedException ex) {
@@ -107,19 +115,22 @@ public class CarroMovimiento extends Carro implements Runnable {
                             }
                             panel.repaint();
                         }
-                        setX(auxX);
+                        getArea().setLocation(auxX, (int) getArea().getY());
+
                         panel.repaint();
                     } else {
-                        while (getX() > auxX) {
+                        while ((int) getArea().getX() > auxX) {
                             try {
-                                setX(getX() - 10);
+                                getArea().setLocation((int) getArea().getX() - 10, (int) getArea().getY());
+
                                 Thread.sleep(velocidad);
                             } catch (InterruptedException ex) {
                                 System.out.println(ex.getMessage());
                             }
                             panel.repaint();
                         }
-                        setX(auxX);
+                        getArea().setLocation(auxX, (int) getArea().getY());
+
                         panel.repaint();
                     }
                 }
@@ -149,5 +160,10 @@ public class CarroMovimiento extends Carro implements Runnable {
         } catch (Exception e) {
         }
     }
+
+    public GrafoDirigido getGrafo() {
+        return grafo;
+    }
+    
 
 }

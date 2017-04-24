@@ -36,6 +36,12 @@ public class Ciudad implements Cloneable{
         this.anchoCiudad = 0;
         this.altoCiudad = 0;
     }
+    
+
+    public void setMatrizCiudad(Componente[][] matrizCiudad) {
+        this.matrizCiudad = matrizCiudad;
+    }
+    
 
     public int getAltoCampo() {
         return altoCampo;

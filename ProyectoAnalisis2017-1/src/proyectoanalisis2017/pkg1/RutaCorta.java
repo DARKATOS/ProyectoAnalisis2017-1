@@ -12,8 +12,8 @@ package proyectoanalisis2017.pkg1;
  */
 public class RutaCorta extends AlgoritmosRuta{
 
-    public RutaCorta() {
-        super();
+    public RutaCorta(int cantidadNodos) {
+        super(cantidadNodos);
     }
     
 

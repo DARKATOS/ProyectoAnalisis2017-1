@@ -31,18 +31,23 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
     AlgoritmosRuta rutaEspecifica;
     Ciudad auxCiudad = null;
-    Componente auxUbicacion=null;
-    CarroMovimiento auxCarro=null;
-    
+    int idNodoOrigen;
+    LinkedList<Integer> idDestinos;
+    int auxi1 = 0;
+    int auxj1 = 0;
+
+    CarroMovimiento auxCarro = null;
+
     public PanelVentana() {
         initComponents();
         this.carrosMovimiento = new LinkedList<>();
-        this.grafo= new GrafoDirigido();
+        this.idDestinos = new LinkedList<>();
+        this.grafo = new GrafoDirigido();
         this.xImgSelecionada = 0;
         this.yImgSelecionada = 0;
         this.itemSeleccionado = new Item();
         this.estaSelecionadoComponente = false;
-        opciones=0;
+        opciones = 0;
     }
 
     /**
@@ -93,7 +98,39 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        Componente auxUbicacion = new Componente();
+        if (opciones == 2) {
 
+            if (evt.getX() < auxCiudad.getAnchoCiudad() && evt.getY() < auxCiudad.getAltoCiudad()) {
+                for (int i = 0; i < carrosMovimiento.size(); i++) {
+                    if (carrosMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
+                        auxCarro = carrosMovimiento.get(i);
+                        auxCarro.pause();
+
+                    }
+                }
+                auxi1 = (int) evt.getY() / ciudad.getAltoCampo();
+                auxj1 = (int) evt.getX() / ciudad.getAnchoCampo();
+                auxUbicacion = auxCiudad.getMatrizCiudad()[auxi1][auxj1];
+
+                if (auxUbicacion != null && auxCarro != null) {
+                    auxCiudad.marcarNodo(auxUbicacion);
+                    opciones = 3;
+                    this.idNodoOrigen = auxUbicacion.getIdNodo();
+                }
+            }
+        } else if (opciones == 3) {
+            if (evt.getX() < auxCiudad.getAnchoCiudad() && evt.getY() < auxCiudad.getAltoCiudad()) {
+                {
+                    int auxi = (int) evt.getY() / ciudad.getAltoCampo();
+                    int auxj = (int) evt.getX() / ciudad.getAnchoCampo();
+                    auxUbicacion = auxCiudad.getMatrizCiudad()[auxi][auxj];
+                    auxCiudad.marcarNodo(auxUbicacion);
+                    this.idDestinos.add(auxUbicacion.getIdNodo());
+                }
+
+            }
+        }
     }//GEN-LAST:event_formMouseClicked
     /**
      * Evaluamos si el puntero del mouse esta en los limites del areaItem y si
@@ -104,57 +141,8 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
      * @param evt
      */
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
-        
-        if (opciones==1)
-        {
-            auxCiudad=(Ciudad) ciudad.clone();
-            rutaEspecifica=new RutaCorta();
-            opciones=2;
-        }
-        if (opciones==2)
-        {
-            if (evt.getX()<auxCiudad.getAnchoCiudad() && evt.getY()<auxCiudad.getAltoCiudad())
-            {
-                
-                for (int i=0; i<auxCiudad.getMatrizCiudad().length;i++)
-                {
-                    for (int j=0; j<auxCiudad.getMatrizCiudad()[0].length;j++)
-                    {
-                        if(auxCiudad.getMatrizCiudad()[i][j].getArea().contains(new Point(evt.getX(), evt.getY())));
-                        {
-                            auxUbicacion=auxCiudad.getMatrizCiudad()[i][j];
-                        }
-                    }
-                }
-                for(int i=0; i<carrosMovimiento.size(); i++)
-                {
-                    if (carrosMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY())))
-                        {
-                            auxCarro=carrosMovimiento.get(i);
-                        }
-                }        
-                if(auxUbicacion!=null && auxCarro!=null)
-                {
-                    opciones=3;
-                    auxCiudad.marcarNodo(auxUbicacion);
-                    auxCarro.setTipo(0);
- 
-                    
-                }
-//                else if (auxUbicacion!=null && auxCarro ==null && rutaEspecifica.getComponenteOrigen()!=null)
-//                {
-//                    rutaEspecifica.setComponenteDestino(auxUbicacion);
-//                    rutaEspecifica.preparacionRuta();
-//                    
-//                }
-//                else
-//                {
-//                    rutaEspecifica=null;
-//                    opciones=1;
-//                }
-            }
-        }
-        else if (evt.getX() > areaItems.getAnchoListaComponentesX1() && evt.getX() < areaItems.getAnchoListaComponentesX2()) {
+
+        if (evt.getX() > areaItems.getAnchoListaComponentesX1() && evt.getX() < areaItems.getAnchoListaComponentesX2()) {
             for (int i = 0; i < areaItems.getListaItems().size(); i++) {
                 if (areaItems.getListaItems().get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
                     this.estaSelecionadoComponente = true;
@@ -163,7 +151,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                 }
             }
         }
-        
+
     }//GEN-LAST:event_formMousePressed
     /**
      * Cuando se halla activado la bandera estaSelecionadoComponentes que es
@@ -195,7 +183,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                 int auxN = evt.getY() / ciudad.getAltoCampo();
                 int auxM = evt.getX() / ciudad.getAnchoCampo();
                 Componente auxComponente = new Componente(itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getNombre());
-                Rectangle area=new Rectangle(evt.getX(), evt.getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
+                Rectangle area = new Rectangle(evt.getX(), evt.getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
                 auxComponente.setArea(area);
                 ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
             } catch (Exception e) {
@@ -212,6 +200,43 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_formKeyPressed
+    public void ClonearCiudad() {
+        auxCiudad = (Ciudad) ciudad.clone();
+        auxCiudad.setMatrizCiudad(null);
+        Componente[][] auxComponente = new Componente[auxCiudad.getN()][auxCiudad.getM()];
+        auxCiudad.setMatrizCiudad(auxComponente);
+        for (int i = 0; i < ciudad.getN(); i++) {
+            for (int j = 0; j < ciudad.getM(); j++) {
+                if (ciudad.getMatrizCiudad()[i][j] != null) {
+                    //auxCiudad.getMatrizCiudad()[i][j]= new Componente();
+                    auxCiudad.getMatrizCiudad()[i][j] = (Componente) ciudad.getMatrizCiudad()[i][j].clone();
+                }
+            }
+        }
+        opciones = 2;
+    }
+
+    public void ModificarGrafo() {
+
+        GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad.getCantidadNodos());
+        auxGrafo.crearGrafo(auxCiudad.getMatrizCiudad(), auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo());
+        auxCarro.setGrafo(auxGrafo);
+        RutaCorta auxRuta = new RutaCorta(auxCiudad.getCantidadNodos());
+        auxRuta.llenarPesos(auxGrafo);
+        auxRuta.setOrigen(this.idNodoOrigen);
+        auxRuta.caminosMinimos();
+        auxCarro.setTipo(0);
+        auxCarro.getArea().setLocation(auxj1 * auxCiudad.getAnchoCampo(), auxi1 * auxCiudad.getAltoCampo());
+        LinkedList<Arista> auxCamino= new LinkedList<>();
+        for (int i = 0; i < idDestinos.size(); i++) {
+            LinkedList<Arista> auxCamino1= auxRuta.convertirCamino(auxGrafo, idDestinos.get(i));
+            for (int j = 0; j < auxCamino1.size(); j++) {
+                auxCamino.add(auxCamino1.get(j));
+            }
+        }
+         auxCarro.setCamino(auxCamino);
+        auxCarro.start();
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -227,7 +252,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
             pintarCiudad(g);
             //pitnar carros automaticos
             for (int i = 0; i < this.carrosMovimiento.size(); i++) {
-                g.drawImage(new ImageIcon(getClass().getResource(this.carrosMovimiento.get(i).getRuta())).getImage(), this.carrosMovimiento.get(i).getX(), this.carrosMovimiento.get(i).getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), this);
+                g.drawImage(new ImageIcon(getClass().getResource(this.carrosMovimiento.get(i).getRuta())).getImage(), (int) this.carrosMovimiento.get(i).getArea().getX(), (int) this.carrosMovimiento.get(i).getArea().getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), this);
 
             }
             //pinta la anamiacion de colocar imagen en el tablero
@@ -239,6 +264,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                 g.drawRect(auxM * ciudad.getAnchoCampo(), auxN * ciudad.getAltoCampo(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
             }
         }
+
     }
 
     /**
@@ -266,6 +292,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
      * Este metodos esta enfocado en recorrer la matriz de componentes y pintar
      * las difrentes imagenes asociadas ala posicion de la matriz en caso de que
      * sea null es que no hay ningun componentes entonces no se pinta nada
+     *
      * @param g grafico del panel que sirve como lienzo
      */
     private void pintarCiudad(Graphics g) {
@@ -279,11 +306,10 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     }
 
     public void ingresarCarro(CarroMovimiento carroAuto) {
-        Rectangle area=new Rectangle(carroAuto.getX(), carroAuto.getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
-        carroAuto.setArea(area);
+
         this.carrosMovimiento.add(carroAuto);
         this.carrosMovimiento.getLast().setPanel(this);
-        GrafoDirigido grafoAux=(GrafoDirigido) this.grafo.clone();
+        GrafoDirigido grafoAux = (GrafoDirigido) this.grafo.clone();
         this.carrosMovimiento.getLast().setGrafo(grafoAux);
     }
 
@@ -323,14 +349,11 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     public int getOpciones() {
         return opciones;
     }
-    
-    
 
     public void setOpciones(int opciones) {
         this.opciones = opciones;
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

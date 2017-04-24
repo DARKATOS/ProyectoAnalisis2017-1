@@ -140,6 +140,11 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
                 jToggleButton1StateChanged(evt);
             }
         });
+        jToggleButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jToggleButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlVentana1Layout = new javax.swing.GroupLayout(pnlVentana1);
         pnlVentana1.setLayout(pnlVentana1Layout);
@@ -230,7 +235,7 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
             }
 
         }
-        pnlVentana1.ingresarCarro(new CarroMovimiento(this.cantidadCarros, camino1.getFirst().getX1(), camino1.getFirst().getY1(), camino1, 1));
+        pnlVentana1.ingresarCarro(new CarroMovimiento(this.cantidadCarros, camino1.getFirst().getX1(), camino1.getFirst().getY1(),ciudad.getAnchoCampo(),ciudad.getAltoCampo(), camino1, 1));
         this.cantidadCarros++;
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -256,15 +261,21 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jToggleButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jToggleButton1StateChanged
+       
+    }//GEN-LAST:event_jToggleButton1StateChanged
+
+    private void jToggleButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton1MouseClicked
         if (pnlVentana1.getOpciones()==0)
         {
             pnlVentana1.setOpciones(1);
+            pnlVentana1.ClonearCiudad();
         }
-        else if (pnlVentana1.getOpciones()==1)
+        else if (pnlVentana1.getOpciones()==3)
         {
+            pnlVentana1.ModificarGrafo();
             pnlVentana1.setOpciones(0);
         }
-    }//GEN-LAST:event_jToggleButton1StateChanged
+    }//GEN-LAST:event_jToggleButton1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -431,4 +442,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
             }
         }
     }
+    
+    
 }
