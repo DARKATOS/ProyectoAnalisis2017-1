@@ -244,10 +244,10 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         int idcarro = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el ID del carro", "Informacion", JOptionPane.INFORMATION_MESSAGE));
         if (idcarro < cantidadCarros) {
             int cantidadNodos = ciudad.getCantidadNodos();
-            RutaCorta d = new RutaCorta(cantidadNodos);
-            d.llenarPesos(grafo);
-            d.caminosMinimos();
-            LinkedList<Arista> camino = d.convertirCamino(grafo, destino);
+//            RutaCorta d = new RutaCorta(cantidadNodos);
+//            d.llenarPesos(grafo);
+//            d.caminosMinimos();
+//            LinkedList<Arista> camino = d.convertirCamino(grafo, destino);
         }
         else
         {

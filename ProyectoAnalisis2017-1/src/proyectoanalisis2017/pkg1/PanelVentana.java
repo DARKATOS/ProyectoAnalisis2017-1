@@ -141,17 +141,17 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
  
                     
                 }
-                else if (auxUbicacion!=null && auxCarro ==null && rutaEspecifica.getComponenteOrigen()!=null)
-                {
-                    rutaEspecifica.setComponenteDestino(auxUbicacion);
-                    rutaEspecifica.preparacionRuta();
-                    
-                }
-                else
-                {
-                    rutaEspecifica=null;
-                    opciones=1;
-                }
+//                else if (auxUbicacion!=null && auxCarro ==null && rutaEspecifica.getComponenteOrigen()!=null)
+//                {
+//                    rutaEspecifica.setComponenteDestino(auxUbicacion);
+//                    rutaEspecifica.preparacionRuta();
+//                    
+//                }
+//                else
+//                {
+//                    rutaEspecifica=null;
+//                    opciones=1;
+//                }
             }
         }
         else if (evt.getX() > areaItems.getAnchoListaComponentesX1() && evt.getX() < areaItems.getAnchoListaComponentesX2()) {
