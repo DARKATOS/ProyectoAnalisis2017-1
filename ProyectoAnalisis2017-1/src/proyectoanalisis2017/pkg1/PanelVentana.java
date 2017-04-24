@@ -227,14 +227,16 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         auxRuta.caminosMinimos();
         auxCarro.setTipo(0);
         auxCarro.getArea().setLocation(auxj1 * auxCiudad.getAnchoCampo(), auxi1 * auxCiudad.getAltoCampo());
-        LinkedList<Arista> auxCamino= new LinkedList<>();
+        LinkedList<Arista> auxCamino = new LinkedList<>();
         for (int i = 0; i < idDestinos.size(); i++) {
-            LinkedList<Arista> auxCamino1= auxRuta.convertirCamino(auxGrafo, idDestinos.get(i));
+            LinkedList<Arista> auxCamino1 = auxRuta.convertirCamino(auxGrafo, idDestinos.get(i));
             for (int j = 0; j < auxCamino1.size(); j++) {
                 auxCamino.add(auxCamino1.get(j));
             }
+            auxRuta.setOrigen(idDestinos.get(i));
+            auxRuta.caminosMinimos();
         }
-         auxCarro.setCamino(auxCamino);
+        auxCarro.setCamino(auxCamino);
         auxCarro.start();
     }
 
