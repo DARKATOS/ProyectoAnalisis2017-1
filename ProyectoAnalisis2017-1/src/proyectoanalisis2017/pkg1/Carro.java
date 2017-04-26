@@ -15,22 +15,19 @@ import java.util.LinkedList;
 public class Carro  {
     private int id;
     private String ruta;
-    private int x;
-    private int y;
+   
     private Rectangle area;
     private LinkedList<Arista> camino;
     private int tipo;
     public Carro() {
     }
 
-    public Carro(int id, int x, int y, LinkedList<Arista> camino,int tipo) {
+    public Carro(int id, int x, int y,int ancho,int alto, LinkedList<Arista> camino,int tipo) {
         this.id = id;
         this.camino = camino;
         this.ruta = "../ImgComponentes/car_ari_abj1.png";
-        this.x = x;
-        this.y = y;
         this.tipo=tipo;
-        this.area=null;
+        this.area= new Rectangle(x, y, ancho, alto);
     }
 
     public LinkedList<Arista> getCamino() {
@@ -43,21 +40,7 @@ public class Carro  {
     public void setTipo(int tipo) {
         this.tipo = tipo;
     }
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
+    
 
     public String getRuta() {
         return ruta;
@@ -70,6 +53,11 @@ public class Carro  {
     public Rectangle getArea() {
         return area;
     }
+
+    public void setCamino(LinkedList<Arista> camino) {
+        this.camino = camino;
+    }
+    
     
     
 }

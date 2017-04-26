@@ -6,13 +6,12 @@
 package proyectoanalisis2017.pkg1;
 
 import java.awt.Rectangle;
-import java.io.Serializable;
 
 /**
  *
  * @author Gianka
  */
-public class Ciudad implements Serializable {
+public class Ciudad implements Cloneable{
 
     private Componente[][] matrizCiudad;
     private int n;//indica la canidad de columnas 
@@ -37,6 +36,12 @@ public class Ciudad implements Serializable {
         this.anchoCiudad = 0;
         this.altoCiudad = 0;
     }
+    
+
+    public void setMatrizCiudad(Componente[][] matrizCiudad) {
+        this.matrizCiudad = matrizCiudad;
+    }
+    
 
     public int getAltoCampo() {
         return altoCampo;
@@ -221,7 +226,7 @@ public class Ciudad implements Serializable {
      * Al componente que va a ser un nodo se le asigna un identificados y se incrementa el numero de nodos.
      * @param componente componente a marcar
      */
-    private void marcarNodo(Componente componente) {
+    public void marcarNodo(Componente componente) {
         componente.setIdNodo(this.cantidadNodos);
         this.cantidadNodos++;
     }
@@ -238,6 +243,16 @@ public class Ciudad implements Serializable {
         }
         return resultado;
 
+    }
+    
+    public Object clone() {
+        Object obj = null;
+        try {
+            obj = super.clone();
+        } catch (CloneNotSupportedException ex) {
+            System.out.println("No se puede clonar");
+        }
+        return obj;
     }
 
     public int getM() {

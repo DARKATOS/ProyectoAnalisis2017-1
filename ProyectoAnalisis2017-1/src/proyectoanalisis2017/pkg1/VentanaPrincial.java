@@ -29,12 +29,10 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     GraphicsDevice grafica;
     GrafoDirigido grafo;
     int cantidadCarros;
-    int opciones;
     
 
     public VentanaPrincial() {
         initComponents();
-        opciones=0;
         this.cantidadCarros = 0;
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
@@ -142,6 +140,11 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
                 jToggleButton1StateChanged(evt);
             }
         });
+        jToggleButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jToggleButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlVentana1Layout = new javax.swing.GroupLayout(pnlVentana1);
         pnlVentana1.setLayout(pnlVentana1Layout);
@@ -199,7 +202,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-//        mostrarMatrizCiudad();
         String nombreArchivo = JOptionPane.showInputDialog("ingrese nombre archivo");
         GuardarCiudad(nombreArchivo);
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -233,7 +235,7 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
             }
 
         }
-        pnlVentana1.ingresarCarro(new CarroMovimiento(this.cantidadCarros, camino1.getFirst().getX1(), camino1.getFirst().getY1(), camino1, 1));
+        pnlVentana1.ingresarCarro(new CarroMovimiento(this.cantidadCarros, camino1.getFirst().getX1(), camino1.getFirst().getY1(),ciudad.getAnchoCampo(),ciudad.getAltoCampo(), camino1, 1));
         this.cantidadCarros++;
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -242,35 +244,38 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        //int origen=Integer.parseInt(JOptionPane.showInputDialog(this,"Ingrese el nodo origen", "Informacion", JOptionPane.INFORMATION_MESSAGE));
+        
         int destino=Integer.parseInt(JOptionPane.showInputDialog(this,"Ingrese el nodo destino", "Informacion", JOptionPane.INFORMATION_MESSAGE));
         int idcarro = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el ID del carro", "Informacion", JOptionPane.INFORMATION_MESSAGE));
         if (idcarro < cantidadCarros) {
             int cantidadNodos = ciudad.getCantidadNodos();
-            RutaCorta d = new RutaCorta();
-            d.llenarPesos(grafo);
-            d.caminosMinimos();
-            LinkedList<Arista> camino = d.convertirCamino(grafo, destino);
+//            RutaCorta d = new RutaCorta(cantidadNodos);
+//            d.llenarPesos(grafo);
+//            d.caminosMinimos();
+//            LinkedList<Arista> camino = d.convertirCamino(grafo, destino);
         }
         else
         {
             
         }
-
-        //pnlVentana1.ingresarCarro(new CarroMovimiento(this.cantidadCarros, camino.getFirst().getX1(), camino.getFirst().getY1(), camino, 0));
-        //this.cantidadCarros++;
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jToggleButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jToggleButton1StateChanged
-        if (opciones==0)
-        {
-            opciones=1;
-        }
-        else if (opciones==1)
-        {
-            
-        }
+       
     }//GEN-LAST:event_jToggleButton1StateChanged
+
+    private void jToggleButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton1MouseClicked
+        if (pnlVentana1.getOpciones()==0)
+        {
+            pnlVentana1.setOpciones(1);
+            pnlVentana1.ClonearCiudad();
+        }
+        else if (pnlVentana1.getOpciones()==3)
+        {
+            pnlVentana1.ModificarGrafo();
+            pnlVentana1.setOpciones(0);
+        }
+    }//GEN-LAST:event_jToggleButton1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -437,4 +442,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
             }
         }
     }
+    
+    
 }

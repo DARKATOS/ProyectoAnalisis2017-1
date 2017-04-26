@@ -11,39 +11,33 @@ import java.util.LinkedList;
  *
  * @author JORGE_ALEJANDRO
  */
-public abstract class AlgoritmosRuta {
-    private Componente componenteOrigen;
-    private CarroMovimiento carro;
-    private Componente destino;
-    
+public class AlgoritmosRuta {
+
     protected int pesos[][];
     private int[] ultimo;
     private int[] D;
     private boolean[] F;
     private int origen, cantidadNodos; // vértice componenteOrigen y número de vértices
 
-    public AlgoritmosRuta() {
-        this.componenteOrigen = null;
-        this.carro = null;
-        this.destino = null;
-        
-        this.origen=-1;
-        this.cantidadNodos=-1;
-        pesos=new int[this.cantidadNodos][this.cantidadNodos];
-        ultimo=new int[this.cantidadNodos];
-        D=new int[this.cantidadNodos];
-        F=new boolean[this.cantidadNodos];
+    public AlgoritmosRuta(int cantidadNodos) {
+
+        this.origen = -1;
+        this.cantidadNodos = cantidadNodos;
+        pesos = new int[this.cantidadNodos][this.cantidadNodos];
+        ultimo = new int[this.cantidadNodos];
+        D = new int[this.cantidadNodos];
+        F = new boolean[this.cantidadNodos];
     }
-    
-    public void preparacionRuta()
-    {
-        
+
+    public void preparacionRuta() {
+
     }
-    
-    public abstract void llenarPesos(GrafoDirigido grafo);
-    
-    public void caminosMinimos()
-    {
+
+    public void llenarPesos(GrafoDirigido grafo) {
+
+    }
+
+    public void caminosMinimos() {
         for (int i = 0; i < cantidadNodos; i++) {
             F[i] = false;
             D[i] = pesos[origen][i];
@@ -52,7 +46,8 @@ public abstract class AlgoritmosRuta {
         F[origen] = true;
         D[origen] = 0;
         for (int i = 1; i < cantidadNodos; i++) {
-            int v = minimo(); /* selecciona vértice no marcado
+            int v = minimo();
+            /* selecciona vértice no marcado
              de menor distancia */
 
             F[v] = true;
@@ -67,9 +62,8 @@ public abstract class AlgoritmosRuta {
             }
         }
     }
-    
-    private int minimo()
-    {
+
+    private int minimo() {
         int mx = 214748364;
         int v = 1;
         for (int j = 0; j < cantidadNodos; j++) {
@@ -80,13 +74,12 @@ public abstract class AlgoritmosRuta {
         }
         return v;
     }
-    
-    private LinkedList<Integer> obtenerCamino(int destino)
-    {
-        LinkedList<Integer>recibido=recuperaCamino(destino, new LinkedList<>());
+
+    public LinkedList<Integer> obtenerCamino(int destino) {
+        LinkedList<Integer> recibido = recuperaCamino(destino, new LinkedList<>());
         return recibido;
     }
-    
+
     private LinkedList recuperaCamino(int v, LinkedList<Integer> camino) {
         int anterior = ultimo[v];
         if (v != origen) {
@@ -97,47 +90,19 @@ public abstract class AlgoritmosRuta {
         }
         return camino;
     }
-    
-    public LinkedList<Arista> convertirCamino(GrafoDirigido grafo, int destino)
-    {
-        LinkedList<Integer>caminoNodos=obtenerCamino(destino);
-        LinkedList<Arista> camino=new LinkedList<>();
-        for (int i=0; i<caminoNodos.size()-1; i++)
-        {
-            Arista arista=grafo.getGrafo()[caminoNodos.get(i)][caminoNodos.get(i+1)];
+
+    public LinkedList<Arista> convertirCamino(GrafoDirigido grafo, int destino) {
+        LinkedList<Integer> caminoNodos = obtenerCamino(destino);
+        LinkedList<Arista> camino = new LinkedList<>();
+        for (int i = 0; i < caminoNodos.size() - 1; i++) {
+            Arista arista = grafo.getGrafo()[caminoNodos.get(i)][caminoNodos.get(i + 1)];
             camino.add(arista);
         }
         return camino;
     }
 
-    public CarroMovimiento getCarro() {
-        return carro;
-    }
-
-    public Componente getDestino() {
-        return destino;
-    }
-
-    public Componente getComponenteOrigen() {
-        return componenteOrigen;
-    }
-
-    public void setCarro(CarroMovimiento carro) {
-        this.carro = carro;
-    }
-
-    public void setDestino(Componente destino) {
-        this.destino = destino;
-    }
-
-    public void setComponenteOrigen(Componente componenteOrigen) {
-        this.componenteOrigen = componenteOrigen;
-    }
-
     public void setOrigen(int origen) {
         this.origen = origen;
     }
-    
-    
-      
+
 }

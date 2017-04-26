@@ -5,15 +5,13 @@
  */
 package proyectoanalisis2017.pkg1;
 
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.io.Serializable;
 
 /**
  *
  * @author root
  */
-public class Componente {
+public class Componente implements Cloneable{
 
     private String tipoVia; //No sindica si es cruce, calle o carretera, null si no es ninguno.
     private int tipo;//1 abajo-arriba;2arriba-abajo;3izq-Der;4der-izq;5doblehorizontal;6doblevertical
@@ -32,7 +30,15 @@ public class Componente {
         this.tipoVia="";
         area=null;
     }
-
+ public Object clone() {
+        Object obj = null;
+        try {
+            obj = super.clone();
+        } catch (CloneNotSupportedException ex) {
+            System.out.println("No se puede clonar");
+        }
+        return obj;
+    }
     public String getNombre() {
         return nombre;
     }
@@ -76,4 +82,5 @@ public class Componente {
     public void setArea(Rectangle area) {
         this.area = area;
     }
+    
 }
