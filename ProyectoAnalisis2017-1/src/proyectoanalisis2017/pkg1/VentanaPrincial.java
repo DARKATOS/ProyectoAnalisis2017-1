@@ -78,7 +78,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         jButton2 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -127,13 +126,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
             }
         });
 
-        jButton3.setText("Dijkstra");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         jToggleButton1.setText("Camino");
         jToggleButton1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -157,11 +149,9 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
                         .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(pnlVentana1Layout.createSequentialGroup()
-                                    .addGap(2, 2, 2)
-                                    .addComponent(jButton2))
-                                .addComponent(jButton3))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addComponent(jButton2))
                             .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jToggleButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -181,10 +171,8 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton1)
-                .addContainerGap(375, Short.MAX_VALUE))
+                .addContainerGap(404, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -243,23 +231,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         pnlVentana1.getCarrosMovimiento().getLast().start();
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
-        int destino=Integer.parseInt(JOptionPane.showInputDialog(this,"Ingrese el nodo destino", "Informacion", JOptionPane.INFORMATION_MESSAGE));
-        int idcarro = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el ID del carro", "Informacion", JOptionPane.INFORMATION_MESSAGE));
-        if (idcarro < cantidadCarros) {
-            int cantidadNodos = ciudad.getCantidadNodos();
-//            RutaCorta d = new RutaCorta(cantidadNodos);
-//            d.llenarPesos(grafo);
-//            d.caminosMinimos();
-//            LinkedList<Arista> camino = d.convertirCamino(grafo, destino);
-        }
-        else
-        {
-            
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jToggleButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jToggleButton1StateChanged
        
     }//GEN-LAST:event_jToggleButton1StateChanged
@@ -317,7 +288,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JToggleButton jToggleButton1;
