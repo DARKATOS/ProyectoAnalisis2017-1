@@ -218,23 +218,47 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
 
     public void ModificarGrafo() {
 
+//        GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad.getCantidadNodos());
+//        auxGrafo.crearGrafo(auxCiudad.getMatrizCiudad(), auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo());
+//        auxCarro.setGrafo(auxGrafo);
+//        RutaCorta auxRuta = new RutaCorta(auxCiudad.getCantidadNodos());
+//        auxRuta.llenarPesos(auxGrafo);
+//        auxRuta.setOrigen(this.idNodoOrigen);
+//        auxRuta.caminosMinimos();
+//        auxCarro.setTipo(0);
+//        auxCarro.getArea().setLocation(auxj1 * auxCiudad.getAnchoCampo(), auxi1 * auxCiudad.getAltoCampo());
+//        LinkedList<Arista> auxCamino = new LinkedList<>();
+//        for (int i = 0; i < idDestinos.size(); i++) {
+//            LinkedList<Arista> auxCamino1 = auxRuta.convertirCamino(auxGrafo, idDestinos.get(i));
+//            for (int j = 0; j < auxCamino1.size(); j++) {
+//                auxCamino.add(auxCamino1.get(j));
+//            }
+//            auxRuta.setOrigen(idDestinos.get(i));
+//            auxRuta.caminosMinimos();
+//        }
+//        auxCarro.setCamino(auxCamino);
+//        auxCarro.start();
+
         GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad.getCantidadNodos());
         auxGrafo.crearGrafo(auxCiudad.getMatrizCiudad(), auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo());
         auxCarro.setGrafo(auxGrafo);
         RutaCorta auxRuta = new RutaCorta(auxCiudad.getCantidadNodos());
+        System.out.println(auxCiudad.getCantidadNodos());
         auxRuta.llenarPesos(auxGrafo);
-        auxRuta.setOrigen(this.idNodoOrigen);
-        auxRuta.caminosMinimos();
+//        auxRuta.setOrigen(this.idNodoOrigen);
+        int matrizVertices[][]=auxRuta.floydWarshall();
         auxCarro.setTipo(0);
         auxCarro.getArea().setLocation(auxj1 * auxCiudad.getAnchoCampo(), auxi1 * auxCiudad.getAltoCampo());
+        int origen=this.idNodoOrigen;
         LinkedList<Arista> auxCamino = new LinkedList<>();
         for (int i = 0; i < idDestinos.size(); i++) {
-            LinkedList<Arista> auxCamino1 = auxRuta.convertirCamino(auxGrafo, idDestinos.get(i));
+            LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoFloydWarshall(matrizVertices, origen, idDestinos.get(i), auxGrafo);
             for (int j = 0; j < auxCamino1.size(); j++) {
                 auxCamino.add(auxCamino1.get(j));
             }
-            auxRuta.setOrigen(idDestinos.get(i));
-            auxRuta.caminosMinimos();
+            origen=idDestinos.get(i);
+//            auxRuta.setOrigen(idDestinos.get(i));
+//            auxRuta.caminosMinimos();
         }
         auxCarro.setCamino(auxCamino);
         auxCarro.start();
