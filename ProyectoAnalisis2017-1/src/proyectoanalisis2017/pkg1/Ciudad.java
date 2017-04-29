@@ -6,12 +6,13 @@
 package proyectoanalisis2017.pkg1;
 
 import java.awt.Rectangle;
+import java.util.LinkedList;
 
 /**
  *
  * @author Gianka
  */
-public class Ciudad implements Cloneable{
+public class Ciudad implements Cloneable {
 
     private Componente[][] matrizCiudad;
     private int n;//indica la canidad de columnas 
@@ -21,10 +22,10 @@ public class Ciudad implements Cloneable{
     private int anchoCiudad;//indica el ancho del area de la ciudad 
     private int altoCiudad;//indica el alto del area de la ciudad
     private int cantidadNodos;//contiene la cantidad de nodos que tiene la ciudad
+    private LinkedList<Interrupcion> listaInterrupciones;
 
     public Ciudad() {
-    }  
-  
+    }
 
     public Ciudad(Componente[][] matrizCiudad, int n, int m) {
         this.matrizCiudad = matrizCiudad;
@@ -35,26 +36,25 @@ public class Ciudad implements Cloneable{
         this.altoCampo = 0;
         this.anchoCiudad = 0;
         this.altoCiudad = 0;
+        this.listaInterrupciones = new LinkedList<>();
     }
-    
 
     public void setMatrizCiudad(Componente[][] matrizCiudad) {
         this.matrizCiudad = matrizCiudad;
     }
-    
 
     public int getAltoCampo() {
         return altoCampo;
     }
-    
+
     public int getAnchoCampo() {
         return anchoCampo;
     }
-    
+
     public void setAltoCampo(int altoCampo) {
         this.altoCampo = altoCampo;
     }
-    
+
     public void setAnchoCampo(int anchoCampo) {
         this.anchoCampo = anchoCampo;
     }
@@ -70,8 +70,6 @@ public class Ciudad implements Cloneable{
     public int getAltoCiudad() {
         return altoCiudad;
     }
-
-    
 
     public void setAnchoCiudad(int anchoCiudad) {
         this.anchoCiudad = anchoCiudad;
@@ -113,6 +111,7 @@ public class Ciudad implements Cloneable{
 
     /**
      * Nos indica si el componente es una carretera que validamos con el nombre
+     *
      * @param componente componente a validar
      * @return true es carretera, false no es carretera
      */
@@ -138,6 +137,57 @@ public class Ciudad implements Cloneable{
             resultado = true;
         }
         return resultado;
+    }
+
+    public void marcarNodosAdyasentes(int i, int j) {
+        if ((j - 1) >= 0 && this.matrizCiudad[i][j - 1] != null && esVia(this.matrizCiudad[i][j - 1])) {
+
+            if (this.matrizCiudad[i][j - 1].getIdNodo() == -1) {
+                marcarNodo(this.matrizCiudad[i][j - 1]);
+            }
+        }
+        if ((j + 1) < this.m && this.matrizCiudad[i][j + 1] != null && esVia(this.matrizCiudad[i][j + 1])) {
+            if (this.matrizCiudad[i][j + 1].getIdNodo() == -1) {
+                marcarNodo(this.matrizCiudad[i][j + 1]);
+            }
+        }
+        if ((i - 1) >= 0 && this.matrizCiudad[i - 1][j] != null && esVia(this.matrizCiudad[i - 1][j])) {
+            if (this.matrizCiudad[i - 1][j].getIdNodo() == -1) {
+                marcarNodo(this.matrizCiudad[i - 1][j]);
+            }
+        }
+        if ((i + 1) < this.n && this.matrizCiudad[i + 1][j] != null && esVia(this.matrizCiudad[i + 1][j])) {
+            if (this.matrizCiudad[i + 1][j].getIdNodo() == -1) {
+                marcarNodo(this.matrizCiudad[i + 1][j]);
+            }
+        }
+
+    }
+
+    public void eliminarNodosAdyasentes(int i, int j) {
+        if ((j - 1) >= 0 && this.matrizCiudad[i][j - 1] != null && esVia(this.matrizCiudad[i][j - 1])) {
+            if (!esCruce(this.matrizCiudad[i][j - 1])) {
+                this.matrizCiudad[i][j - 1].setIdNodo(-1);
+            }
+        }
+        if ((j + 1) < this.m && this.matrizCiudad[i][j + 1] != null && esVia(this.matrizCiudad[i][j + 1])) {
+            if (!esCruce(this.matrizCiudad[i][j + 1])) {
+                this.matrizCiudad[i][j + 1].setIdNodo(-1);
+
+            }
+        }
+        if ((i - 1) >= 0 && this.matrizCiudad[i - 1][j] != null && esVia(this.matrizCiudad[i - 1][j])) {
+            if (!esCruce(this.matrizCiudad[i - 1][j])) {
+                this.matrizCiudad[i - 1][j].setIdNodo(-1);
+            }
+        }
+        if ((i + 1) < this.n && this.matrizCiudad[i + 1][j] != null && esVia(this.matrizCiudad[i + 1][j])) {
+
+            if (!esCruce(this.matrizCiudad[i + 1][j])) {
+                this.matrizCiudad[i + 1][j].setIdNodo(-1);
+            }
+        }
+
     }
 
     /**
@@ -166,20 +216,21 @@ public class Ciudad implements Cloneable{
                             }
                         }
                     }
-                    Rectangle area=new Rectangle(anchoCampo * j,altoCampo*i,anchoCampo,altoCampo);
+                    Rectangle area = new Rectangle(anchoCampo * j, altoCampo * i, anchoCampo, altoCampo);
                     matrizCiudad[i][j].setArea(area);
                 }
             }
         }
-        
+
     }
 
     /**
      * Analizamos si es l componente es via osea si es carretera,calle,o cruce
+     *
      * @param componente componente a validar
      * @return true es via,false no es via
      */
-    private Boolean esVia(Componente componente) {
+    public Boolean esVia(Componente componente) {
         Boolean resultado = false;
         if (esCarretera(componente) || esCalle(componente) || esCruce(componente)) {
             resultado = true;
@@ -223,7 +274,9 @@ public class Ciudad implements Cloneable{
     }
 
     /**
-     * Al componente que va a ser un nodo se le asigna un identificados y se incrementa el numero de nodos.
+     * Al componente que va a ser un nodo se le asigna un identificados y se
+     * incrementa el numero de nodos.
+     *
      * @param componente componente a marcar
      */
     public void marcarNodo(Componente componente) {
@@ -232,7 +285,9 @@ public class Ciudad implements Cloneable{
     }
 
     /**
-     * Validamos si el componente es una cruce que lo comprobamos con el nombre del componente
+     * Validamos si el componente es una cruce que lo comprobamos con el nombre
+     * del componente
+     *
      * @param componente componente a verificar
      * @return true es cruce, false no es cruce
      */
@@ -244,7 +299,7 @@ public class Ciudad implements Cloneable{
         return resultado;
 
     }
-    
+
     public Object clone() {
         Object obj = null;
         try {
@@ -266,4 +321,13 @@ public class Ciudad implements Cloneable{
     public int getCantidadNodos() {
         return cantidadNodos;
     }
+
+    public LinkedList<Interrupcion> getListaInterrupciones() {
+        return listaInterrupciones;
+    }
+
+    public void setListaInterrupciones(LinkedList<Interrupcion> listaInterrupciones) {
+        this.listaInterrupciones = listaInterrupciones;
+    }
+
 }

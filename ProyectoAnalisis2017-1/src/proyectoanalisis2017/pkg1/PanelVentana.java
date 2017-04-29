@@ -114,7 +114,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                 auxUbicacion = auxCiudad.getMatrizCiudad()[auxi1][auxj1];
 
                 if (auxUbicacion != null && auxCarro != null) {
-                    auxCiudad.marcarNodo(auxUbicacion);
+                    if (auxUbicacion.getIdNodo() == -1) {
+                        auxCiudad.marcarNodo(auxUbicacion);
+                    }
                     opciones = 3;
                     this.idNodoOrigen = auxUbicacion.getIdNodo();
                 }
@@ -125,7 +127,10 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                     int auxi = (int) evt.getY() / ciudad.getAltoCampo();
                     int auxj = (int) evt.getX() / ciudad.getAnchoCampo();
                     auxUbicacion = auxCiudad.getMatrizCiudad()[auxi][auxj];
-                    auxCiudad.marcarNodo(auxUbicacion);
+                    if (auxUbicacion.getIdNodo() == -1) {
+                        auxCiudad.marcarNodo(auxUbicacion);
+                    }
+
                     this.idDestinos.add(auxUbicacion.getIdNodo());
                 }
 
@@ -185,8 +190,63 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                 Componente auxComponente = new Componente(itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getNombre());
                 Rectangle area = new Rectangle(evt.getX(), evt.getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
                 auxComponente.setArea(area);
-                ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
+                if (ciudad.getMatrizCiudad()[auxN][auxM] != null && ciudad.esVia(ciudad.getMatrizCiudad()[auxN][auxM]) && (auxComponente.getNombre().equals("XX") || auxComponente.getNombre().equals("YY"))) {
+                    ciudad.getListaInterrupciones().add(new Interrupcion((Componente) ciudad.getMatrizCiudad()[auxN][auxM].clone(), auxN, auxM));
+                    ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
+                    ciudad.marcarNodosAdyasentes(auxN, auxM);
+                    Ciudad auxCiudad1 = new Ciudad();
+                    auxCiudad1 = (Ciudad) ciudad.clone();
+                    auxCiudad1.setMatrizCiudad(null);
+                    Componente[][] auxComponente1 = new Componente[auxCiudad1.getN()][auxCiudad1.getM()];
+                    auxCiudad1.setMatrizCiudad(auxComponente1);
+                    for (int i = 0; i < ciudad.getN(); i++) {
+                        for (int j = 0; j < ciudad.getM(); j++) {
+                            if (ciudad.getMatrizCiudad()[i][j] != null) {
+                                //auxCiudad.getMatrizCiudad()[i][j]= new Componente();
+                                auxCiudad1.getMatrizCiudad()[i][j] = (Componente) ciudad.getMatrizCiudad()[i][j].clone();
+                            }
+                        }
+                    }
+                    GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad1.getCantidadNodos());
+                    auxGrafo.crearGrafo(auxCiudad1.getMatrizCiudad(), auxCiudad1.getAnchoCampo(), auxCiudad1.getAltoCampo());
+                    grafo = auxGrafo;
+                    for (int i = 0; i < carrosMovimiento.size(); i++) {
+                        carrosMovimiento.get(i).setGrafo((GrafoDirigido) grafo.clone());
+                    }
+
+                } else if (ciudad.getMatrizCiudad()[auxN][auxM] != null && auxComponente.getNombre().equals("XXX") && (ciudad.getMatrizCiudad()[auxN][auxM].getNombre().equals("XX") || ciudad.getMatrizCiudad()[auxN][auxM].equals("YY"))) {
+                    for (int i = 0; i < ciudad.getListaInterrupciones().size(); i++) {
+                        if (ciudad.getListaInterrupciones().get(i).getI() == auxN && ciudad.getListaInterrupciones().get(i).getJ() == auxM) {
+                            ciudad.getMatrizCiudad()[auxN][auxM] = ciudad.getListaInterrupciones().get(i).getComponenteAnterior();
+                        }
+                    }
+                    ciudad.eliminarNodosAdyasentes(auxN, auxM);
+                    Ciudad auxCiudad1 = new Ciudad();
+                    auxCiudad1 = (Ciudad) ciudad.clone();
+                    auxCiudad1.setMatrizCiudad(null);
+                    Componente[][] auxComponente1 = new Componente[auxCiudad1.getN()][auxCiudad1.getM()];
+                    auxCiudad1.setMatrizCiudad(auxComponente1);
+                    for (int i = 0; i < ciudad.getN(); i++) {
+                        for (int j = 0; j < ciudad.getM(); j++) {
+                            if (ciudad.getMatrizCiudad()[i][j] != null) {
+                                //auxCiudad.getMatrizCiudad()[i][j]= new Componente();
+                                auxCiudad1.getMatrizCiudad()[i][j] = (Componente) ciudad.getMatrizCiudad()[i][j].clone();
+                            }
+                        }
+                    }
+                    GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad1.getCantidadNodos());
+                    auxGrafo.crearGrafo(auxCiudad1.getMatrizCiudad(), auxCiudad1.getAnchoCampo(), auxCiudad1.getAltoCampo());
+                    grafo = auxGrafo;
+                    for (int i = 0; i < carrosMovimiento.size(); i++) {
+                        carrosMovimiento.get(i).setGrafo((GrafoDirigido) grafo.clone());
+                    }
+                    
+                } else if (!auxComponente.getNombre().equals("XX") && !auxComponente.getNombre().equals("YY") && !auxComponente.getNombre().equals("XXX")) {
+                    ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
+                }
+
             } catch (Exception e) {
+
             }
             repaint();
         }
@@ -238,7 +298,6 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
 //        }
 //        auxCarro.setCamino(auxCamino);
 //        auxCarro.start();
-
         GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad.getCantidadNodos());
         auxGrafo.crearGrafo(auxCiudad.getMatrizCiudad(), auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo());
         auxCarro.setGrafo(auxGrafo);
@@ -246,17 +305,17 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         System.out.println(auxCiudad.getCantidadNodos());
         auxRuta.llenarPesos(auxGrafo);
 //        auxRuta.setOrigen(this.idNodoOrigen);
-        int matrizVertices[][]=auxRuta.floydWarshall();
+        int matrizVertices[][] = auxRuta.floydWarshall();
         auxCarro.setTipo(0);
         auxCarro.getArea().setLocation(auxj1 * auxCiudad.getAnchoCampo(), auxi1 * auxCiudad.getAltoCampo());
-        int origen=this.idNodoOrigen;
+        int origen = this.idNodoOrigen;
         LinkedList<Arista> auxCamino = new LinkedList<>();
         for (int i = 0; i < idDestinos.size(); i++) {
             LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoFloydWarshall(matrizVertices, origen, idDestinos.get(i), auxGrafo);
             for (int j = 0; j < auxCamino1.size(); j++) {
                 auxCamino.add(auxCamino1.get(j));
             }
-            origen=idDestinos.get(i);
+            origen = idDestinos.get(i);
 //            auxRuta.setOrigen(idDestinos.get(i));
 //            auxRuta.caminosMinimos();
         }
