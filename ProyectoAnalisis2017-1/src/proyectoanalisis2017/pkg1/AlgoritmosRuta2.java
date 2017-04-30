@@ -14,10 +14,8 @@ import java.util.LinkedList;
 public class AlgoritmosRuta2 {
     protected int pesos[][];
     private int cantidadNodos;
-//    private int origen;
 
     public AlgoritmosRuta2(int cantidadNodos) {
-//        this.origen=-1;
         this.cantidadNodos = cantidadNodos;
         this.pesos = new int [this.cantidadNodos][this.cantidadNodos];
         
@@ -27,6 +25,10 @@ public class AlgoritmosRuta2 {
 
     }
     
+    /**
+     * Permite obtener los pesos minimos y los caminos minimos de cada nodo a todos los nodos. 
+     * @return int[][] matrizVertices con la matriz de nodos que permiten obtener el camino minimo.
+     */
     public int[][] floydWarshall() {
         int [][]matrizVertices=new int[pesos.length][pesos.length];
         for (int i = 0; i < cantidadNodos; i++) {
@@ -55,6 +57,15 @@ public class AlgoritmosRuta2 {
         return matrizVertices;
     }
     
+    
+    /**
+     * Permite obtener el camino minimo a traves de un nodo origen y un nodo destino
+     * @param matrizVertices Matriz que contienen los nodos de caminos minimos
+     * @param origen nodo origen
+     * @param destino nodo destino
+     * @param grafo Permite obtener la matriz de adyacencia que contienen las aristas
+     * @return LinkedList aristas que conforman el camino minimo
+     */
     public LinkedList<Arista>obtenerCaminoFloydWarshall(int matrizVertices[][], int origen, int destino, GrafoDirigido grafo)
     {
         LinkedList<Integer>caminoNodos=new LinkedList<>();
@@ -91,9 +102,6 @@ public class AlgoritmosRuta2 {
         this.cantidadNodos = cantidadNodos;
     }
 
-//    public void setOrigen(int origen) {
-//        this.origen = origen;
-//    }
 
     public void setPesos(int[][] pesos) {
         this.pesos = pesos;
@@ -102,14 +110,8 @@ public class AlgoritmosRuta2 {
     public int getCantidadNodos() {
         return cantidadNodos;
     }
-//
-//    public int getOrigen() {
-//        return origen;
-//    }
 
     public int[][] getPesos() {
         return pesos;
     }
-    
-    
 }

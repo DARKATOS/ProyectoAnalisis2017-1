@@ -29,14 +29,14 @@ public class AlgoritmosRuta {
         F = new boolean[this.cantidadNodos];
     }
 
-    public void preparacionRuta() {
-
-    }
-
     public void llenarPesos(GrafoDirigido grafo) {
 
     }
 
+    /**
+     * Dijkstra
+     * Obtiene los caminos minimos desde un nodoo origen
+     */
     public void caminosMinimos() {
         for (int i = 0; i < cantidadNodos; i++) {
             F[i] = false;
@@ -63,6 +63,10 @@ public class AlgoritmosRuta {
         }
     }
 
+    /**
+     * Minimo vertice de un camino.
+     * @return numero de vertice
+     */
     private int minimo() {
         int mx = 214748364;
         int v = 1;
@@ -75,6 +79,11 @@ public class AlgoritmosRuta {
         return v;
     }
 
+    /**
+     * Obtiene una lista de los id de nodo que forman un camino hacia el nodo de destino
+     * @param destino nodo destino para formar el camino
+     * @return LinkedList Lista con los id de nodos del camino.
+     */
     public LinkedList<Integer> obtenerCamino(int destino) {
         LinkedList<Integer> recibido = recuperaCamino(destino, new LinkedList<>());
         return recibido;
@@ -90,7 +99,13 @@ public class AlgoritmosRuta {
         }
         return camino;
     }
-
+    
+    /**
+     * Permite obtener una lista de aristas del camino de nodos.
+     * @param grafo Para obtener la matriz de aristas.
+     * @param destino Desttino para formar el camino.
+     * @return LinkedList de aristas. 
+     */
     public LinkedList<Arista> convertirCamino(GrafoDirigido grafo, int destino) {
         LinkedList<Integer> caminoNodos = obtenerCamino(destino);
         LinkedList<Arista> camino = new LinkedList<>();
