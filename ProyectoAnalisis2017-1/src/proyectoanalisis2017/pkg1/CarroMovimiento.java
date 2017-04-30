@@ -139,6 +139,7 @@ public class CarroMovimiento extends Carro implements Runnable {
                 getCamino().removeFirst();
 
                 if (getTipo() == 1) {
+                   
                     buscarCamino(n, m);
                 }
             }
@@ -158,6 +159,7 @@ public class CarroMovimiento extends Carro implements Runnable {
             int num = (int) (rnd.nextDouble() * numero + 0);
             this.getCamino().add(posiblesCaminos.get(num));
         } catch (Exception e) {
+            
         }
     }
 
