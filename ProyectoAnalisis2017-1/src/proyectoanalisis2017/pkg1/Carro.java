@@ -15,13 +15,13 @@ import java.util.LinkedList;
 public class Carro  {
     private int id;
     private String ruta;
-   
     private Rectangle area;
     private LinkedList<Arista> camino;
     private int tipo;
     public Carro() {
     }
 
+    
     public Carro(int id, int x, int y,int ancho,int alto, LinkedList<Arista> camino,int tipo) {
         this.id = id;
         this.camino = camino;

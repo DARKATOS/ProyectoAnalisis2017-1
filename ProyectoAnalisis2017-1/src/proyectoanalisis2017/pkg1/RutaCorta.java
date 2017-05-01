@@ -36,15 +36,5 @@ public class RutaCorta extends AlgoritmosRuta2{
                 
             }
         }
-//        System.out.println("Imprimir pesos");
-//        for (int i=0; i<pesos.length; i++)
-//        {
-//            for (int j=0; j<pesos.length; j++)
-//            {
-//                System.out.print(pesos[i][j]+", ");
-//                
-//            }
-//            System.out.println("");
-//        }
     }    
 }

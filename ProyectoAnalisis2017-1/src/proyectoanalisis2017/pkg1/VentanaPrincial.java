@@ -75,7 +75,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         pnlVentana1 = new proyectoanalisis2017.pkg1.PanelVentana();
         btnGuardar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
@@ -102,13 +101,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Ver Grafo");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
             }
         });
 
@@ -143,36 +135,29 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         pnlVentana1Layout.setHorizontalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlVentana1Layout.createSequentialGroup()
-                .addGap(52, 778, Short.MAX_VALUE)
-                .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
-                        .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentana1Layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(jButton2))
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jToggleButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
+                .addContainerGap()
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(424, Short.MAX_VALUE))
         );
         pnlVentana1Layout.setVerticalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlVentana1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnGuardar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton1)
-                .addContainerGap(404, Short.MAX_VALUE))
+                .addContainerGap(549, Short.MAX_VALUE)
+                .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jToggleButton1)
+                    .addComponent(btnGuardar)
+                    .addComponent(jButton1)
+                    .addComponent(jButton5)
+                    .addComponent(jButton6))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -207,10 +192,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         pnlVentana1.setGrafo(grafo);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        grafo.verGrafo();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         LinkedList<Arista> camino1 = new LinkedList<>();
         boolean bandera = false;
@@ -239,7 +220,8 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         if (pnlVentana1.getOpciones()==0)
         {
             pnlVentana1.setOpciones(1);
-            pnlVentana1.ClonearCiudad();
+            pnlVentana1.setAuxCiudad(pnlVentana1.copiarCiudad());
+            pnlVentana1.setOpciones(2);
         }
         else if (pnlVentana1.getOpciones()==3)
         {
@@ -287,7 +269,6 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JToggleButton jToggleButton1;
@@ -403,15 +384,15 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         grafo.crearGrafo(matrizCopia, ciudad.getAnchoCampo(), ciudad.getAltoCampo());
     }
 
-    private void mostrarMatrizCiudad() {
-        for (int i = 0; i < ciudad.getN(); i++) {
-            for (int j = 0; j < ciudad.getM(); j++) {
-                if (ciudad.getMatrizCiudad()[i][j] != null) {
-                    System.out.println(ciudad.getMatrizCiudad()[i][j].getIdNodo());
-                }
-            }
-        }
-    }
+//    private void mostrarMatrizCiudad() {
+//        for (int i = 0; i < ciudad.getN(); i++) {
+//            for (int j = 0; j < ciudad.getM(); j++) {
+//                if (ciudad.getMatrizCiudad()[i][j] != null) {
+//                    System.out.println(ciudad.getMatrizCiudad()[i][j].getIdNodo());
+//                }
+//            }
+//        }
+//    }
     
     
 }

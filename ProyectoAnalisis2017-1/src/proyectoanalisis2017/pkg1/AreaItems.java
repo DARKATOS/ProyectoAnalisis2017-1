@@ -37,8 +37,9 @@ public class AreaItems implements Serializable{
         return listaItems;
     }
     
-    
-    
+    /**
+     * Permite cargar los componentes al area de items.
+     */
     private void cargarComponentes() {
         int auxAltura = 100;
         LinkedList<Componente> auxLista= new LinkedList<>();
@@ -85,14 +86,12 @@ public class AreaItems implements Serializable{
         listaItems.add(new Item(10, auxLista, anchoListaComponentesX1 + 30+80, 4 * auxAltura+40));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("XX"));
-        listaItems.add(new Item(11, auxLista, anchoListaComponentesX1 + 30+80, 5 * auxAltura+40));
+        listaItems.add(new Item(11, auxLista, anchoListaComponentesX1 + 30+80+80, 2 * auxAltura+20));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("YY"));
-        listaItems.add(new Item(12, auxLista, anchoListaComponentesX1 + 30+80, 6 * auxAltura+40));
+        listaItems.add(new Item(12, auxLista, anchoListaComponentesX1 + 30+80+80, 3 * auxAltura+30));
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("XXX"));
-        listaItems.add(new Item(13, auxLista, anchoListaComponentesX1 + 30+80, 7 * auxAltura+40));
-        
-
+        listaItems.add(new Item(13, auxLista, anchoListaComponentesX1 + 30+80+80, 4 * auxAltura+40));
     }
 }

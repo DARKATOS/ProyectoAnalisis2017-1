@@ -11,7 +11,7 @@ import java.awt.Rectangle;
  *
  * @author root
  */
-public class Componente implements Cloneable{
+public class Componente implements Cloneable {
 
     private String tipoVia; //No sindica si es cruce, calle o carretera, null si no es ninguno.
     private int tipo;//1 abajo-arriba;2arriba-abajo;3izq-Der;4der-izq;5doblehorizontal;6doblevertical
@@ -19,6 +19,7 @@ public class Componente implements Cloneable{
     private String nombre;// nos indica el nombre del compoente 
     private int idNodo;//si es -1 no es nodo y >=0 si es un nodo y el valor es el identificador del nodo
     private Rectangle area;
+
     public Componente() {
     }
 
@@ -27,10 +28,12 @@ public class Componente implements Cloneable{
         this.tipo = 0;
         this.ruta = "../ImgComponentes/" + nombre + ".png";
         this.idNodo = -1;
-        this.tipoVia="";
-        area=null;
+        this.tipoVia = "";
+        area = null;
     }
- public Object clone() {
+
+    @Override
+    public Object clone() {
         Object obj = null;
         try {
             obj = super.clone();
@@ -39,6 +42,7 @@ public class Componente implements Cloneable{
         }
         return obj;
     }
+
     public String getNombre() {
         return nombre;
     }
@@ -82,5 +86,5 @@ public class Componente implements Cloneable{
     public void setArea(Rectangle area) {
         this.area = area;
     }
-    
+
 }

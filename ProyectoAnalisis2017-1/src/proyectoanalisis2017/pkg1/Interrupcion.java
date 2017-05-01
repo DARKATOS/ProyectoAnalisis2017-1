@@ -17,12 +17,20 @@ public class Interrupcion {
     public Interrupcion() {
     }
 
+    /**
+     * Permite guardar el estado anterior a la interrupcion
+     * @param componenteAnterior Componente anterior a la interrupcion
+     * i y j es la posicion de la interrupcion y del componente anterior
+     * @param i
+     * @param j 
+     */
     public Interrupcion(Componente componenteAnterior, int i, int j) {
         this.componenteAnterior = componenteAnterior;
         this.i = i;
         this.j = j;
     }
 
+    
     public Componente getComponenteAnterior() {
         return componenteAnterior;
     }
