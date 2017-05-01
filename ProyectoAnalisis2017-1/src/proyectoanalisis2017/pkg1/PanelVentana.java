@@ -98,7 +98,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        Componente auxUbicacion = new Componente();
+        Componente auxUbicacion;
         //Si opciones es igual a 2 es porque el usuario va a realizar un camino.
         if (opciones == 2) {
             //Verificamos que el evento se de dentro del ancho y alto de la ciudad.
@@ -158,7 +158,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
 
         //Verifica si se presiono en alguno de los items del area de items
-        if (evt.getX() > areaItems.getAnchoListaComponentesX1() && evt.getX() < areaItems.getAnchoListaComponentesX2()) {
+        if (evt.getX() > areaItems.getAnchoListaComponentesX1()) {
             for (int i = 0; i < areaItems.getListaItems().size(); i++) {
                 if (areaItems.getListaItems().get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
                     this.estaSelecionadoComponente = true;
@@ -208,24 +208,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                     //Se establece la interrupcion en la posicion i, j de la matriz de la ciudad
                     ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
                     //Marca los nodos adyacentes a la interrupción
-                    ciudad.marcarNodosAdyasentes(auxN, auxM);
+                    ciudad.marcarNodosAdyacentes(auxN, auxM);
                     //Se crea una ciudad local
-                    Ciudad auxCiudad1;
-                    //Se clona la ciudad
-                    auxCiudad1 = (Ciudad) ciudad.clone();
-                    auxCiudad1.setMatrizCiudad(null);
-                    Componente[][] auxComponente1 = new Componente[auxCiudad1.getN()][auxCiudad1.getM()];
-                    //Se pasa la matriz de la ciudad
-                    auxCiudad1.setMatrizCiudad(auxComponente1);
-                    for (int i = 0; i < ciudad.getN(); i++) {
-                        for (int j = 0; j < ciudad.getM(); j++) {
-                            if (ciudad.getMatrizCiudad()[i][j] != null) {
-                                //Se pasa uno a uno los componentes de la matriz
-                                auxCiudad1.getMatrizCiudad()[i][j] = (Componente) ciudad.getMatrizCiudad()[i][j].clone();
-                            }
-                        }
-                    }
-
+                    Ciudad auxCiudad1 = copiarCiudad();
                     GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad1.getCantidadNodos());
                     //Se crea el grafo con la ciudad auxiliar
                     auxGrafo.crearGrafo(auxCiudad1.getMatrizCiudad(), auxCiudad1.getAnchoCampo(), auxCiudad1.getAltoCampo());
@@ -247,21 +232,8 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                         }
                     }
                     //Procedo con la eliminacion de nodos adyacentes.
-                    ciudad.eliminarNodosAdyasentes(auxN, auxM);
-                    Ciudad auxCiudad1;
-                    //Clono la ciudad
-                    auxCiudad1 = (Ciudad) ciudad.clone();
-                    auxCiudad1.setMatrizCiudad(null);
-                    Componente[][] auxComponente1 = new Componente[auxCiudad1.getN()][auxCiudad1.getM()];
-                    //Clono la matriz de la ciudad
-                    auxCiudad1.setMatrizCiudad(auxComponente1);
-                    for (int i = 0; i < ciudad.getN(); i++) {
-                        for (int j = 0; j < ciudad.getM(); j++) {
-                            if (ciudad.getMatrizCiudad()[i][j] != null) {
-                                auxCiudad1.getMatrizCiudad()[i][j] = (Componente) ciudad.getMatrizCiudad()[i][j].clone();
-                            }
-                        }
-                    }
+                    ciudad.eliminarNodosAdyacentes(auxN, auxM);
+                    Ciudad auxCiudad1 = copiarCiudad();
                     GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad1.getCantidadNodos());
                     //Creo el grafo con la matriz de la ciudad
                     auxGrafo.crearGrafo(auxCiudad1.getMatrizCiudad(), auxCiudad1.getAnchoCampo(), auxCiudad1.getAltoCampo());
@@ -272,7 +244,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                         carrosMovimiento.get(i).setGrafo((GrafoDirigido) grafo.clone());
                     }
 
-                } else if (!auxComponente.getNombre().equals("XX") && !auxComponente.getNombre().equals("YY") && !auxComponente.getNombre().equals("XXX")) {
+                }
+                //Si el componente no es una de las interrupciones ni el que borra las interrupciones es un componente para pintar en el mapa.
+                else if (!auxComponente.getNombre().equals("XX") && !auxComponente.getNombre().equals("YY") && !auxComponente.getNombre().equals("XXX")) {
                     ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
                 }
 
@@ -291,20 +265,19 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_formKeyPressed
-    public void ClonearCiudad() {
-        auxCiudad = (Ciudad) ciudad.clone();
-        auxCiudad.setMatrizCiudad(null);
-        Componente[][] auxComponente = new Componente[auxCiudad.getN()][auxCiudad.getM()];
-        auxCiudad.setMatrizCiudad(auxComponente);
+    public Ciudad copiarCiudad() {
+        Ciudad copiaCiudad = (Ciudad) ciudad.clone();
+        copiaCiudad.setMatrizCiudad(null);
+        Componente[][] compiaComponentes = new Componente[copiaCiudad.getN()][copiaCiudad.getM()];
+        copiaCiudad.setMatrizCiudad(compiaComponentes);
         for (int i = 0; i < ciudad.getN(); i++) {
             for (int j = 0; j < ciudad.getM(); j++) {
                 if (ciudad.getMatrizCiudad()[i][j] != null) {
-                    //auxCiudad.getMatrizCiudad()[i][j]= new Componente();
-                    auxCiudad.getMatrizCiudad()[i][j] = (Componente) ciudad.getMatrizCiudad()[i][j].clone();
+                    copiaCiudad.getMatrizCiudad()[i][j] = (Componente) ciudad.getMatrizCiudad()[i][j].clone();
                 }
             }
         }
-        opciones = 2;
+        return copiaCiudad;
     }
 
     public void ModificarGrafo() {
@@ -333,9 +306,8 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         auxGrafo.crearGrafo(auxCiudad.getMatrizCiudad(), auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo());
         auxCarro.setGrafo(auxGrafo);
         RutaCorta auxRuta = new RutaCorta(auxCiudad.getCantidadNodos());
-        System.out.println(auxCiudad.getCantidadNodos());
+        System.out.println(auxRuta.getCantidadNodos());
         auxRuta.llenarPesos(auxGrafo);
-//        auxRuta.setOrigen(this.idNodoOrigen);
         int matrizVertices[][] = auxRuta.floydWarshall();
         auxCarro.setTipo(0);
         auxCarro.getArea().setLocation(auxj1 * auxCiudad.getAnchoCampo(), auxi1 * auxCiudad.getAltoCampo());
@@ -347,8 +319,6 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                 auxCamino.add(auxCamino1.get(j));
             }
             origen = idDestinos.get(i);
-//            auxRuta.setOrigen(idDestinos.get(i));
-//            auxRuta.caminosMinimos();
         }
         auxCarro.setCamino(auxCamino);
         auxCarro.start();
@@ -385,7 +355,6 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
 
     /**
      * pintamos la lista de los item que podemos selecionar y poner en la ciudad
-     *
      * @param g grafico del panel que sirve como lienzo
      */
     private void pintarComponentes(Graphics g) {
@@ -405,9 +374,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     }
 
     /**
-     * Este metodos esta enfocado en recorrer la matriz de componentes y pintar
+     * Permite en recorrer la matriz de componentes y pintar
      * las difrentes imagenes asociadas ala posicion de la matriz en caso de que
-     * sea null es que no hay ningun componentes entonces no se pinta nada
+     * sea null es que no hay ningun componente entonces no se pinta nada
      *
      * @param g grafico del panel que sirve como lienzo
      */
@@ -421,8 +390,11 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         }
     }
 
+    /**
+     * Permite añadir un carro a la lista de carros en movimiento y asignarle un grafo.
+     * @param carroAuto 
+     */
     public void ingresarCarro(CarroMovimiento carroAuto) {
-
         this.carrosMovimiento.add(carroAuto);
         this.carrosMovimiento.getLast().setPanel(this);
         GrafoDirigido grafoAux = (GrafoDirigido) this.grafo.clone();
@@ -434,10 +406,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     }
 
     /**
-     * detectamos que si se preciona las teclas ----- aumentamos el contador del
+     * detectamos que si se preciona alguna de las teclas aumentamos el contador del
      * item para que cambie el componente y lo logre ubicar en la matriz de la
      * ciudad
-     *
      * @param ke
      */
     @Override
@@ -470,6 +441,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         this.opciones = opciones;
     }
 
+    public void setAuxCiudad(Ciudad auxCiudad) {
+        this.auxCiudad = auxCiudad;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

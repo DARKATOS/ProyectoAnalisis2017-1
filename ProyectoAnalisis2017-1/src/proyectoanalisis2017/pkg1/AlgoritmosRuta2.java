@@ -30,7 +30,7 @@ public class AlgoritmosRuta2 {
      * @return int[][] matrizVertices con la matriz de nodos que permiten obtener el camino minimo.
      */
     public int[][] floydWarshall() {
-        int [][]matrizVertices=new int[pesos.length][pesos.length];
+        int [][]matrizNodos=new int[pesos.length][pesos.length];
         for (int i = 0; i < cantidadNodos; i++) {
             pesos[i][i] = 0;
         }
@@ -38,7 +38,7 @@ public class AlgoritmosRuta2 {
         {
             for (int j=0; j<cantidadNodos; j++)
             {
-                matrizVertices[j][i]=i;
+                matrizNodos[j][i]=i;
             }
         }
 
@@ -48,52 +48,60 @@ public class AlgoritmosRuta2 {
                     int dt = pesos[j][i] + pesos[i][k];
                     if (pesos[j][k] > dt) {
                         pesos[j][k] = dt;
-                        matrizVertices[j][k]=i;
+                        matrizNodos[j][k]=i;
                     }
                 }
             }
             
         }
-        return matrizVertices;
+        return matrizNodos;
     }
     
     
     /**
      * Permite obtener el camino minimo a traves de un nodo origen y un nodo destino
-     * @param matrizVertices Matriz que contienen los nodos de caminos minimos
+     * @param matrizNodos Matriz que contienen los nodos de caminos minimos
      * @param origen nodo origen
      * @param destino nodo destino
      * @param grafo Permite obtener la matriz de adyacencia que contienen las aristas
      * @return LinkedList aristas que conforman el camino minimo
      */
-    public LinkedList<Arista>obtenerCaminoFloydWarshall(int matrizVertices[][], int origen, int destino, GrafoDirigido grafo)
+    public LinkedList<Arista>obtenerCaminoFloydWarshall(int matrizNodos[][], int origen, int destino, GrafoDirigido grafo)
     {
+        mostrarMatrizNodos(matrizNodos);
+        System.out.println("");
+        mostrarGrafo(grafo);
+        System.out.println("");
         LinkedList<Integer>caminoNodos=new LinkedList<>();
-        int origenV=origen;
-        int destinoV=destino;
         boolean bandera=true;
-        caminoNodos.addLast(destino);
         int nuevoOrigen=origen;
         
         while(bandera)
         {
-            int nuevoDestino=matrizVertices[origenV][destinoV];
-            if (nuevoOrigen==nuevoDestino)
+            int nuevoDestino=matrizNodos[nuevoOrigen][destino];
+            if (destino==nuevoDestino)
             {
                 bandera=false;
             }
             else
             {
-                caminoNodos.addFirst(nuevoDestino);
-                destinoV=nuevoDestino;
+                caminoNodos.add(nuevoDestino);
                 nuevoOrigen=nuevoDestino;
             }
         }
         caminoNodos.addFirst(origen);
+        caminoNodos.addLast(destino);
+        System.out.println("Origen: "+origen);
+        System.out.println("Destino: "+destino);
+        mostrarCaminoNodos(caminoNodos);
         LinkedList<Arista> camino = new LinkedList<>();
         for (int i = 0; i < caminoNodos.size() - 1; i++) {
             Arista arista = grafo.getGrafo()[caminoNodos.get(i)][caminoNodos.get(i + 1)];
-            camino.add(arista);
+            //Si la arista es nula no se agrega
+            if (arista!=null)
+            {
+                camino.add(arista);
+            }
         }
         return camino;
     }
@@ -113,5 +121,39 @@ public class AlgoritmosRuta2 {
 
     public int[][] getPesos() {
         return pesos;
+    }
+    
+    private void mostrarGrafo(GrafoDirigido grafo)
+    {
+        for (int i = 0; i < grafo.getGrafo().length; i++) {
+            for (int j = 0; j < grafo.getGrafo()[i].length; j++) {
+                if (grafo.getGrafo()[i][j] == null) {
+                    System.out.print("-\t");
+                } else {
+                    System.out.print(i+":"+j+"\t");
+                }
+            }
+            System.out.println("");
+        }
+    }
+    private void mostrarMatrizNodos(int matrizNodos[][])
+    {
+        for(int i=0; i<cantidadNodos; i++)
+        {
+            for (int j=0; j<cantidadNodos; j++)
+            {
+                System.out.print(matrizNodos[i][j]+"\t");
+            }
+            System.out.println("");
+        }
+    }
+    
+    private void mostrarCaminoNodos(LinkedList<Integer>caminoNodos)
+    {
+        for(int i=0; i<caminoNodos.size(); i++)
+        {
+            System.out.println(caminoNodos.get(i));
+        }
+        
     }
 }

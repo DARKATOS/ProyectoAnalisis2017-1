@@ -24,11 +24,17 @@ public class CarroMovimiento extends Carro implements Runnable {
 
     }
 
+    /**
+     * Permite iniciar el hilo del carro
+     */
     public void start() {
         this.hilo = new Thread(this);
         this.hilo.start();
     }
 
+    /**
+     * Permite pausar el hilo del carro
+     */
     public void pause() {
         this.hilo.suspend();
     }
@@ -46,9 +52,12 @@ public class CarroMovimiento extends Carro implements Runnable {
 
     @Override
     public void run() {
-        int velocidad = 0;
+        int velocidad;
+        //Siempre esta corriendo el hilo
         while (true) {
+            //Mientras exista un camino
             while (!getCamino().isEmpty()) {
+                //Se obtiene la velocidad del camino
                 velocidad = getCamino().getFirst().getVelocidad();
                 Boolean sentido = false;
                 if (getCamino().getFirst().getX1() == getCamino().getFirst().getX2()) {
@@ -67,7 +76,6 @@ public class CarroMovimiento extends Carro implements Runnable {
                         while ((int) getArea().getY() < auxY) {
                             try {
                                 getArea().setLocation((int) getArea().getX(), (int) getArea().getY() + 10);
-
                                 Thread.sleep(velocidad);
                             } catch (InterruptedException ex) {
                                 System.out.println(ex.getMessage());
