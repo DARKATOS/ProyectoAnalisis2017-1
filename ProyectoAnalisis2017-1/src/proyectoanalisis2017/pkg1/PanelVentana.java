@@ -9,8 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
@@ -18,7 +17,7 @@ import javax.swing.ImageIcon;
  *
  * @author Gianka
  */
-public class PanelVentana extends javax.swing.JPanel implements KeyListener {
+public class PanelVentana extends javax.swing.JPanel{
 
     Ciudad ciudad;
     AreaItems areaItems;
@@ -220,11 +219,10 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                         //Aqui si se mandara el grafo completo con solo ese clone????
                         carrosMovimiento.get(i).setGrafo((GrafoDirigido) grafo.clone());
                     }
-                } 
-                //Si la ciudad en la posicion i,j es diferente de null y el componente tomado del area de items es el que remueve interrupciones y donde se tomo el evento en la posicion i, j es alguna de las interrupciones
+                } //Si la ciudad en la posicion i,j es diferente de null y el componente tomado del area de items es el que remueve interrupciones y donde se tomo el evento en la posicion i, j es alguna de las interrupciones
                 else if (ciudad.getMatrizCiudad()[auxN][auxM] != null && auxComponente.getNombre().equals("XXX") && (ciudad.getMatrizCiudad()[auxN][auxM].getNombre().equals("XX") || ciudad.getMatrizCiudad()[auxN][auxM].getNombre().equals("YY"))) {
                     //Recorro la lista de interrupciones para obtener la interrupciion
-                    System.out.println("Hola");
+
                     for (int i = 0; i < ciudad.getListaInterrupciones().size(); i++) {
                         //Si para cada interrupcion en i, j es igual a la posicion del evento
                         if (ciudad.getListaInterrupciones().get(i).getI() == auxN && ciudad.getListaInterrupciones().get(i).getJ() == auxM) {
@@ -232,6 +230,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                             ciudad.getMatrizCiudad()[auxN][auxM] = ciudad.getListaInterrupciones().get(i).getComponenteAnterior();
                         }
                     }
+
                     //Procedo con la eliminacion de nodos adyacentes.
                     ciudad.eliminarNodosAdyacentes(auxN, auxM);
                     Ciudad auxCiudad1 = copiarCiudad();
@@ -243,10 +242,12 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                     for (int i = 0; i < carrosMovimiento.size(); i++) {
                         //Le seteamos a todos los carro el nuevo grafo. (¿EL grafo si clona bien?)
                         carrosMovimiento.get(i).setGrafo((GrafoDirigido) grafo.clone());
+                        if (carrosMovimiento.get(i).getEsperando()) {
+                            carrosMovimiento.get(i).setEsperando(false);
+                        }
                     }
 
-                }
-                //Si el componente no es una de las interrupciones ni el que borra las interrupciones es un componente para pintar en el mapa.
+                } //Si el componente no es una de las interrupciones ni el que borra las interrupciones es un componente para pintar en el mapa.
                 else if (!auxComponente.getNombre().equals("XX") && !auxComponente.getNombre().equals("YY") && !auxComponente.getNombre().equals("XXX")) {
                     ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
                 }
@@ -254,6 +255,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
             } catch (Exception e) {
 
             }
+           
             repaint();
         }
     }//GEN-LAST:event_formMouseReleased
@@ -356,6 +358,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
 
     /**
      * pintamos la lista de los item que podemos selecionar y poner en la ciudad
+     *
      * @param g grafico del panel que sirve como lienzo
      */
     private void pintarComponentes(Graphics g) {
@@ -375,9 +378,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     }
 
     /**
-     * Permite en recorrer la matriz de componentes y pintar
-     * las difrentes imagenes asociadas ala posicion de la matriz en caso de que
-     * sea null es que no hay ningun componente entonces no se pinta nada
+     * Permite en recorrer la matriz de componentes y pintar las difrentes
+     * imagenes asociadas ala posicion de la matriz en caso de que sea null es
+     * que no hay ningun componente entonces no se pinta nada
      *
      * @param g grafico del panel que sirve como lienzo
      */
@@ -392,8 +395,10 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
     }
 
     /**
-     * Permite añadir un carro a la lista de carros en movimiento y asignarle un grafo.
-     * @param carroAuto 
+     * Permite añadir un carro a la lista de carros en movimiento y asignarle un
+     * grafo.
+     *
+     * @param carroAuto
      */
     public void ingresarCarro(CarroMovimiento carroAuto) {
         this.carrosMovimiento.add(carroAuto);
@@ -402,18 +407,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         this.carrosMovimiento.getLast().setGrafo(grafoAux);
     }
 
-    @Override
-    public void keyTyped(KeyEvent ke) {
-    }
+   
 
-    /**
-     * detectamos que si se preciona alguna de las teclas aumentamos el contador del
-     * item para que cambie el componente y lo logre ubicar en la matriz de la
-     * ciudad
-     * @param ke
-     */
-    @Override
-    public void keyPressed(KeyEvent ke) {
+    public void girarItem() {
         if (itemSeleccionado.getContador() == itemSeleccionado.getLstComponentes().size() - 1) {
             this.itemSeleccionado.setContador(0);
         } else {
@@ -426,9 +422,7 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
         return carrosMovimiento;
     }
 
-    @Override
-    public void keyReleased(KeyEvent ke) {
-    }
+   
 
     public void setGrafo(GrafoDirigido grafo) {
         this.grafo = grafo;

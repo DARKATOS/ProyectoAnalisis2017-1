@@ -5,6 +5,8 @@
  */
 package proyectoanalisis2017.pkg1;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -17,11 +19,11 @@ public class CarroMovimiento extends Carro implements Runnable {
     private PanelVentana panel;
     private Thread hilo;
     private GrafoDirigido grafo;
+    private Boolean esperando;
 
     public CarroMovimiento(int id, int x, int y, int ancho, int alto, LinkedList<Arista> camino, int tipo) {
         super(id, x, y, ancho, alto, camino, tipo);
-        
-
+        this.esperando = false;
     }
 
     /**
@@ -142,19 +144,33 @@ public class CarroMovimiento extends Carro implements Runnable {
                         panel.repaint();
                     }
                 }
-                int n = getCamino().getFirst().getX();
-                int m = getCamino().getFirst().getY();
-                getCamino().removeFirst();
 
+                int m = getCamino().getFirst().getY();
+                int n = getCamino().getFirst().getX();
+                getCamino().removeFirst();
                 if (getTipo() == 1) {
-                   
-                    buscarCamino(n, m);
+
+                    buscarCamino(m, n);
                 }
             }
         }
     }
 
-    private void buscarCamino(int n, int m) {
+    public int buscarNodo(int x, int y, int anchoCampoCiudad, int altoCampoCiudad) {
+        int auxN = y / altoCampoCiudad;
+        int auxM = x / anchoCampoCiudad;
+        Componente auxComponente = panel.ciudad.getMatrizCiudad()[auxN][auxM];
+
+        return auxComponente.getIdNodo();
+    }
+
+    public Componente buscarComponente(int x, int y) {
+        int auxN = y / panel.ciudad.getAltoCampo();
+        int auxM = x / panel.ciudad.getAnchoCampo();
+        return panel.ciudad.getMatrizCiudad()[auxN][auxM];
+    }
+
+    private void buscarCamino(int m, int n) {
         try {
             LinkedList<Arista> posiblesCaminos = new LinkedList<>();
             for (int i = 0; i < this.grafo.getGrafo()[m].length; i++) {
@@ -167,13 +183,52 @@ public class CarroMovimiento extends Carro implements Runnable {
             int num = (int) (rnd.nextDouble() * numero + 0);
             this.getCamino().add(posiblesCaminos.get(num));
         } catch (Exception e) {
-            
+            esperandoCamino(n);
+
         }
     }
 
     public GrafoDirigido getGrafo() {
         return grafo;
     }
-    
+
+    private void esperandoCamino(int n) {
+        this.esperando = true;
+        while (this.esperando) {
+            System.out.println("esperando");
+        }
+        Componente auxComponenteEsperando = buscarComponente((int) getArea().getX(), (int) getArea().getY());
+        Componente auxComponenteDestino = new Componente();
+        LinkedList<Arista> posiblesCaminos = new LinkedList<>();
+        for (int i = 0; i < this.grafo.getGrafo()[n].length; i++) {
+            if (this.grafo.getGrafo()[n][i] != null) {
+                posiblesCaminos.add(this.grafo.getGrafo()[n][i]);
+            }
+        }
+        int destino = 0;
+        for (int i = 0; i < posiblesCaminos.size(); i++) {
+            Rectangle auxRectangulo = new Rectangle(posiblesCaminos.get(i).getX1(), posiblesCaminos.get(i).getY1(), posiblesCaminos.get(i).getY2() - posiblesCaminos.get(i).getY(), 10);
+            if (auxRectangulo.contains(new Point((int) getArea().getX(), (int) getArea().getY())));
+            {
+                destino = posiblesCaminos.get(i).getY();
+            }
+        }
+        for (int i = 0; i < panel.ciudad.getN(); i++) {
+            for (int j = 0; j < panel.ciudad.getM(); j++) {
+                if (panel.ciudad.getMatrizCiudad()[i][j] != null && panel.ciudad.getMatrizCiudad()[i][j].getIdNodo() == destino) {
+                    auxComponenteDestino = panel.ciudad.getMatrizCiudad()[i][j];
+                }
+            }
+        }
+        getCamino().add(new Arista((int) auxComponenteEsperando.getArea().getX(), (int) auxComponenteDestino.getArea().getX(), (int) auxComponenteEsperando.getArea().getY(), (int) auxComponenteDestino.getArea().getY(), 60, 0, auxComponenteDestino.getIdNodo()));
+    }
+
+    public Boolean getEsperando() {
+        return esperando;
+    }
+
+    public void setEsperando(Boolean esperando) {
+        this.esperando = esperando;
+    }
 
 }
