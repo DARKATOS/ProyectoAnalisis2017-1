@@ -222,8 +222,9 @@ public class PanelVentana extends javax.swing.JPanel implements KeyListener {
                     }
                 } 
                 //Si la ciudad en la posicion i,j es diferente de null y el componente tomado del area de items es el que remueve interrupciones y donde se tomo el evento en la posicion i, j es alguna de las interrupciones
-                else if (ciudad.getMatrizCiudad()[auxN][auxM] != null && auxComponente.getNombre().equals("XXX") && (ciudad.getMatrizCiudad()[auxN][auxM].getNombre().equals("XX") || ciudad.getMatrizCiudad()[auxN][auxM].equals("YY"))) {
+                else if (ciudad.getMatrizCiudad()[auxN][auxM] != null && auxComponente.getNombre().equals("XXX") && (ciudad.getMatrizCiudad()[auxN][auxM].getNombre().equals("XX") || ciudad.getMatrizCiudad()[auxN][auxM].getNombre().equals("YY"))) {
                     //Recorro la lista de interrupciones para obtener la interrupciion
+                    System.out.println("Hola");
                     for (int i = 0; i < ciudad.getListaInterrupciones().size(); i++) {
                         //Si para cada interrupcion en i, j es igual a la posicion del evento
                         if (ciudad.getListaInterrupciones().get(i).getI() == auxN && ciudad.getListaInterrupciones().get(i).getJ() == auxM) {
