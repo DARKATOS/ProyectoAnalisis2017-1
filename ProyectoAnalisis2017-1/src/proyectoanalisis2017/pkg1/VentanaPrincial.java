@@ -22,22 +22,22 @@ import javax.swing.JOptionPane;
  *
  * @author Gianka
  */
-public class VentanaPrincial extends javax.swing.JFrame implements Serializable {
+public class VentanaPrincial extends javax.swing.JFrame {
 
     Ciudad ciudad;
     AreaItems areaItems;
     GraphicsDevice grafica;
     GrafoDirigido grafo;
     int cantidadCarros;
-    
 
     public VentanaPrincial() {
         initComponents();
+
         this.cantidadCarros = 0;
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
         pnlVentana1.setFocusable(true);
-        pnlVentana1.addKeyListener(pnlVentana1);
+
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
         if (opcion == 1) {
             cargarCiudad();
@@ -48,6 +48,7 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
         redimensionar();
         setResizable(false);
         setVisible(true);
+
     }
 
     private void redimensionar() {
@@ -81,6 +82,11 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        pnlVentana1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                pnlVentana1MouseReleased(evt);
+            }
+        });
         pnlVentana1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 pnlVentana1KeyPressed(evt);
@@ -184,7 +190,7 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     }//GEN-LAST:event_pnlVentana1KeyReleased
 
     private void pnlVentana1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnlVentana1KeyPressed
-        // TODO add your handling code   here:
+       pnlVentana1.girarItem();
     }//GEN-LAST:event_pnlVentana1KeyPressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -204,7 +210,7 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
             }
 
         }
-        pnlVentana1.ingresarCarro(new CarroMovimiento(this.cantidadCarros, camino1.getFirst().getX1(), camino1.getFirst().getY1(),ciudad.getAnchoCampo(),ciudad.getAltoCampo(), camino1, 1));
+        pnlVentana1.ingresarCarro(new CarroMovimiento(this.cantidadCarros, camino1.getFirst().getX1(), camino1.getFirst().getY1(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), camino1, 1));
         this.cantidadCarros++;
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -213,22 +219,23 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jToggleButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jToggleButton1StateChanged
-       
+
     }//GEN-LAST:event_jToggleButton1StateChanged
 
     private void jToggleButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton1MouseClicked
-        if (pnlVentana1.getOpciones()==0)
-        {
+        if (pnlVentana1.getOpciones() == 0) {
             pnlVentana1.setOpciones(1);
             pnlVentana1.setAuxCiudad(pnlVentana1.copiarCiudad());
             pnlVentana1.setOpciones(2);
-        }
-        else if (pnlVentana1.getOpciones()==3)
-        {
+        } else if (pnlVentana1.getOpciones() == 3) {
             pnlVentana1.ModificarGrafo();
             pnlVentana1.setOpciones(0);
         }
     }//GEN-LAST:event_jToggleButton1MouseClicked
+
+    private void pnlVentana1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVentana1MouseReleased
+      
+    }//GEN-LAST:event_pnlVentana1MouseReleased
 
     /**
      * @param args the command line arguments
@@ -393,6 +400,4 @@ public class VentanaPrincial extends javax.swing.JFrame implements Serializable 
 //            }
 //        }
 //    }
-    
-    
 }
