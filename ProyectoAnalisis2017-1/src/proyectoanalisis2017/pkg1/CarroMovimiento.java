@@ -9,6 +9,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -54,6 +56,8 @@ public class CarroMovimiento extends Carro implements Runnable {
 
     @Override
     public void run() {
+        int m=0;
+        int n=0;
         int velocidad;
         //Siempre esta corriendo el hilo
         while (true) {
@@ -145,17 +149,29 @@ public class CarroMovimiento extends Carro implements Runnable {
                     }
                 }
 
-                int m = getCamino().getFirst().getY().getIdNodo();
-                int n = getCamino().getFirst().getX().getIdNodo();
+                 m = idNodoComponente((int)getArea().getX(),(int)getArea().getY());
+                 n = getCamino().getFirst().getX().getIdNodo();
                 getCamino().removeFirst();
                 if (getTipo() == 1) {
 
                     buscarCamino(m, n);
                 }
             }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(CarroMovimiento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            setTipo(1);
+            buscarCamino(m, n);
         }
     }
-
+    public int idNodoComponente(int x,int y)
+    {
+        int auxX=y/this.panel.getCiudad().getAltoCampo();
+        int auxY=x/this.panel.getCiudad().getAnchoCampo();
+        return this.panel.getCiudad().getMatrizCiudad()[auxX][auxY].getIdNodo();
+    }
     public int buscarNodo(int x, int y, int anchoCampoCiudad, int altoCampoCiudad) {
         int auxN = y / altoCampoCiudad;
         int auxM = x / anchoCampoCiudad;
@@ -183,7 +199,7 @@ public class CarroMovimiento extends Carro implements Runnable {
             int num = (int) (rnd.nextDouble() * numero + 0);
             this.getCamino().add(posiblesCaminos.get(num));
         } catch (Exception e) {
-            esperandoCamino(n);
+           // esperandoCamino(n);
 
         }
     }

@@ -107,7 +107,7 @@ public class PanelVentana extends javax.swing.JPanel {
         if (this.opciones == 2) {
             this.auxUbicacion = null;
             this.auxCarro = null;
-            this.NodoOrigen =new Componente();
+            this.NodoOrigen = new Componente();
             this.idDestinos = new LinkedList<>();
             //Verificamos que el evento se de dentro del ancho y alto de la ciudad.
             if (evt.getX() < this.auxCiudad.getAnchoCiudad() && evt.getY() < this.auxCiudad.getAltoCiudad()) {
@@ -210,13 +210,14 @@ public class PanelVentana extends javax.swing.JPanel {
                 auxComponente.setArea(area);
                 //Si ciudad en la posicion i, j del evento es diferente de null y si es una vida y el componente tomado del area de items uno de las dos interrupciones
                 if (ciudad.getMatrizCiudad()[auxN][auxM] != null && ciudad.esVia(ciudad.getMatrizCiudad()[auxN][auxM]) && (auxComponente.getNombre().equals("XX") || auxComponente.getNombre().equals("YY"))) {
-                   
+
                     //Se añade la interrupcion a la lista de interrupciones de la ciudad, con el componente anterior al de la interrupcion y la posicion en donde esta
                     ciudad.getListaInterrupciones().add(new Interrupcion((Componente) ciudad.getMatrizCiudad()[auxN][auxM].clone(), auxN, auxM));
                     //Se establece la interrupcion en la posicion i, j de la matriz de la ciudad
                     ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
                     //Marca los nodos adyacentes a la interrupción
                     ciudad.marcarNodosAdyacentes(auxN, auxM);
+                    ciudad.modificarNodos();
                     //Se crea una ciudad local
                     Ciudad auxCiudad1 = copiarCiudad();
                     GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad1.getCantidadNodos());
