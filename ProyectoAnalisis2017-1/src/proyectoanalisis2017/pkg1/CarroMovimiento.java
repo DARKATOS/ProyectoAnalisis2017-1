@@ -145,8 +145,8 @@ public class CarroMovimiento extends Carro implements Runnable {
                     }
                 }
 
-                int m = getCamino().getFirst().getY();
-                int n = getCamino().getFirst().getX();
+                int m = getCamino().getFirst().getY().getIdNodo();
+                int n = getCamino().getFirst().getX().getIdNodo();
                 getCamino().removeFirst();
                 if (getTipo() == 1) {
 
@@ -159,15 +159,15 @@ public class CarroMovimiento extends Carro implements Runnable {
     public int buscarNodo(int x, int y, int anchoCampoCiudad, int altoCampoCiudad) {
         int auxN = y / altoCampoCiudad;
         int auxM = x / anchoCampoCiudad;
-        Componente auxComponente = panel.ciudad.getMatrizCiudad()[auxN][auxM];
+        Componente auxComponente = panel.getCiudad().getMatrizCiudad()[auxN][auxM];
 
         return auxComponente.getIdNodo();
     }
 
     public Componente buscarComponente(int x, int y) {
-        int auxN = y / panel.ciudad.getAltoCampo();
-        int auxM = x / panel.ciudad.getAnchoCampo();
-        return panel.ciudad.getMatrizCiudad()[auxN][auxM];
+        int auxN = y / panel.getCiudad().getAltoCampo();
+        int auxM = x / panel.getCiudad().getAnchoCampo();
+        return panel.getCiudad().getMatrizCiudad()[auxN][auxM];
     }
 
     private void buscarCamino(int m, int n) {
@@ -207,20 +207,20 @@ public class CarroMovimiento extends Carro implements Runnable {
         }
         int destino = 0;
         for (int i = 0; i < posiblesCaminos.size(); i++) {
-            Rectangle auxRectangulo = new Rectangle(posiblesCaminos.get(i).getX1(), posiblesCaminos.get(i).getY1(), posiblesCaminos.get(i).getY2() - posiblesCaminos.get(i).getY(), 10);
+            Rectangle auxRectangulo = new Rectangle(posiblesCaminos.get(i).getX1(), posiblesCaminos.get(i).getY1(), posiblesCaminos.get(i).getY2() - posiblesCaminos.get(i).getY().getIdNodo(), 10);
             if (auxRectangulo.contains(new Point((int) getArea().getX(), (int) getArea().getY())));
             {
-                destino = posiblesCaminos.get(i).getY();
+                destino = posiblesCaminos.get(i).getY().getIdNodo();
             }
         }
-        for (int i = 0; i < panel.ciudad.getN(); i++) {
-            for (int j = 0; j < panel.ciudad.getM(); j++) {
-                if (panel.ciudad.getMatrizCiudad()[i][j] != null && panel.ciudad.getMatrizCiudad()[i][j].getIdNodo() == destino) {
-                    auxComponenteDestino = panel.ciudad.getMatrizCiudad()[i][j];
+        for (int i = 0; i < panel.getCiudad().getN(); i++) {
+            for (int j = 0; j < panel.getCiudad().getM(); j++) {
+                if (panel.getCiudad().getMatrizCiudad()[i][j] != null && panel.getCiudad().getMatrizCiudad()[i][j].getIdNodo() == destino) {
+                    auxComponenteDestino = panel.getCiudad().getMatrizCiudad()[i][j];
                 }
             }
         }
-        getCamino().add(new Arista((int) auxComponenteEsperando.getArea().getX(), (int) auxComponenteDestino.getArea().getX(), (int) auxComponenteEsperando.getArea().getY(), (int) auxComponenteDestino.getArea().getY(), 60, 0, auxComponenteDestino.getIdNodo()));
+        getCamino().add(new Arista((int) auxComponenteEsperando.getArea().getX(), (int) auxComponenteDestino.getArea().getX(), (int) auxComponenteEsperando.getArea().getY(), (int) auxComponenteDestino.getArea().getY(), 60, 0, auxComponenteDestino));
     }
 
     public Boolean getEsperando() {

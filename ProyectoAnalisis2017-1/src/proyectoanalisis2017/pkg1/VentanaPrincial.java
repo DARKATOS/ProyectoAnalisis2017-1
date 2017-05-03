@@ -37,7 +37,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
         pnlVentana1.setFocusable(true);
-
+        JOptionPane.showMessageDialog(rootPane, "OJO con copia de codigo(GIT HUB)!!!!");
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
         if (opcion == 1) {
             cargarCiudad();
@@ -219,14 +219,15 @@ public class VentanaPrincial extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jToggleButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jToggleButton1StateChanged
-
+     
     }//GEN-LAST:event_jToggleButton1StateChanged
 
     private void jToggleButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton1MouseClicked
+        System.out.println("A");
         if (pnlVentana1.getOpciones() == 0) {
-            pnlVentana1.setOpciones(1);
-            pnlVentana1.setAuxCiudad(pnlVentana1.copiarCiudad());
             pnlVentana1.setOpciones(2);
+            pnlVentana1.setAuxCiudad(pnlVentana1.copiarCiudad());
+         
         } else if (pnlVentana1.getOpciones() == 3) {
             pnlVentana1.ModificarGrafo();
             pnlVentana1.setOpciones(0);
