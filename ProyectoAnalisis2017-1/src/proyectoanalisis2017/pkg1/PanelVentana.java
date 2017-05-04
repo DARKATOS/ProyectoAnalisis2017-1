@@ -17,25 +17,26 @@ import javax.swing.ImageIcon;
  *
  * @author Gianka
  */
-public class PanelVentana extends javax.swing.JPanel{
+public class PanelVentana extends javax.swing.JPanel {
 
-    Ciudad ciudad;
-    AreaItems areaItems;
+    private Ciudad ciudad;
+    private GrafoDirigido grafo;
+    private AreaItems areaItems;
     private Boolean estaSelecionadoComponente;
     private Item itemSeleccionado;
     private int xImgSelecionada;
     private int yImgSelecionada;
     private LinkedList<CarroMovimiento> carrosMovimiento;
-    private GrafoDirigido grafo;
     private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
-    AlgoritmosRuta rutaEspecifica;
-    Ciudad auxCiudad = null;
-    int idNodoOrigen;
-    LinkedList<Integer> idDestinos;
-    int auxi1 = 0;
-    int auxj1 = 0;
+    private Ciudad auxCiudad;
+    private GrafoDirigido auxGrafo;
 
-    CarroMovimiento auxCarro = null;
+    private Componente NodoOrigen;
+    private LinkedList<Componente> idDestinos;
+    private int auxNSeleccion;
+    private int auxMSeleccion;
+    private CarroMovimiento auxCarro;
+    private Componente auxUbicacion;
 
     public PanelVentana() {
         initComponents();
@@ -46,7 +47,12 @@ public class PanelVentana extends javax.swing.JPanel{
         this.yImgSelecionada = 0;
         this.itemSeleccionado = new Item();
         this.estaSelecionadoComponente = false;
-        opciones = 0;
+        this.opciones = 0;
+        this.auxMSeleccion = 0;
+        this.auxNSeleccion = 0;
+        this.idDestinos = new LinkedList<>();
+        this.auxCarro = new CarroMovimiento();
+        this.auxUbicacion = new Componente();
     }
 
     /**
@@ -97,50 +103,52 @@ public class PanelVentana extends javax.swing.JPanel{
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        Componente auxUbicacion;
         //Si opciones es igual a 2 es porque el usuario va a realizar un camino.
-        if (opciones == 2) {
+        if (this.opciones == 2) {
+            this.auxUbicacion = null;
+            this.auxCarro = null;
+            this.NodoOrigen = new Componente();
+            this.idDestinos = new LinkedList<>();
             //Verificamos que el evento se de dentro del ancho y alto de la ciudad.
-            if (evt.getX() < auxCiudad.getAnchoCiudad() && evt.getY() < auxCiudad.getAltoCiudad()) {
+            if (evt.getX() < this.auxCiudad.getAnchoCiudad() && evt.getY() < this.auxCiudad.getAltoCiudad()) {
                 //Recorro la lista de carros en movimiento para obtener el carro al cual se le dio click
-                for (int i = 0; i < carrosMovimiento.size(); i++) {
-                    if (carrosMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
-                        auxCarro = carrosMovimiento.get(i);
+                for (int i = 0; i < this.carrosMovimiento.size(); i++) {
+                    if (this.carrosMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
+                        this.auxCarro = carrosMovimiento.get(i);
                         //Se pausa el carro.
                         auxCarro.pause();
                     }
                 }
-                auxi1 = (int) evt.getY() / ciudad.getAltoCampo();
-                auxj1 = (int) evt.getX() / ciudad.getAnchoCampo();
+                this.auxNSeleccion = (int) evt.getY() / ciudad.getAltoCampo();
+                this.auxMSeleccion = (int) evt.getX() / ciudad.getAnchoCampo();
                 //Y tambien obtenemos la ubicacion del carro
-                auxUbicacion = auxCiudad.getMatrizCiudad()[auxi1][auxj1];
-
+                this.auxUbicacion = this.auxCiudad.getMatrizCiudad()[this.auxNSeleccion][this.auxMSeleccion];
                 // Si la ubicación no es un nodo se debe marcar como nodo
-                if (auxUbicacion != null && auxCarro != null) {
-                    if (auxUbicacion.getIdNodo() == -1) {
-                        auxCiudad.marcarNodo(auxUbicacion);
+                if (this.auxUbicacion != null && this.auxCarro != null) {
+                    if (this.auxUbicacion.getIdNodo() == -1) {
+                        this.auxCiudad.marcarNodo(this.auxUbicacion);
                     }
                     //Pasamos a opciones 3
                     opciones = 3;
                     //Obtenemos el nodo origen para un posterior camino
-                    this.idNodoOrigen = auxUbicacion.getIdNodo();
+                    this.NodoOrigen = auxUbicacion;
                 }
             }
             //Si opciones es igual a 3 es porque ya esta seleccionado el carro y el nodo origen
-        } else if (opciones == 3) {
+        } else if (this.opciones == 3) {
             //Verificamos que el evento esta dentro del ancho y alto de ciudad.
-            if (evt.getX() < auxCiudad.getAnchoCiudad() && evt.getY() < auxCiudad.getAltoCiudad()) {
+            if (evt.getX() < this.auxCiudad.getAnchoCiudad() && evt.getY() < this.auxCiudad.getAltoCiudad()) {
                 {
-                    int auxi = (int) evt.getY() / ciudad.getAltoCampo();
-                    int auxj = (int) evt.getX() / ciudad.getAnchoCampo();
+                    int auxi = (int) evt.getY() / this.auxCiudad.getAltoCampo();
+                    int auxj = (int) evt.getX() / this.auxCiudad.getAnchoCampo();
                     //Obtenemos la ubicacion
-                    auxUbicacion = auxCiudad.getMatrizCiudad()[auxi][auxj];
-                    if (auxUbicacion.getIdNodo() == -1) {
+                    this.auxUbicacion = this.auxCiudad.getMatrizCiudad()[auxi][auxj];
+                    if (this.auxUbicacion.getIdNodo() == -1) {
                         //La marcamos si es nodo.
-                        auxCiudad.marcarNodo(auxUbicacion);
+                        this.auxCiudad.marcarNodo(this.auxUbicacion);
                     }
                     //Añado a los destino el nodo de destino
-                    this.idDestinos.add(auxUbicacion.getIdNodo());
+                    this.idDestinos.add(this.auxUbicacion);
                 }
 
             }
@@ -202,12 +210,14 @@ public class PanelVentana extends javax.swing.JPanel{
                 auxComponente.setArea(area);
                 //Si ciudad en la posicion i, j del evento es diferente de null y si es una vida y el componente tomado del area de items uno de las dos interrupciones
                 if (ciudad.getMatrizCiudad()[auxN][auxM] != null && ciudad.esVia(ciudad.getMatrizCiudad()[auxN][auxM]) && (auxComponente.getNombre().equals("XX") || auxComponente.getNombre().equals("YY"))) {
+
                     //Se añade la interrupcion a la lista de interrupciones de la ciudad, con el componente anterior al de la interrupcion y la posicion en donde esta
                     ciudad.getListaInterrupciones().add(new Interrupcion((Componente) ciudad.getMatrizCiudad()[auxN][auxM].clone(), auxN, auxM));
                     //Se establece la interrupcion en la posicion i, j de la matriz de la ciudad
                     ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
                     //Marca los nodos adyacentes a la interrupción
                     ciudad.marcarNodosAdyacentes(auxN, auxM);
+                    ciudad.modificarNodos();
                     //Se crea una ciudad local
                     Ciudad auxCiudad1 = copiarCiudad();
                     GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad1.getCantidadNodos());
@@ -255,7 +265,7 @@ public class PanelVentana extends javax.swing.JPanel{
             } catch (Exception e) {
 
             }
-           
+
             repaint();
         }
     }//GEN-LAST:event_formMouseReleased
@@ -268,6 +278,7 @@ public class PanelVentana extends javax.swing.JPanel{
         // TODO add your handling code here:
 
     }//GEN-LAST:event_formKeyPressed
+
     public Ciudad copiarCiudad() {
         Ciudad copiaCiudad = (Ciudad) ciudad.clone();
         copiaCiudad.setMatrizCiudad(null);
@@ -305,26 +316,27 @@ public class PanelVentana extends javax.swing.JPanel{
 //        }
 //        auxCarro.setCamino(auxCamino);
 //        auxCarro.start();
-        GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad.getCantidadNodos());
-        auxGrafo.crearGrafo(auxCiudad.getMatrizCiudad(), auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo());
-        auxCarro.setGrafo(auxGrafo);
-        RutaCorta auxRuta = new RutaCorta(auxCiudad.getCantidadNodos());
+        this.auxGrafo = new GrafoDirigido(this.auxCiudad.getCantidadNodos());
+        this.auxCiudad.modificarNodos();
+        this.auxGrafo.crearGrafo(this.auxCiudad.getMatrizCiudad(), this.auxCiudad.getAnchoCampo(), this.auxCiudad.getAltoCampo());
+        this.auxCarro.setGrafo(this.auxGrafo);
+        RutaCorta auxRuta = new RutaCorta(this.auxCiudad.getCantidadNodos());
         System.out.println(auxRuta.getCantidadNodos());
-        auxRuta.llenarPesos(auxGrafo);
+        auxRuta.llenarPesos(this.auxGrafo);
         int matrizVertices[][] = auxRuta.floydWarshall();
-        auxCarro.setTipo(0);
-        auxCarro.getArea().setLocation(auxj1 * auxCiudad.getAnchoCampo(), auxi1 * auxCiudad.getAltoCampo());
-        int origen = this.idNodoOrigen;
+        this.auxCarro.setTipo(0);
+        this.auxCarro.getArea().setLocation(this.auxMSeleccion * this.auxCiudad.getAnchoCampo(), this.auxNSeleccion * this.auxCiudad.getAltoCampo());
+        int origen = this.NodoOrigen.getIdNodo();
         LinkedList<Arista> auxCamino = new LinkedList<>();
-        for (int i = 0; i < idDestinos.size(); i++) {
-            LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoFloydWarshall(matrizVertices, origen, idDestinos.get(i), auxGrafo);
+        for (int i = 0; i < this.idDestinos.size(); i++) {
+            LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoFloydWarshall(matrizVertices, origen, this.idDestinos.get(i).getIdNodo(), this.auxCarro.getGrafo());
             for (int j = 0; j < auxCamino1.size(); j++) {
                 auxCamino.add(auxCamino1.get(j));
             }
-            origen = idDestinos.get(i);
+            origen = this.idDestinos.get(i).getIdNodo();
         }
-        auxCarro.setCamino(auxCamino);
-        auxCarro.start();
+        this.auxCarro.setCamino(auxCamino);
+        this.auxCarro.start();
     }
 
     @Override
@@ -407,8 +419,6 @@ public class PanelVentana extends javax.swing.JPanel{
         this.carrosMovimiento.getLast().setGrafo(grafoAux);
     }
 
-   
-
     public void girarItem() {
         if (itemSeleccionado.getContador() == itemSeleccionado.getLstComponentes().size() - 1) {
             this.itemSeleccionado.setContador(0);
@@ -421,8 +431,6 @@ public class PanelVentana extends javax.swing.JPanel{
     public LinkedList<CarroMovimiento> getCarrosMovimiento() {
         return carrosMovimiento;
     }
-
-   
 
     public void setGrafo(GrafoDirigido grafo) {
         this.grafo = grafo;
@@ -439,6 +447,11 @@ public class PanelVentana extends javax.swing.JPanel{
     public void setAuxCiudad(Ciudad auxCiudad) {
         this.auxCiudad = auxCiudad;
     }
+
+    public Ciudad getCiudad() {
+        return ciudad;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

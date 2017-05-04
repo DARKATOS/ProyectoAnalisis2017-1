@@ -81,6 +81,7 @@ public class Ciudad implements Cloneable {
 
     /**
      * Nos indica si el componente es una calle que validamos con el nombre
+     *
      * @param componente componente a verificar
      * @return resutaldo true es calle,false no es calle
      */
@@ -110,6 +111,7 @@ public class Ciudad implements Cloneable {
 
     /**
      * Nos indica si el componente es una carretera que validamos con el nombre
+     *
      * @param componente componente a validar
      * @return true es carretera, false no es carretera
      */
@@ -138,9 +140,11 @@ public class Ciudad implements Cloneable {
     }
 
     /**
-     * Permite marcar los nodos adyacentes a una interrupcion, i y j es la posicion de la interrupcion
+     * Permite marcar los nodos adyacentes a una interrupcion, i y j es la
+     * posicion de la interrupcion
+     *
      * @param i
-     * @param j 
+     * @param j
      */
     public void marcarNodosAdyacentes(int i, int j) {
         if ((j - 1) >= 0 && this.matrizCiudad[i][j - 1] != null && esVia(this.matrizCiudad[i][j - 1])) {
@@ -168,10 +172,11 @@ public class Ciudad implements Cloneable {
     }
 
     /**
-     * Permite eliminar los nodos adyacentes a una interrupcion que se acaba de eliminar
-     * i y j es la posicion de la interrupcion
+     * Permite eliminar los nodos adyacentes a una interrupcion que se acaba de
+     * eliminar i y j es la posicion de la interrupcion
+     *
      * @param i
-     * @param j 
+     * @param j
      */
     public void eliminarNodosAdyacentes(int i, int j) {
         if ((j - 1) >= 0 && this.matrizCiudad[i][j - 1] != null && esVia(this.matrizCiudad[i][j - 1])) {
@@ -233,6 +238,19 @@ public class Ciudad implements Cloneable {
 
     }
 
+    public void modificarNodos() {
+        int contador=0;
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.m; j++) {
+                if(this.matrizCiudad[i][j]!=null&&this.matrizCiudad[i][j].getIdNodo()!=-1)
+                {
+                    this.matrizCiudad[i][j].setIdNodo(contador);
+                    contador++;
+                }
+            }
+        }
+    }
+
     /**
      * Analizamos si el componente es via es decir si es carretera,calle,o cruce
      *
@@ -285,6 +303,7 @@ public class Ciudad implements Cloneable {
     /**
      * Al componente que va a ser un nodo se le asigna un identificados y se
      * incrementa el numero de nodos.
+     *
      * @param componente componente a marcar
      */
     public void marcarNodo(Componente componente) {
@@ -295,6 +314,7 @@ public class Ciudad implements Cloneable {
     /**
      * Validamos si el componente es una cruce que lo comprobamos con el nombre
      * del componente
+     *
      * @param componente componente a verificar
      * @return true es cruce, false no es cruce
      */

@@ -66,17 +66,17 @@ public class GrafoDirigido implements Serializable, Cloneable {
             for (int j = 0; j < matrizCiudad[i].length; j++) {
                 if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1) {
                     if (j - 1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getTipoVia().equals("calle") || matrizCiudad[i][j - 1].getTipoVia().equals("carretera"))) {
-                        verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 2);
+                        verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 2);
                     }
                     if (j + 1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getTipoVia().equals("calle") || matrizCiudad[i][j + 1].getTipoVia().equals("carretera"))) {
 
-                        verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 1);
+                        verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 1);
                     }
                     if (i - 1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getTipoVia().equals("calle") || matrizCiudad[i - 1][j].getTipoVia().equals("carretera"))) {
-                        verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 3);
+                        verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 3);
                     }
                     if (i + 1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getTipoVia().equals("calle") || matrizCiudad[i + 1][j].getTipoVia().equals("carretera"))) {
-                        verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j].getIdNodo(), i, j, anchoCuadroCiudad, altoCuadroCiudad, 4);
+                        verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 4);
                     }
                 }
             }
@@ -113,55 +113,55 @@ public class GrafoDirigido implements Serializable, Cloneable {
      * @param y identidicador del segundo nodo
      * @param arista arista a asignar
      */
-    private void añadirArista(int x, int y, Arista arista) {
+    private void añadirArista(Componente x, Componente y, Arista arista) {
         if (arista.getDireccion() == 5 || arista.getDireccion() == 6) {
             arista.setX(x);
             arista.setY(y);
-            this.grafo[x][y] = arista;
+            this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
             Arista aris = (Arista) arista.clone();
             aris.setX(y);
             aris.setY(x);
-            this.grafo[y][x] = aris;
+            this.grafo[y.getIdNodo()][x.getIdNodo()] = aris;
         } else if (arista.getDireccion() == 1) {
-            if (x < y) {
+            if (x.getIdNodo() < y.getIdNodo()) {
                 arista.setX(y);
                 arista.setY(x);
-                this.grafo[y][x] = arista;
+                this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
 
             } else {
                 arista.setX(x);
                 arista.setY(y);
-                this.grafo[x][y] = arista;
+                this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
             }
         } else if (arista.getDireccion() == 2) {
-            if (x < y) {
+            if (x.getIdNodo() < y.getIdNodo()) {
                 arista.setX(x);
                 arista.setY(y);
-                this.grafo[x][y] = arista;
+                this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
             } else {
                 arista.setX(y);
                 arista.setY(x);
-                this.grafo[y][x] = arista;
+                this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
             }
         } else if (arista.getDireccion() == 3) {
-            if (x < y) {
+            if (x.getIdNodo() < y.getIdNodo()) {
                 arista.setX(x);
                 arista.setY(y);
-                this.grafo[x][y] = arista;
+                this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
             } else {
                 arista.setX(y);
                 arista.setY(x);
-                this.grafo[y][x] = arista;
+                this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
             }
         } else if (arista.getDireccion() == 4) {
-            if (x < y) {
+            if (x.getIdNodo() < y.getIdNodo()) {
                 arista.setX(y);
                 arista.setY(x);
-                this.grafo[y][x] = arista;
+                this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
             } else {
                 arista.setX(x);
                 arista.setY(y);
-                this.grafo[x][y] = arista;
+                this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
             }
         }
     }
@@ -182,7 +182,7 @@ public class GrafoDirigido implements Serializable, Cloneable {
      * @param opcion si es 1 busca hacia la derecha si es 2 busca a izquierda 3
      * busca hacia arriba y 4 busca hacia arriba
      */
-    private void verArista(Componente[][] matrizCiudad, int i, int j, int idNodoorigen, int xOrigen, int yOrigen, int ancho, int alto, int opcion) {
+    private void verArista(Componente[][] matrizCiudad, int i, int j, Componente idNodoorigen, int xOrigen, int yOrigen, int ancho, int alto, int opcion) {
         LinkedList<Componente> auxListaComponentes = new LinkedList<>();
         Arista auxArista;
         Boolean bandera = false;
@@ -218,7 +218,7 @@ public class GrafoDirigido implements Serializable, Cloneable {
             auxListaComponentes.add(matrizCiudad[i][j]);
         }
         auxArista = crearArista(yOrigen * ancho, xOrigen * alto, j * ancho, i * alto, auxListaComponentes);
-        añadirArista(idNodoorigen, matrizCiudad[i][j].getIdNodo(), auxArista);
+        añadirArista(idNodoorigen, matrizCiudad[i][j], auxArista);
     }
     
     public Arista[][] getGrafo() {
