@@ -56,8 +56,10 @@ public class CarroMovimiento extends Carro implements Runnable {
 
     @Override
     public void run() {
-        int m=0;
-        int n=0;
+        int m = 0;
+        int n = 0;
+        int auxN = 0;
+        int auxM = 0;
         int velocidad;
         //Siempre esta corriendo el hilo
         while (true) {
@@ -149,29 +151,32 @@ public class CarroMovimiento extends Carro implements Runnable {
                     }
                 }
 
-                 m = idNodoComponente((int)getArea().getX(),(int)getArea().getY());
-                 n = getCamino().getFirst().getX().getIdNodo();
+                m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
+                auxN = getCamino().getFirst().getX1();
+                auxM = getCamino().getFirst().getY1();
                 getCamino().removeFirst();
                 if (getTipo() == 1) {
-
-                    buscarCamino(m, n);
+                    buscarCamino(m, auxN, auxM);
                 }
             }
+            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(CarroMovimiento.class.getName()).log(Level.SEVERE, null, ex);
             }
+            m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
             setTipo(1);
-            buscarCamino(m, n);
+            buscarCamino(m, auxN, auxM);
         }
     }
-    public int idNodoComponente(int x,int y)
-    {
-        int auxX=y/this.panel.getCiudad().getAltoCampo();
-        int auxY=x/this.panel.getCiudad().getAnchoCampo();
+
+    public int idNodoComponente(int x, int y) {
+        int auxX = y / this.panel.getCiudad().getAltoCampo();
+        int auxY = x / this.panel.getCiudad().getAnchoCampo();
         return this.panel.getCiudad().getMatrizCiudad()[auxX][auxY].getIdNodo();
     }
+
     public int buscarNodo(int x, int y, int anchoCampoCiudad, int altoCampoCiudad) {
         int auxN = y / altoCampoCiudad;
         int auxM = x / anchoCampoCiudad;
@@ -186,7 +191,7 @@ public class CarroMovimiento extends Carro implements Runnable {
         return panel.getCiudad().getMatrizCiudad()[auxN][auxM];
     }
 
-    private void buscarCamino(int m, int n) {
+    private void buscarCamino(int m, int x, int y) {
         try {
             LinkedList<Arista> posiblesCaminos = new LinkedList<>();
             for (int i = 0; i < this.grafo.getGrafo()[m].length; i++) {
@@ -199,8 +204,9 @@ public class CarroMovimiento extends Carro implements Runnable {
             int num = (int) (rnd.nextDouble() * numero + 0);
             this.getCamino().add(posiblesCaminos.get(num));
         } catch (Exception e) {
-           // esperandoCamino(n);
-
+            //   int n=idNodoComponente(x, y);
+            // esperandoCamino(n);
+            System.out.println("eeeeeeoorro");
         }
     }
 
@@ -210,9 +216,9 @@ public class CarroMovimiento extends Carro implements Runnable {
 
     private void esperandoCamino(int n) {
         this.esperando = true;
-        while (this.esperando) {
-            System.out.println("esperando");
-        }
+//        while (this.esperando) {
+//            System.out.println("esperando");
+//        }
         Componente auxComponenteEsperando = buscarComponente((int) getArea().getX(), (int) getArea().getY());
         Componente auxComponenteDestino = new Componente();
         LinkedList<Arista> posiblesCaminos = new LinkedList<>();
