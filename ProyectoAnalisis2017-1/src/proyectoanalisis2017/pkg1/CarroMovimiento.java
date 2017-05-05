@@ -21,11 +21,11 @@ public class CarroMovimiento extends Carro implements Runnable {
     private PanelVentana panel;
     private Thread hilo;
     private GrafoDirigido grafo;
-    private Boolean esperando;
+//    private Boolean esperando;
 
-    public CarroMovimiento(int id, int x, int y, int ancho, int alto, LinkedList<Arista> camino, int tipo) {
-        super(id, x, y, ancho, alto, camino, tipo);
-        this.esperando = false;
+    public CarroMovimiento(int id, int ancho, int alto, LinkedList<Arista> camino, int tipo) {
+        super(id, ancho, alto, camino, tipo);
+//        this.esperando = false;
     }
 
     /**
@@ -62,113 +62,112 @@ public class CarroMovimiento extends Carro implements Runnable {
         int auxM = 0;
         int velocidad;
         //Siempre esta corriendo el hilo
-        while (true) {
-            //Mientras exista un camino
-            while (!getCamino().isEmpty()) {
-                //Se obtiene la velocidad del camino
-                velocidad = getCamino().getFirst().getVelocidad();
-                Boolean sentido = false;
-                if (getCamino().getFirst().getX1() == getCamino().getFirst().getX2()) {
-                    int auxY = 0;
-                    if ((int) getArea().getY() == getCamino().getFirst().getY1()) {
-                        auxY = getCamino().getFirst().getY2();
-                    } else {
-                        auxY = getCamino().getFirst().getY1();
-                    }
-                    if ((int) getArea().getY() < auxY) {
-                        sentido = true;//incrementar
-                    } else {
-                        sentido = false;
-                    }
-                    if (sentido) {
-                        while ((int) getArea().getY() < auxY) {
-                            try {
-                                getArea().setLocation((int) getArea().getX(), (int) getArea().getY() + 10);
-                                Thread.sleep(velocidad);
-                            } catch (InterruptedException ex) {
-                                System.out.println(ex.getMessage());
-                            }
-                            panel.repaint();
-                        }
-                        getArea().setLocation((int) getArea().getX(), auxY);
-                        panel.repaint();
-                    } else {
-                        while ((int) getArea().getY() > auxY) {
-                            try {
-                                getArea().setLocation((int) getArea().getX(), (int) getArea().getY() - 10);
-
-                                Thread.sleep(velocidad);
-                            } catch (InterruptedException ex) {
-                                System.out.println(ex.getMessage());
-                            }
-                            panel.repaint();
-                        }
-                        getArea().setLocation((int) getArea().getX(), auxY);
-
-                        panel.repaint();
-                    }
+//        while (true) {    CAMBIO MIO
+        //Mientras exista un camino
+        while (!getCamino().isEmpty()) {
+            //Se obtiene la velocidad del camino
+            velocidad = getCamino().getFirst().getVelocidad();
+            Boolean sentido;
+            if (getCamino().getFirst().getX1() == getCamino().getFirst().getX2()) {
+                int auxY;
+                if ((int) getArea().getY() == getCamino().getFirst().getY1()) {
+                    auxY = getCamino().getFirst().getY2();
                 } else {
-                    int auxX;
-
-                    if ((int) getArea().getX() == getCamino().getFirst().getX1()) {
-                        auxX = getCamino().getFirst().getX2();
-                    } else {
-                        auxX = getCamino().getFirst().getX1();
-                    }
-                    if ((int) getArea().getX() < auxX) {
-                        sentido = true;// invrementar
-                    } else {
-                        sentido = false;
-                    }
-                    if (sentido) {
-                        while ((int) getArea().getX() < auxX) {
-                            try {
-                                getArea().setLocation((int) getArea().getX() + 10, (int) getArea().getY());
-
-                                Thread.sleep(velocidad);
-                            } catch (InterruptedException ex) {
-                                System.out.println(ex.getMessage());
-                            }
-                            panel.repaint();
+                    auxY = getCamino().getFirst().getY1();
+                }
+                if ((int) getArea().getY() < auxY) {
+                    sentido = true;//incrementar
+                } else {
+                    sentido = false;
+                }
+                if (sentido) {
+                    while ((int) getArea().getY() < auxY) {
+                        try {
+                            getArea().setLocation((int) getArea().getX(), (int) getArea().getY() + 10);
+                            Thread.sleep(velocidad);
+                        } catch (InterruptedException ex) {
+                            System.out.println(ex.getMessage());
                         }
-                        getArea().setLocation(auxX, (int) getArea().getY());
-
-                        panel.repaint();
-                    } else {
-                        while ((int) getArea().getX() > auxX) {
-                            try {
-                                getArea().setLocation((int) getArea().getX() - 10, (int) getArea().getY());
-
-                                Thread.sleep(velocidad);
-                            } catch (InterruptedException ex) {
-                                System.out.println(ex.getMessage());
-                            }
-                            panel.repaint();
-                        }
-                        getArea().setLocation(auxX, (int) getArea().getY());
-
                         panel.repaint();
                     }
-                }
+                    getArea().setLocation((int) getArea().getX(), auxY);
+                    panel.repaint();
+                } else {
+                    while ((int) getArea().getY() > auxY) {
+                        try {
+                            getArea().setLocation((int) getArea().getX(), (int) getArea().getY() - 10);
 
-                m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
-                auxN = getCamino().getFirst().getX1();
-                auxM = getCamino().getFirst().getY1();
-                getCamino().removeFirst();
-                if (getTipo() == 1) {
-                    buscarCamino(m, auxN, auxM);
+                            Thread.sleep(velocidad);
+                        } catch (InterruptedException ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                        panel.repaint();
+                    }
+                    getArea().setLocation((int) getArea().getX(), auxY);
+
+                    panel.repaint();
+                }
+            } else {
+                int auxX;
+
+                if ((int) getArea().getX() == getCamino().getFirst().getX1()) {
+                    auxX = getCamino().getFirst().getX2();
+                } else {
+                    auxX = getCamino().getFirst().getX1();
+                }
+                if ((int) getArea().getX() < auxX) {
+                    sentido = true;// invrementar
+                } else {
+                    sentido = false;
+                }
+                if (sentido) {
+                    while ((int) getArea().getX() < auxX) {
+                        try {
+                            getArea().setLocation((int) getArea().getX() + 10, (int) getArea().getY());
+
+                            Thread.sleep(velocidad);
+                        } catch (InterruptedException ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                        panel.repaint();
+                    }
+                    getArea().setLocation(auxX, (int) getArea().getY());
+
+                    panel.repaint();
+                } else {
+                    while ((int) getArea().getX() > auxX) {
+                        try {
+                            getArea().setLocation((int) getArea().getX() - 10, (int) getArea().getY());
+
+                            Thread.sleep(velocidad);
+                        } catch (InterruptedException ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                        panel.repaint();
+                    }
+                    getArea().setLocation(auxX, (int) getArea().getY());
+
+                    panel.repaint();
                 }
             }
-            
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(CarroMovimiento.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
             m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
-            setTipo(1);
-            buscarCamino(m, auxN, auxM);
+//            auxN = getCamino().getFirst().getX1();
+//            auxM = getCamino().getFirst().getY1();
+            getCamino().removeFirst();
+            if (getTipo() == 1) {
+                buscarCamino(m);
+            }
         }
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(CarroMovimiento.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
+//            setTipo(1);
+//            buscarCamino(m, auxN, auxM);
+//        }
     }
 
     public int idNodoComponente(int x, int y) {
@@ -191,7 +190,7 @@ public class CarroMovimiento extends Carro implements Runnable {
         return panel.getCiudad().getMatrizCiudad()[auxN][auxM];
     }
 
-    private void buscarCamino(int m, int x, int y) {
+    public void buscarCamino(int m) {
         try {
             LinkedList<Arista> posiblesCaminos = new LinkedList<>();
             for (int i = 0; i < this.grafo.getGrafo()[m].length; i++) {
@@ -199,13 +198,13 @@ public class CarroMovimiento extends Carro implements Runnable {
                     posiblesCaminos.add(this.grafo.getGrafo()[m][i]);
                 }
             }
-            int numero = posiblesCaminos.size();
-            Random rnd = new Random();
-            int num = (int) (rnd.nextDouble() * numero + 0);
-            this.getCamino().add(posiblesCaminos.get(num));
+            if (!posiblesCaminos.isEmpty()) {
+                int numero = posiblesCaminos.size();
+                Random rnd = new Random();
+                int num = (int) (rnd.nextDouble() * numero + 0);
+                this.getCamino().add(posiblesCaminos.get(num));
+            }
         } catch (Exception e) {
-            //   int n=idNodoComponente(x, y);
-            // esperandoCamino(n);
             System.out.println("eeeeeeoorro");
         }
     }
@@ -215,7 +214,7 @@ public class CarroMovimiento extends Carro implements Runnable {
     }
 
     private void esperandoCamino(int n) {
-        this.esperando = true;
+//        this.esperando = true;
 //        while (this.esperando) {
 //            System.out.println("esperando");
 //        }
@@ -245,12 +244,12 @@ public class CarroMovimiento extends Carro implements Runnable {
         getCamino().add(new Arista((int) auxComponenteEsperando.getArea().getX(), (int) auxComponenteDestino.getArea().getX(), (int) auxComponenteEsperando.getArea().getY(), (int) auxComponenteDestino.getArea().getY(), 60, 0, auxComponenteDestino));
     }
 
-    public Boolean getEsperando() {
-        return esperando;
-    }
-
-    public void setEsperando(Boolean esperando) {
-        this.esperando = esperando;
-    }
+//    public Boolean getEsperando() {
+//        return esperando;
+//    }
+//
+//    public void setEsperando(Boolean esperando) {
+//        this.esperando = esperando;
+//    }
 
 }

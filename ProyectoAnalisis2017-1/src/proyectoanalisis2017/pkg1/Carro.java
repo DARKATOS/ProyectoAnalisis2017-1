@@ -22,12 +22,12 @@ public class Carro  {
     }
 
     
-    public Carro(int id, int x, int y,int ancho,int alto, LinkedList<Arista> camino,int tipo) {
+    public Carro(int id, int ancho,int alto, LinkedList<Arista> camino,int tipo) {
         this.id = id;
         this.camino = camino;
         this.ruta = "../ImgComponentes/car_ari_abj1.png";
         this.tipo=tipo;
-        this.area= new Rectangle(x, y, ancho, alto);
+        this.area= new Rectangle(camino.getFirst().getX1(),camino.getFirst().getY1() , ancho, alto);
     }
 
     public LinkedList<Arista> getCamino() {

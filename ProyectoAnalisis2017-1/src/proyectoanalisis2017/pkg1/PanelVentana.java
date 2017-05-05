@@ -20,13 +20,15 @@ import javax.swing.ImageIcon;
 public class PanelVentana extends javax.swing.JPanel {
 
     private Ciudad ciudad;
-    private GrafoDirigido grafo;
+
+    //CAMBIO MIO
+//    private GrafoDirigido grafo;
     private AreaItems areaItems;
     private Boolean estaSelecionadoComponente;
     private Item itemSeleccionado;
     private int xImgSelecionada;
     private int yImgSelecionada;
-    private LinkedList<CarroMovimiento> carrosMovimiento;
+    private final LinkedList<CarroMovimiento> carrosMovimiento;
     private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
     private Ciudad auxCiudad;
     private GrafoDirigido auxGrafo;
@@ -42,7 +44,8 @@ public class PanelVentana extends javax.swing.JPanel {
         initComponents();
         this.carrosMovimiento = new LinkedList<>();
         this.idDestinos = new LinkedList<>();
-        this.grafo = new GrafoDirigido();
+        //CAMBIO MIO
+//        this.grafo = new GrafoDirigido();
         this.xImgSelecionada = 0;
         this.yImgSelecionada = 0;
         this.itemSeleccionado = new Item();
@@ -121,7 +124,7 @@ public class PanelVentana extends javax.swing.JPanel {
                 }
                 this.auxNSeleccion = (int) evt.getY() / ciudad.getAltoCampo();
                 this.auxMSeleccion = (int) evt.getX() / ciudad.getAnchoCampo();
-                //Y tambien obtenemos la ubicacion del carro
+                //Y tambien obtenemos la ubicacion del carro que se toma como un nodo
                 this.auxUbicacion = this.auxCiudad.getMatrizCiudad()[this.auxNSeleccion][this.auxMSeleccion];
                 // Si la ubicación no es un nodo se debe marcar como nodo
                 if (this.auxUbicacion != null && this.auxCarro != null) {
@@ -208,9 +211,8 @@ public class PanelVentana extends javax.swing.JPanel {
                 Componente auxComponente = new Componente(itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getNombre());
                 Rectangle area = new Rectangle(evt.getX(), evt.getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
                 auxComponente.setArea(area);
-                //Si ciudad en la posicion i, j del evento es diferente de null y si es una vida y el componente tomado del area de items uno de las dos interrupciones
+                //Si ciudad en la posicion i, j del evento es diferente de null y si es una via y el componente tomado del area de items uno de las dos interrupciones
                 if (ciudad.getMatrizCiudad()[auxN][auxM] != null && ciudad.esVia(ciudad.getMatrizCiudad()[auxN][auxM]) && (auxComponente.getNombre().equals("XX") || auxComponente.getNombre().equals("YY"))) {
-
                     //Se añade la interrupcion a la lista de interrupciones de la ciudad, con el componente anterior al de la interrupcion y la posicion en donde esta
                     ciudad.getListaInterrupciones().add(new Interrupcion((Componente) ciudad.getMatrizCiudad()[auxN][auxM].clone(), auxN, auxM));
                     //Se establece la interrupcion en la posicion i, j de la matriz de la ciudad
@@ -220,19 +222,17 @@ public class PanelVentana extends javax.swing.JPanel {
                     ciudad.modificarNodos();
                     //Se crea una ciudad local
                     Ciudad auxCiudad1 = copiarCiudad();
-                    GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad1.getCantidadNodos());
+                    GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());
                     //Se crea el grafo con la ciudad auxiliar
-                    auxGrafo.crearGrafo(auxCiudad1.getMatrizCiudad(), auxCiudad1.getAnchoCampo(), auxCiudad1.getAltoCampo());
-                    //Se asigna al objeto de clase grafo
-                    grafo = auxGrafo;
+                    auxGrafo1.crearGrafo(auxCiudad1);
                     for (int i = 0; i < carrosMovimiento.size(); i++) {
-                        //Aqui si se mandara el grafo completo con solo ese clone????
-                        carrosMovimiento.get(i).setGrafo((GrafoDirigido) grafo.clone());
+                        //Aqui si se mandara el grafo completo
+                        carrosMovimiento.get(i).setGrafo((auxGrafo1));
+
                     }
                 } //Si la ciudad en la posicion i,j es diferente de null y el componente tomado del area de items es el que remueve interrupciones y donde se tomo el evento en la posicion i, j es alguna de las interrupciones
                 else if (ciudad.getMatrizCiudad()[auxN][auxM] != null && auxComponente.getNombre().equals("XXX") && (ciudad.getMatrizCiudad()[auxN][auxM].getNombre().equals("XX") || ciudad.getMatrizCiudad()[auxN][auxM].getNombre().equals("YY"))) {
                     //Recorro la lista de interrupciones para obtener la interrupciion
-
                     for (int i = 0; i < ciudad.getListaInterrupciones().size(); i++) {
                         //Si para cada interrupcion en i, j es igual a la posicion del evento
                         if (ciudad.getListaInterrupciones().get(i).getI() == auxN && ciudad.getListaInterrupciones().get(i).getJ() == auxM) {
@@ -243,18 +243,28 @@ public class PanelVentana extends javax.swing.JPanel {
 
                     //Procedo con la eliminacion de nodos adyacentes.
                     ciudad.eliminarNodosAdyacentes(auxN, auxM);
-                    Ciudad auxCiudad1 = copiarCiudad();
-                    GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad1.getCantidadNodos());
-                    //Creo el grafo con la matriz de la ciudad
-                    auxGrafo.crearGrafo(auxCiudad1.getMatrizCiudad(), auxCiudad1.getAnchoCampo(), auxCiudad1.getAltoCampo());
-                    //Le asignamos a la variable de clase el grafo.
-                    grafo = auxGrafo;
+                    ciudad.modificarNodos();
                     for (int i = 0; i < carrosMovimiento.size(); i++) {
-                        //Le seteamos a todos los carro el nuevo grafo. (¿EL grafo si clona bien?)
-                        carrosMovimiento.get(i).setGrafo((GrafoDirigido) grafo.clone());
-                        if (carrosMovimiento.get(i).getEsperando()) {
-                            carrosMovimiento.get(i).setEsperando(false);
+                        Ciudad auxCiudad1 = copiarCiudad(); //Copio la ciudad para el caso especifico del carro
+                        if (carrosMovimiento.get(i).getCamino().isEmpty()) { //Si el carro esta sin camino es porque esta parado
+                            int auxN2 = (int) (carrosMovimiento.get(i).getArea().getY() / ciudad.getAltoCampo());
+                            int auxM2 = (int) (carrosMovimiento.get(i).getArea().getX() / ciudad.getAnchoCampo());
+                            Componente auxComponente2 = auxCiudad1.getMatrizCiudad()[auxN2][auxM2];
+                            auxCiudad1.marcarNodo(auxComponente2); //Tengo que marcar como nodo la posicion en donde se encuentra el carro, pero es al auxiliar de la ciudad.
+                            auxCiudad1.modificarNodos();
+                            GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());
+                            auxGrafo1.crearGrafo(auxCiudad1);
+                            carrosMovimiento.get(i).setGrafo(auxGrafo1);
+                            mostrarMatrizCiudad(auxCiudad1);
+                            int m = auxCiudad1.getMatrizCiudad()[auxN2][auxM2].getIdNodo();
+                            carrosMovimiento.get(i).buscarCamino(m);
+                            carrosMovimiento.get(i).start();
+                        } else {
+                            GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());
+                            auxGrafo1.crearGrafo(auxCiudad1);
+                            carrosMovimiento.get(i).setGrafo(auxGrafo1);
                         }
+
                     }
 
                 } //Si el componente no es una de las interrupciones ni el que borra las interrupciones es un componente para pintar en el mapa.
@@ -263,9 +273,8 @@ public class PanelVentana extends javax.swing.JPanel {
                 }
 
             } catch (Exception e) {
-
+                System.out.println("Error en el panel");
             }
-
             repaint();
         }
     }//GEN-LAST:event_formMouseReleased
@@ -295,30 +304,10 @@ public class PanelVentana extends javax.swing.JPanel {
     }
 
     public void ModificarGrafo() {
-
-//        GrafoDirigido auxGrafo = new GrafoDirigido(auxCiudad.getCantidadNodos());
-//        auxGrafo.crearGrafo(auxCiudad.getMatrizCiudad(), auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo());
-//        auxCarro.setGrafo(auxGrafo);
-//        RutaCorta auxRuta = new RutaCorta(auxCiudad.getCantidadNodos());
-//        auxRuta.llenarPesos(auxGrafo);
-//        auxRuta.setOrigen(this.idNodoOrigen);
-//        auxRuta.caminosMinimos();
-//        auxCarro.setTipo(0);
-//        auxCarro.getArea().setLocation(auxj1 * auxCiudad.getAnchoCampo(), auxi1 * auxCiudad.getAltoCampo());
-//        LinkedList<Arista> auxCamino = new LinkedList<>();
-//        for (int i = 0; i < idDestinos.size(); i++) {
-//            LinkedList<Arista> auxCamino1 = auxRuta.convertirCamino(auxGrafo, idDestinos.get(i));
-//            for (int j = 0; j < auxCamino1.size(); j++) {
-//                auxCamino.add(auxCamino1.get(j));
-//            }
-//            auxRuta.setOrigen(idDestinos.get(i));
-//            auxRuta.caminosMinimos();
-//        }
-//        auxCarro.setCamino(auxCamino);
-//        auxCarro.start();
-        this.auxGrafo = new GrafoDirigido(this.auxCiudad.getCantidadNodos());
+        GrafoDirigido auxGrafo1 = new GrafoDirigido(this.auxCiudad.getCantidadNodos());
         this.auxCiudad.modificarNodos();
-        this.auxGrafo.crearGrafo(this.auxCiudad.getMatrizCiudad(), this.auxCiudad.getAnchoCampo(), this.auxCiudad.getAltoCampo());
+        Ciudad auxCiudad1 = copiarCiudad();
+        auxGrafo1.crearGrafo(auxCiudad1);
         this.auxCarro.setGrafo(this.auxGrafo);
         RutaCorta auxRuta = new RutaCorta(this.auxCiudad.getCantidadNodos());
         System.out.println(auxRuta.getCantidadNodos());
@@ -412,13 +401,13 @@ public class PanelVentana extends javax.swing.JPanel {
      *
      * @param carroAuto
      */
-    public void ingresarCarro(CarroMovimiento carroAuto) {
-        this.carrosMovimiento.add(carroAuto);
-        this.carrosMovimiento.getLast().setPanel(this);
-        GrafoDirigido grafoAux = (GrafoDirigido) this.grafo.clone();
-        this.carrosMovimiento.getLast().setGrafo(grafoAux);
-    }
-
+    //CAMBIO MIO LO PASE AL FORM PORQUE AQUI NO SE LLAMA NO LE VEO SENTIDO
+//    public void ingresarCarro(CarroMovimiento carroAuto) {
+//        this.carrosMovimiento.add(carroAuto);
+//        this.carrosMovimiento.getLast().setPanel(this);
+//        GrafoDirigido grafoAux = (GrafoDirigido) this.grafo.clone();
+//        this.carrosMovimiento.getLast().setGrafo(grafoAux);
+//    }
     public void girarItem() {
         if (itemSeleccionado.getContador() == itemSeleccionado.getLstComponentes().size() - 1) {
             this.itemSeleccionado.setContador(0);
@@ -432,10 +421,10 @@ public class PanelVentana extends javax.swing.JPanel {
         return carrosMovimiento;
     }
 
-    public void setGrafo(GrafoDirigido grafo) {
-        this.grafo = grafo;
-    }
-
+    //CAMBIO MIO
+//    public void setGrafo(GrafoDirigido grafo) {
+//        this.grafo = grafo;
+//    }
     public int getOpciones() {
         return opciones;
     }
@@ -452,6 +441,33 @@ public class PanelVentana extends javax.swing.JPanel {
         return ciudad;
     }
 
+    private void mostrarGrafo(GrafoDirigido grafo) {
+        for (int i = 0; i < grafo.getGrafo().length; i++) {
+            for (int j = 0; j < grafo.getGrafo()[i].length; j++) {
+                if (grafo.getGrafo()[i][j] == null) {
+                    System.out.print("-\t");
+                } else {
+                    System.out.print(i + ":" + j + "\t");
+                }
+            }
+            System.out.println("");
+        }
+    }
+
+    private void mostrarMatrizCiudad(Ciudad auxCiudad1) {
+        for (int i = 0; i < auxCiudad1.getN(); i++) {
+            for (int j = 0; j < auxCiudad1.getM(); j++) {
+                if (auxCiudad1.getMatrizCiudad()[i][j] != null) {
+                    System.out.print(auxCiudad1.getMatrizCiudad()[i][j].getIdNodo()+"\t");
+                }
+                else
+                {
+                    System.out.print("-\t");
+                }
+            }
+            System.out.println("");
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
