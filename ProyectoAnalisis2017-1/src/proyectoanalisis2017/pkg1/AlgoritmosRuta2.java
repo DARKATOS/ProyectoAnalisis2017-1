@@ -68,8 +68,8 @@ public class AlgoritmosRuta2 {
      */
     public LinkedList<Arista>obtenerCaminoFloydWarshall(int matrizNodos[][], int origen, int destino, GrafoDirigido grafo)
     {
-        mostrarMatrizNodos(matrizNodos);
-        System.out.println("");
+//        mostrarMatrizNodos(matrizNodos);
+//        System.out.println("");
         mostrarGrafo(grafo);
         System.out.println("");
         LinkedList<Integer>caminoNodos=new LinkedList<>();

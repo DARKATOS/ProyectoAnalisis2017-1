@@ -235,7 +235,6 @@ public class Ciudad implements Cloneable {
                 }
             }
         }
-
     }
 
     public void modificarNodos() {

@@ -84,7 +84,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,15 +130,10 @@ public class VentanaPrincial extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton1.setText("Camino");
-        jToggleButton1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jToggleButton1StateChanged(evt);
-            }
-        });
-        jToggleButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jToggleButton1MouseClicked(evt);
+        jButton2.setText("Camino");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -156,19 +151,19 @@ public class VentanaPrincial extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(424, Short.MAX_VALUE))
+                .addComponent(jButton2)
+                .addContainerGap(438, Short.MAX_VALUE))
         );
         pnlVentana1Layout.setVerticalGroup(
             pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlVentana1Layout.createSequentialGroup()
                 .addContainerGap(549, Short.MAX_VALUE)
                 .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton1)
                     .addComponent(btnGuardar)
                     .addComponent(jButton1)
                     .addComponent(jButton5)
-                    .addComponent(jButton6))
+                    .addComponent(jButton6)
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
@@ -207,8 +202,8 @@ public class VentanaPrincial extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         GrafoDirigido auxGrafo1=new GrafoDirigido(ciudad.getCantidadNodos());
-        Ciudad auxCiudad = pnlVentana1.copiarCiudad();
-        auxGrafo1.crearGrafo(auxCiudad);
+        Ciudad auxCiudad1 = pnlVentana1.copiarCiudad(ciudad);
+        auxGrafo1.crearGrafo(auxCiudad1);
         LinkedList<Arista> camino1 = new LinkedList<>();
         boolean bandera = false;
         for (int i = 0; i < auxGrafo1.getGrafo().length && !bandera; i++) {
@@ -219,7 +214,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
                 }
             }
         }
-        ingresarCarro(new CarroMovimiento(this.cantidadCarros, ciudad.getAnchoCampo(), ciudad.getAltoCampo(), camino1, 1), auxGrafo1);
+        ingresarCarro(new CarroMovimiento(this.cantidadCarros, ciudad.getAnchoCampo(), ciudad.getAltoCampo(), camino1, 1), auxGrafo1, ciudad);
         this.cantidadCarros++;
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -227,25 +222,19 @@ public class VentanaPrincial extends javax.swing.JFrame {
         pnlVentana1.getCarrosMovimiento().getLast().start();
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void jToggleButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jToggleButton1StateChanged
-     
-    }//GEN-LAST:event_jToggleButton1StateChanged
+    private void pnlVentana1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVentana1MouseReleased
+      
+    }//GEN-LAST:event_pnlVentana1MouseReleased
 
-    private void jToggleButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton1MouseClicked
-        System.out.println("A");
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (pnlVentana1.getOpciones() == 0) {
             pnlVentana1.setOpciones(2);
-            pnlVentana1.setAuxCiudad(pnlVentana1.copiarCiudad());
          
         } else if (pnlVentana1.getOpciones() == 3) {
             pnlVentana1.ModificarGrafo();
             pnlVentana1.setOpciones(0);
         }
-    }//GEN-LAST:event_jToggleButton1MouseClicked
-
-    private void pnlVentana1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVentana1MouseReleased
-      
-    }//GEN-LAST:event_pnlVentana1MouseReleased
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -286,9 +275,9 @@ public class VentanaPrincial extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JToggleButton jToggleButton1;
     private proyectoanalisis2017.pkg1.PanelVentana pnlVentana1;
     // End of variables declaration//GEN-END:variables
 
@@ -406,10 +395,11 @@ public class VentanaPrincial extends javax.swing.JFrame {
      * @param carroAuto
      * @param auxGrafo1
      */
-    private void ingresarCarro(CarroMovimiento carroAuto, GrafoDirigido auxGrafo1) {
+    private void ingresarCarro(CarroMovimiento carroAuto, GrafoDirigido auxGrafo1, Ciudad auxCiudad1) {
         pnlVentana1.getCarrosMovimiento().add(carroAuto);
         pnlVentana1.getCarrosMovimiento().getLast().setPanel(pnlVentana1);
         pnlVentana1.getCarrosMovimiento().getLast().setGrafo(auxGrafo1);
+        pnlVentana1.getCarrosMovimiento().getLast().setCiudad(auxCiudad1);
     }
 
 //    private void mostrarMatrizCiudad() {
