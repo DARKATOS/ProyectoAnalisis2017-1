@@ -5,14 +5,14 @@
  */
 package proyectoanalisis2017.pkg1;
 
-import java.io.Serializable;
+
 import java.util.LinkedList;
 
 /**
  *
  * @author JORGE_ALEJANDRO
  */
-public class GrafoDirigido implements Serializable, Cloneable {
+public class GrafoDirigido implements Cloneable {
 
     //Matriz grafo de tipo arista, cada una de las filas representa un id de alguno de los cruces.
     Arista grafo[][];
@@ -61,27 +61,49 @@ public class GrafoDirigido implements Serializable, Cloneable {
      *
      * @param matrizCiudad matriz de la ciudad que tenemos diseñada
      */
-    public void crearGrafo(Componente[][] matrizCiudad, int anchoCuadroCiudad, int altoCuadroCiudad) {
+    public void crearGrafo(Ciudad auxCiudad) {
+        Componente [][]matrizCiudad=auxCiudad.getMatrizCiudad();
         for (int i = 0; i < matrizCiudad.length; i++) {
             for (int j = 0; j < matrizCiudad[i].length; j++) {
                 if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1) {
                     if (j - 1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getTipoVia().equals("calle") || matrizCiudad[i][j - 1].getTipoVia().equals("carretera"))) {
-                        verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 2);
+                        verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 2);
                     }
                     if (j + 1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getTipoVia().equals("calle") || matrizCiudad[i][j + 1].getTipoVia().equals("carretera"))) {
 
-                        verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 1);
+                        verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 1);
                     }
                     if (i - 1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getTipoVia().equals("calle") || matrizCiudad[i - 1][j].getTipoVia().equals("carretera"))) {
-                        verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 3);
+                        verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 3);
                     }
                     if (i + 1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getTipoVia().equals("calle") || matrizCiudad[i + 1][j].getTipoVia().equals("carretera"))) {
-                        verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 4);
+                        verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 4);
                     }
                 }
             }
         }
     }
+//    public void crearGrafo(Componente[][] matrizCiudad, int anchoCuadroCiudad, int altoCuadroCiudad) {
+//        for (int i = 0; i < matrizCiudad.length; i++) {
+//            for (int j = 0; j < matrizCiudad[i].length; j++) {
+//                if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1) {
+//                    if (j - 1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getTipoVia().equals("calle") || matrizCiudad[i][j - 1].getTipoVia().equals("carretera"))) {
+//                        verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 2);
+//                    }
+//                    if (j + 1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getTipoVia().equals("calle") || matrizCiudad[i][j + 1].getTipoVia().equals("carretera"))) {
+//
+//                        verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 1);
+//                    }
+//                    if (i - 1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getTipoVia().equals("calle") || matrizCiudad[i - 1][j].getTipoVia().equals("carretera"))) {
+//                        verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 3);
+//                    }
+//                    if (i + 1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getTipoVia().equals("calle") || matrizCiudad[i + 1][j].getTipoVia().equals("carretera"))) {
+//                        verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 4);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Procedemos a crear la arista que se va asignar al grafo validado si es

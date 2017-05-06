@@ -14,15 +14,14 @@ import java.util.LinkedList;
  * @author JORGE_ALEJANDRO
  */
 public class AreaItems implements Serializable{
-    private ArrayList<Item>listaItems;
-    private int anchoListaComponentesX1;
-    private int anchoListaComponentesX2;
+    private final ArrayList<Item>listaItems;
+    private final int anchoListaComponentesX1;
+    private final int anchoListaComponentesX2;
 
-    public AreaItems(ArrayList<Item> listaItems, int anchoListaComponentesX1, int anchoListaComponentesX2) {
-        this.listaItems = listaItems;
+    public AreaItems(int anchoListaComponentesX1, int anchoListaComponentesX2) {
+        this.listaItems =new ArrayList<>();
         this.anchoListaComponentesX1 = anchoListaComponentesX1;
         this.anchoListaComponentesX2 = anchoListaComponentesX2;
-        cargarComponentes();
     }
 
     public int getAnchoListaComponentesX1() {
@@ -40,7 +39,7 @@ public class AreaItems implements Serializable{
     /**
      * Permite cargar los componentes al area de items.
      */
-    private void cargarComponentes() {
+    public void cargarComponentes() {
         int auxAltura = 100;
         LinkedList<Componente> auxLista= new LinkedList<>();
         auxLista.add(new Componente("X"));
