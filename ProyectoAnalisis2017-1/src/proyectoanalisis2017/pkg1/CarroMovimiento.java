@@ -22,7 +22,7 @@ public class CarroMovimiento extends Carro implements Runnable {
     private Thread hilo;
     private GrafoDirigido grafo;
     private Ciudad ciudad;
-    private boolean debug=false;
+    private boolean debug = false;
 //    private Boolean esperando;
 
     public CarroMovimiento(int id, int ancho, int alto, LinkedList<Arista> camino, int tipo) {
@@ -65,14 +65,14 @@ public class CarroMovimiento extends Carro implements Runnable {
         int velocidad;
         Boolean sentido;
         while (!getCamino().isEmpty()) {
+
 //            if(debug)
 //            {
 //                System.out.println("");
 //            }
             //Se obtiene la velocidad del camino
-            System.out.println("hola");
             velocidad = getCamino().getFirst().getVelocidad();
-            sentido=false;
+            sentido = false;
             if (getCamino().getFirst().getX1() == getCamino().getFirst().getX2()) {
                 int auxY;
                 if ((int) getArea().getY() == getCamino().getFirst().getY1()) {
@@ -88,8 +88,9 @@ public class CarroMovimiento extends Carro implements Runnable {
                 if (sentido) {
                     while ((int) getArea().getY() < auxY) {
                         try {
+                            puedoPasar((int) getArea().getX(), (int) getArea().getY() + (int) getArea().getHeight(), 1);
                             getArea().setLocation((int) getArea().getX(), (int) getArea().getY() + 10);
-                            Thread.sleep(velocidad);
+                            Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
                         } catch (InterruptedException ex) {
                             System.out.println(ex.getMessage());
                         }
@@ -100,9 +101,9 @@ public class CarroMovimiento extends Carro implements Runnable {
                 } else {
                     while ((int) getArea().getY() > auxY) {
                         try {
+                            puedoPasar((int) getArea().getX(), (int) getArea().getY(), 0);
                             getArea().setLocation((int) getArea().getX(), (int) getArea().getY() - 10);
-
-                            Thread.sleep(velocidad);
+                            Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
                         } catch (InterruptedException ex) {
                             System.out.println(ex.getMessage());
                         }
@@ -130,7 +131,7 @@ public class CarroMovimiento extends Carro implements Runnable {
                         try {
                             getArea().setLocation((int) getArea().getX() + 10, (int) getArea().getY());
 
-                            Thread.sleep(velocidad);
+                            Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
                         } catch (InterruptedException ex) {
                             System.out.println(ex.getMessage());
                         }
@@ -144,7 +145,7 @@ public class CarroMovimiento extends Carro implements Runnable {
                         try {
                             getArea().setLocation((int) getArea().getX() - 10, (int) getArea().getY());
 
-                            Thread.sleep(velocidad);
+                            Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
                         } catch (InterruptedException ex) {
                             System.out.println(ex.getMessage());
                         }
@@ -159,9 +160,7 @@ public class CarroMovimiento extends Carro implements Runnable {
                 int m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
                 getCamino().removeFirst();
                 buscarCamino(m);
-            }
-            else
-            {
+            } else {
                 getCamino().removeFirst();
             }
         }
@@ -171,7 +170,7 @@ public class CarroMovimiento extends Carro implements Runnable {
             setTipo(1);
             start();
             setCiudad(panel.copiarCiudad(panel.getCiudad()));
-            GrafoDirigido auxGrafo=new GrafoDirigido(ciudad.getCantidadNodos());
+            GrafoDirigido auxGrafo = new GrafoDirigido(ciudad.getCantidadNodos());
             auxGrafo.crearGrafo(ciudad);
             setGrafo(auxGrafo);
         }
@@ -181,11 +180,74 @@ public class CarroMovimiento extends Carro implements Runnable {
         return ciudad;
     }
 
-    
     public int idNodoComponente(int x, int y) {
         int auxX = y / this.panel.getCiudad().getAltoCampo();
         int auxY = x / this.panel.getCiudad().getAnchoCampo();
         return ciudad.getMatrizCiudad()[auxX][auxY].getIdNodo();
+    }
+
+    public void puedoPasar(int x, int y, int tipo) {
+        int auxI;
+        int auxJ;
+        if (tipo == 0) {
+            auxI = (y) / ciudad.getAltoCampo();
+            auxJ = (x) / ciudad.getAnchoCampo();
+        } else {
+            auxI = (y - 1) / ciudad.getAltoCampo();
+            auxJ = (x) / ciudad.getAnchoCampo();
+        }
+        Boolean paso = false;
+
+        if (tipo == 1) {
+            if (auxI + 1 < ciudad.getMatrizCiudad()[auxI].length && ciudad.getMatrizCiudad()[auxI + 1][auxJ] != null && ciudad.getMatrizCiudad()[auxI + 1][auxJ].getTipoVia().equals("cruce")) {
+                while (!paso) {
+                    paso = true;
+                    if (paso && auxJ - 1 >= 0 && auxI + 1 < ciudad.getN() && ciudad.getMatrizCiudad()[auxI + 1][auxJ - 1] != null && (ciudad.getMatrizCiudad()[auxI + 1][auxJ - 1].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI + 1][auxJ - 1].getTipoVia().equals("carretera"))) {
+                        paso = hayCarro(auxI + 1, auxJ - 1);
+                    }
+//                    if (auxI + 2 < ciudad.getM() && ciudad.getMatrizCiudad()[auxI + 2][auxJ] != null && (ciudad.getMatrizCiudad()[auxI + 2][auxJ].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI + 2][auxJ].getTipoVia().equals("carretera"))) {
+//                        paso = hayCarro(auxI + 2, auxJ);
+//                    }
+                    if (paso && auxI + 1 < ciudad.getN() && auxJ + 1 < ciudad.getM() && ciudad.getMatrizCiudad()[auxI + 1][auxJ + 1] != null && (ciudad.getMatrizCiudad()[auxI + 1][auxJ + 1].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI + 1][auxJ + 1].getTipoVia().equals("carretera"))) {
+                        paso = hayCarro(auxI + 1, auxJ + 1);
+                    }
+                    if (paso && auxI + 1 < ciudad.getN() && ciudad.getMatrizCiudad()[auxI + 1][auxJ] != null && (ciudad.getMatrizCiudad()[auxI + 1][auxJ].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI + 1][auxJ].getTipoVia().equals("carretera"))) {
+                        paso = hayCarro(auxI + 1, auxJ);
+                    }
+                    if (!paso) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(CarroMovimiento.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }
+        } else {
+            if (auxI - 1 >= 0 && ciudad.getMatrizCiudad()[auxI - 1][auxJ] != null && ciudad.getMatrizCiudad()[auxI - 1][auxJ].getTipoVia().equals("cruce")) {
+                while (!paso) {
+
+                    paso = true;
+                    if (auxJ - 1 >= 0 && auxI - 1 < ciudad.getN() && ciudad.getMatrizCiudad()[auxI - 1][auxJ - 1] != null && (ciudad.getMatrizCiudad()[auxI - 1][auxJ - 1].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI - 1][auxJ - 1].getTipoVia().equals("carretera"))) {
+                        paso = hayCarro(auxI - 1, auxJ - 1);
+                    }
+                    if (paso && auxI - 1 < ciudad.getN() && auxJ + 1 < ciudad.getM() && ciudad.getMatrizCiudad()[auxI - 1][auxJ + 1] != null && (ciudad.getMatrizCiudad()[auxI - 1][auxJ + 1].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI - 1][auxJ + 1].getTipoVia().equals("carretera"))) {
+                        paso = hayCarro(auxI - 1, auxJ + 1);
+                    }
+                    if (paso && auxI - 1 >= 0 && ciudad.getMatrizCiudad()[auxI - 1][auxJ] != null && (ciudad.getMatrizCiudad()[auxI - 1][auxJ].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI - 1][auxJ].getTipoVia().equals("carretera"))) {
+                        paso = hayCarro(auxI - 1, auxJ);
+                    }
+                    if (!paso) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(CarroMovimiento.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     public void buscarCamino(int m) {
@@ -213,6 +275,16 @@ public class CarroMovimiento extends Carro implements Runnable {
 
     public void setCiudad(Ciudad ciudad) {
         this.ciudad = ciudad;
+    }
+
+    private Boolean hayCarro(int i, int j) {
+        Boolean respuesta = true;
+        for (int k = 0; k < panel.getCarrosMovimiento().size() && respuesta; k++) {
+            if (ciudad.getMatrizCiudad()[i][j].getArea().contains(new Point((int) panel.getCarrosMovimiento().get(k).getArea().getX(), (int) panel.getCarrosMovimiento().get(k).getArea().getY()))) {
+                respuesta = false;
+            }
+        }
+        return respuesta;
     }
 
 }
