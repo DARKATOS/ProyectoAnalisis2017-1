@@ -57,7 +57,17 @@ public class AlgoritmosRuta2 {
         return matrizNodos;
     }
     
-    
+    public void mostrarPesos()
+    {
+        for (int i=0; i<pesos.length; i++)
+        {
+            for (int j=0; j<pesos[i].length; j++)
+            {
+                System.out.print(pesos[i][j]+"\t");
+            }
+            System.out.println("");
+        }
+    }
     /**
      * Permite obtener el camino minimo a traves de un nodo origen y un nodo destino
      * @param matrizNodos Matriz que contienen los nodos de caminos minimos
@@ -78,7 +88,7 @@ public class AlgoritmosRuta2 {
         
         while(bandera)
         {
-            int nuevoDestino=matrizNodos[nuevoOrigen][destino];
+            int nuevoDestino=matrizNodos[origen][destino];
             if (destino==nuevoDestino)
             {
                 bandera=false;
@@ -86,7 +96,7 @@ public class AlgoritmosRuta2 {
             else
             {
                 caminoNodos.add(nuevoDestino);
-                nuevoOrigen=nuevoDestino;
+                destino=nuevoDestino;
             }
         }
         caminoNodos.addFirst(origen);
