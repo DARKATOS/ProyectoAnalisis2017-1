@@ -21,6 +21,7 @@ public class Arista implements Cloneable {
     private Componente y;
     private int velocidad;//depende del tipo de la via si es carretera o calle
     private int longitud;//tamaño de desplazamiento de un nodo al otro
+    private int trafico;
     private int direccion;////1 abajo-arriba;2arriba-abajo;3izq-Der;4der-izq;5doblehorizontal;6doblevertical
     private LinkedList<Componente> lstComponentes;
 
@@ -91,6 +92,14 @@ public class Arista implements Cloneable {
 
     public int getLongitud() {
         return longitud;
+    }
+
+    public int getTrafico() {
+        return trafico;
+    }
+
+    public void setTrafico(int trafico) {
+        this.trafico = trafico;
     }
 
     public int getX1() {

@@ -5,19 +5,15 @@
  */
 package proyectoanalisis2017.pkg1;
 
-
 /**
  *
  * @author JORGE_ALEJANDRO
  */
-public class RutaCorta extends AlgoritmosRuta2{
+public class RutaTrafico extends AlgoritmosRuta2 {
 
-    public RutaCorta(int cantidadNodos) {
+    public RutaTrafico(int cantidadNodos) {
         super(cantidadNodos);
     }
-    
-
-   
     @Override
     public void llenarPesos(GrafoDirigido grafo)
     {
@@ -27,15 +23,14 @@ public class RutaCorta extends AlgoritmosRuta2{
             {
                 if (grafo.getGrafo()[i][j]!=null)
                 {
-                    pesos[i][j]=grafo.getGrafo()[i][j].getLongitud();
+                    pesos[i][j]=grafo.getGrafo()[i][j].getTrafico();
                 }
                 else
                 {
                     pesos[i][j]=214748364;
                 }
+                
             }
         }
-    }
-
-    
+    }   
 }

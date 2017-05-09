@@ -57,6 +57,14 @@ public class Carro  {
     public void setCamino(LinkedList<Arista> camino) {
         this.camino = camino;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     
     
     

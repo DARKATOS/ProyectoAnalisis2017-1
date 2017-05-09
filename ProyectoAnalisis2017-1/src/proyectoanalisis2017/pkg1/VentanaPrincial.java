@@ -227,9 +227,11 @@ public class VentanaPrincial extends javax.swing.JFrame {
     }//GEN-LAST:event_pnlVentana1MouseReleased
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
         if (pnlVentana1.getOpciones() == 0) {
+            int tipoCamino = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 camino corto \n 2 camino veloz \n 3 camino trafico", "Menu", JOptionPane.INFORMATION_MESSAGE));
             pnlVentana1.setOpciones(2);
-         
+            pnlVentana1.setTipoCamino(tipoCamino);
         } else if (pnlVentana1.getOpciones() == 3) {
             pnlVentana1.ModificarGrafo();
             pnlVentana1.setOpciones(0);

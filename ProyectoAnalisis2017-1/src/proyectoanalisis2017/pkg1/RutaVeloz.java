@@ -17,7 +17,21 @@ public class RutaVeloz extends AlgoritmosRuta2 {
 
     @Override
     public void llenarPesos(GrafoDirigido grafo) {
-        
+        for (int i=0; i<pesos.length; i++)
+        {
+            for (int j=0; j<pesos.length; j++)
+            {
+                if (grafo.getGrafo()[i][j]!=null)
+                {
+                    pesos[i][j]=grafo.getGrafo()[i][j].getVelocidad();
+                }
+                else
+                {
+                    pesos[i][j]=214748364;
+                }
+                
+            }
+        }
     }
     
     

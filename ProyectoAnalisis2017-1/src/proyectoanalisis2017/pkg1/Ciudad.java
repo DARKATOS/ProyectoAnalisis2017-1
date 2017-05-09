@@ -325,6 +325,19 @@ public class Ciudad implements Cloneable {
         return resultado;
 
     }
+    
+    public void mostrarMatrizCiudad() {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <m; j++) {
+                if (matrizCiudad[i][j] != null) {
+                    System.out.print(matrizCiudad[i][j].getIdNodo() + "\t");
+                } else {
+                    System.out.print("-\t");
+                }
+            }
+            System.out.println("");
+        }
+    }
 
     public Object clone() {
         Object obj = null;
