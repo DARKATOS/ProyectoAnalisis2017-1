@@ -70,7 +70,7 @@ public class CarroMovimiento extends Carro implements Runnable {
 //                System.out.println("");
 //            }
             //Se obtiene la velocidad del camino
-            System.out.println("hola");
+//            System.out.println("hola");
             velocidad = getCamino().getFirst().getVelocidad();
             sentido=false;
             if (getCamino().getFirst().getX1() == getCamino().getFirst().getX2()) {
@@ -162,7 +162,9 @@ public class CarroMovimiento extends Carro implements Runnable {
             }
             else
             {
+                
                 getCamino().removeFirst();
+                
             }
         }
         if (getTipo() == 0) {
