@@ -29,23 +29,22 @@ public class PanelVentana extends javax.swing.JPanel {
     private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
     private Ciudad auxCiudad;
     private int tipoCamino;
-    private LinkedList<Componente> destinos;
+//    private LinkedList<Componente> destinos;
     private CarroMovimiento auxCarro;
-    private Componente auxUbicacion;
+//    private Componente auxUbicacion;
 
     public PanelVentana() {
         initComponents();
         carrosMovimiento = new LinkedList<>();
-        destinos = new LinkedList<>();
+//        destinos = new LinkedList<>();
         xImgSelecionada = 0;
         yImgSelecionada = 0;
         itemSeleccionado = new Item();
         estaSelecionadoComponente = false;
         opciones = 0;
         tipoCamino = 0;
-        destinos = new LinkedList<>();
         auxCarro = new CarroMovimiento();
-        auxUbicacion = new Componente();
+//        auxUbicacion = new Componente();
     }
 
     /**
@@ -99,9 +98,9 @@ public class PanelVentana extends javax.swing.JPanel {
         //Si opciones es igual a 2 es porque el usuario va a realizar un camino.
         if (opciones == 2) {
             auxCiudad = copiarCiudad(ciudad);
-            auxUbicacion = null;
+            Componente auxUbicacion = null;
             auxCarro = null;
-            destinos = new LinkedList<>();
+//            destinos = new LinkedList<>();
             //Verificamos que el evento se de dentro del ancho y alto de la ciudad.
             if (evt.getX() < auxCiudad.getAnchoCiudad() && evt.getY() < auxCiudad.getAltoCiudad()) {
                 //Recorro la lista de carros en movimiento para obtener el carro al cual se le dio click
@@ -117,10 +116,7 @@ public class PanelVentana extends javax.swing.JPanel {
                     for (int i = 0; i < this.carrosMovimiento.size(); i++) {
                         if (carrosMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
                             auxCarro = carrosMovimiento.get(i);
-                            //Se pausa el carro.
                             auxCarro.stop();
-                            auxCarro.getArea().setLocation((int)auxUbicacion.getArea().getX(),(int) auxUbicacion.getArea().getY());
-
                         }
                     }
                     //Pasamos a opciones 3
@@ -136,12 +132,19 @@ public class PanelVentana extends javax.swing.JPanel {
                 //Obtenemos la ubicacion
                 Componente destino = auxCiudad.getMatrizCiudad()[auxi][auxj];
                 if (destino != null) {
-                    if (destino.getIdNodo() == -1) {
-                        //La marcamos si es nodo.
+                    if (!destino.getTipoVia().equals("")) {
+                        if (destino.getIdNodo() == -1) {
+                            //La marcamos si es nodo.
+                            auxCiudad.marcarNodo(destino);
+                        }
+                    }
+                    else
+                    {
+                        destino=buscarCarreteraCercana(auxi, auxj);
                         auxCiudad.marcarNodo(destino);
                     }
                     //Añado a los destinos el nodo de destino
-                    destinos.add(destino);
+                    auxCarro.getDestinos().add(destino);
                 }
             }
         }
@@ -210,14 +213,63 @@ public class PanelVentana extends javax.swing.JPanel {
                     ciudad.marcarNodosAdyacentes(auxN, auxM);
                     ciudad.modificarNodos();
                     //Se crea una ciudad local
-                    Ciudad auxCiudad1 = copiarCiudad(ciudad);
-                    GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());
-                    //Se crea el grafo con la ciudad auxiliar
-                    auxGrafo1.crearGrafo(auxCiudad1);
                     for (int i = 0; i < carrosMovimiento.size(); i++) {
                         //Aqui si se mandara el grafo completo
-                        carrosMovimiento.get(i).setGrafo((auxGrafo1));
-                        carrosMovimiento.get(i).setCiudad((auxCiudad1));
+                        if (carrosMovimiento.get(i).getTipo() != 0) {
+                            Ciudad auxCiudad1 = copiarCiudad(carrosMovimiento.get(i).getCiudad());
+                            auxCiudad1.getListaInterrupciones().add(new Interrupcion((Componente) auxCiudad1.getMatrizCiudad()[auxN][auxM].clone(), auxN, auxM));
+                            //Se establece la interrupcion en la posicion i, j de la matriz de la ciudad
+                            auxCiudad1.getMatrizCiudad()[auxN][auxM] = auxComponente;
+                            //Marca los nodos adyacentes a la interrupción
+                            auxCiudad1.marcarNodosAdyacentes(auxN, auxM);
+                            //HASTA AQUI COPIE LO DE ARRIBA
+                            int auxNU = (int) (carrosMovimiento.get(i).getArea().getY() / ciudad.getAltoCampo());
+                            int auxMU = (int) (carrosMovimiento.get(i).getArea().getX() / ciudad.getAnchoCampo());
+                            auxCiudad1.marcarNodo(auxCiudad1.getMatrizCiudad()[auxNU][auxMU]);
+                            auxCiudad1.modificarNodos();
+                            GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());
+                            auxGrafo1.crearGrafo(copiarCiudad(auxCiudad1));
+                            carrosMovimiento.get(i).stop();
+                            carrosMovimiento.get(i).setGrafo(auxGrafo1);
+//                            auxCiudad1.mostrarMatrizCiudad();
+                            carrosMovimiento.get(i).setCiudad(auxCiudad1);
+                            carrosMovimiento.get(i).reconstruirUbicacion();
+                            carrosMovimiento.get(i).reconstruirDestinos();
+                            AlgoritmosRuta2 auxRuta;
+                            if (carrosMovimiento.get(i).getTipo() == 1) {
+                                auxRuta = new RutaCorta(carrosMovimiento.get(i).getCiudad().getCantidadNodos());
+                            } else if (carrosMovimiento.get(i).getTipo() == 2) {
+                                auxRuta = new RutaVeloz(carrosMovimiento.get(i).getCiudad().getCantidadNodos());
+                            } else {
+                                auxRuta = new RutaTrafico(carrosMovimiento.get(i).getCiudad().getCantidadNodos());
+                                obtenerTrafico(carrosMovimiento.get(i));
+                            }
+                            //        System.out.println(auxRuta.getCantidadNodos());
+                            auxRuta.llenarPesos(carrosMovimiento.get(i).getGrafo());
+                            //auxRuta.mostrarPesos();
+                            int matrizVertices[][] = auxRuta.floydWarshall();
+                            int origen = carrosMovimiento.get(i).getUbicacion().getIdNodo();
+                            LinkedList<Arista> auxCamino = new LinkedList<>();
+                            for (int k = 0; k < carrosMovimiento.get(i).getDestinos().size(); k++) {
+                                LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoFloydWarshall(matrizVertices, origen, carrosMovimiento.get(i).getDestinos().get(k).getIdNodo(), carrosMovimiento.get(i).getGrafo());
+                                for (int j = 0; j < auxCamino1.size(); j++) {
+                                    System.out.println("camino: A" + auxCamino1.get(j).getX().getIdNodo());
+                                    System.out.println("camino: B" + auxCamino1.get(j).getY().getIdNodo());
+                                    auxCamino.add(auxCamino1.get(j));
+                                }
+                                origen = carrosMovimiento.get(i).getDestinos().get(k).getIdNodo();
+                            }
+                            carrosMovimiento.get(i).setCamino(auxCamino);
+                            carrosMovimiento.get(i).start();
+
+                        } else {
+                            Ciudad auxCiudad1 = copiarCiudad(ciudad);
+                            GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());
+                            //Se crea el grafo con la ciudad auxiliar
+                            auxGrafo1.crearGrafo(copiarCiudad(ciudad));
+                            carrosMovimiento.get(i).setGrafo(auxGrafo1);
+                            carrosMovimiento.get(i).setCiudad(auxCiudad1);
+                        }
 
                     }
                 } //Si la ciudad en la posicion i,j es diferente de null y el componente tomado del area de items es el que remueve interrupciones y donde se tomo el evento en la posicion i, j es alguna de las interrupciones
@@ -230,7 +282,6 @@ public class PanelVentana extends javax.swing.JPanel {
                             ciudad.getMatrizCiudad()[auxN][auxM] = ciudad.getListaInterrupciones().get(i).getComponenteAnterior();
                         }
                     }
-
                     //Procedo con la eliminacion de nodos adyacentes.
                     ciudad.eliminarNodosAdyacentes(auxN, auxM);
                     ciudad.modificarNodos();
@@ -248,7 +299,6 @@ public class PanelVentana extends javax.swing.JPanel {
                             auxGrafo1.crearGrafo(auxCiudad1);
                             carrosMovimiento.get(i).setGrafo(auxGrafo1);
                             carrosMovimiento.get(i).setCiudad(auxCiudad1);
-//                            mostrarMatrizCiudad(auxCiudad1);
                             int m = auxCiudad1.getMatrizCiudad()[auxN2][auxM2].getIdNodo();
                             carrosMovimiento.get(i).buscarCamino(m);
                             carrosMovimiento.get(i).start();
@@ -258,16 +308,14 @@ public class PanelVentana extends javax.swing.JPanel {
                             carrosMovimiento.get(i).setGrafo(auxGrafo1);
                             carrosMovimiento.get(i).setCiudad(auxCiudad1);
                         }
-
                     }
-
                 } //Si el componente no es una de las interrupciones ni el que borra las interrupciones es un componente para pintar en el mapa.
                 else if (!auxComponente.getNombre().equals("XX") && !auxComponente.getNombre().equals("YY") && !auxComponente.getNombre().equals("XXX")) {
                     ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
                 }
 
             } catch (Exception e) {
-                System.out.println("Error en el panel");
+                System.out.println("Error en el panel: " + e.toString());
             }
             repaint();
         }
@@ -301,79 +349,56 @@ public class PanelVentana extends javax.swing.JPanel {
         auxCiudad.modificarNodos();
         Ciudad auxCiudad1 = copiarCiudad(auxCiudad);
         GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());  // Creo un grafo que se le asignara al carro
-        auxGrafo1.crearGrafo(auxCiudad1);    //Creo el grafo con la ciudad.
+        auxGrafo1.crearGrafo(copiarCiudad(auxCiudad));    //Creo el grafo con la ciudad.
         auxCarro.setGrafo(auxGrafo1);   //Seteo el grafo al carro.
-        auxCarro.setCiudad(copiarCiudad(auxCiudad));
-        auxCarro.setTipo(0); //Seteo el tipo de carro.
-        LinkedList<Componente> auxDestinos = new LinkedList<>();
-        for (int k = 0; k < destinos.size(); k++) {
-            for (int i = 0; i < auxCiudad.getMatrizCiudad().length; i++) {
-                for (int j = 0; j < auxCiudad.getMatrizCiudad()[i].length; j++) {
-                    if (auxCiudad.getMatrizCiudad()[i][j] != null) {
-                        if (destinos.get(k).getArea().getX() == auxCiudad.getMatrizCiudad()[i][j].getArea().getX() && destinos.get(k).getArea().getY() == auxCiudad.getMatrizCiudad()[i][j].getArea().getY()) {
-                            auxDestinos.add(auxCiudad.getMatrizCiudad()[i][j]);
-                        }
-                    }
-
-                }
-            }
-        }
-        Componente auxUbicacion1 = null;
-        for (int i = 0; i < auxCiudad.getMatrizCiudad().length; i++) {
-            for (int j = 0; j < auxCiudad.getMatrizCiudad()[i].length; j++) {
-                if (auxCiudad.getMatrizCiudad()[i][j] != null) {
-                    if (auxUbicacion.getArea().getX() == auxCiudad.getMatrizCiudad()[i][j].getArea().getX() && auxUbicacion.getArea().getY() == auxCiudad.getMatrizCiudad()[i][j].getArea().getY()) {
-                        auxUbicacion1 = auxCiudad.getMatrizCiudad()[i][j];
-                    }
-                }
-
-            }
-        }
-        auxCiudad1.mostrarMatrizCiudad();
+        auxCarro.setCiudad(auxCiudad1);
+        auxCarro.setTipo(tipoCamino); //Seteo el tipo de carro.
+        auxCarro.reconstruirDestinos();
+        auxCarro.reconstruirUbicacion();
+        auxCarro.getCiudad().mostrarMatrizCiudad();
 //        mostrarGrafo(auxGrafo1);
         AlgoritmosRuta2 auxRuta;
-        if (tipoCamino == 1) {
-            auxRuta = new RutaCorta(auxCiudad.getCantidadNodos());
-        } else if (tipoCamino == 2) {
-            auxRuta = new RutaVeloz(auxCiudad.getCantidadNodos());
+        if (auxCarro.getTipo() == 1) {
+            auxRuta = new RutaCorta(auxCarro.getCiudad().getCantidadNodos());
+        } else if (auxCarro.getTipo() == 2) {
+            auxRuta = new RutaVeloz(auxCarro.getCiudad().getCantidadNodos());
         } else {
-            auxRuta=new RutaTrafico(auxCiudad.getCantidadNodos());
-            obtenerTrafico();
+            auxRuta = new RutaTrafico(auxCarro.getCiudad().getCantidadNodos());
+            obtenerTrafico(auxCarro);
         }
 //        System.out.println(auxRuta.getCantidadNodos());
-        auxRuta.llenarPesos(auxGrafo1);
+        auxRuta.llenarPesos(auxCarro.getGrafo());
         //auxRuta.mostrarPesos();
         int matrizVertices[][] = auxRuta.floydWarshall();
-        int origen = auxUbicacion1.getIdNodo();
+        int origen = auxCarro.getUbicacion().getIdNodo();
         LinkedList<Arista> auxCamino = new LinkedList<>();
-        for (int i = 0; i < auxDestinos.size(); i++) {
-            LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoFloydWarshall(matrizVertices, origen, auxDestinos.get(i).getIdNodo(), auxCarro.getGrafo());
+        for (int i = 0; i < auxCarro.getDestinos().size(); i++) {
+            LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoFloydWarshall(matrizVertices, origen, auxCarro.getDestinos().get(i).getIdNodo(), auxCarro.getGrafo());
             for (int j = 0; j < auxCamino1.size(); j++) {
                 System.out.println("camino: A" + auxCamino1.get(j).getX().getIdNodo());
                 System.out.println("camino: B" + auxCamino1.get(j).getY().getIdNodo());
                 auxCamino.add(auxCamino1.get(j));
             }
-            origen = auxDestinos.get(i).getIdNodo();
+            origen = auxCarro.getDestinos().get(i).getIdNodo();
         }
         auxCarro.setCamino(auxCamino);
-        
         auxCarro.start();
     }
 
-    public void obtenerTrafico() {
-        for (int j = 0; j < auxCarro.getGrafo().getGrafo().length; j++) {
-            for (int k = 0; k < auxCarro.getGrafo().getGrafo()[j].length; k++) {
-                auxCarro.getGrafo().getGrafo()[j][k].setTrafico(0);
+    public void obtenerTrafico(CarroMovimiento carro) {
+        for (int j = 0; j < carro.getGrafo().getGrafo().length; j++) {
+            for (int k = 0; k < carro.getGrafo().getGrafo()[j].length; k++) {
+                carro.getGrafo().getGrafo()[j][k].setTrafico(0);
             }
         }
         for (int i = 0; i < carrosMovimiento.size(); i++) {
-            if (carrosMovimiento.get(i).getId() != auxCarro.getId() && carrosMovimiento.get(i).getCamino() != null) {
+            if (carrosMovimiento.get(i).getId() != carro.getId() && carrosMovimiento.get(i).getCamino() != null) {
                 Arista arista = carrosMovimiento.get(i).getCamino().getFirst();
-                for (int j = 0; j < auxCarro.getGrafo().getGrafo().length; j++) {
-                    for (int k = 0; k < auxCarro.getGrafo().getGrafo()[j].length; k++) {
-                        if (arista.getX().getIdNodo() == auxCarro.getGrafo().getGrafo()[j][k].getX().getIdNodo()
-                                && arista.getY().getIdNodo() == auxCarro.getGrafo().getGrafo()[j][k].getY().getIdNodo()) {
-                            auxCarro.getGrafo().getGrafo()[j][k].setTrafico(auxCarro.getGrafo().getGrafo()[j][k].getTrafico() + 1);
+                for (int j = 0; j < carro.getGrafo().getGrafo().length; j++) {
+                    for (int k = 0; k < carro.getGrafo().getGrafo()[j].length; k++) {
+                        if (arista.getX().getIdNodo() == carro.getGrafo().getGrafo()[j][k].getX().getIdNodo()
+                                && arista.getY().getIdNodo() == carro.getGrafo().getGrafo()[j][k].getY().getIdNodo()) {
+                            carro.getGrafo().getGrafo()[j][k].setTrafico(carro.getGrafo().getGrafo()[j][k].getTrafico() + 1);
                         }
                     }
                 }
@@ -492,6 +517,151 @@ public class PanelVentana extends javax.swing.JPanel {
             }
             System.out.println("");
         }
+    }
+
+    //GIAN PRO
+    private Componente buscarCarreteraCercana(int x, int y) {
+        Componente respuesta = null;
+        int comIzq = valorCarreteraIzq(x, y - 1);
+        int comDer = valorCarreteraDer(x, y + 1);
+        int comArriba = valorCarreteraArriba(x - 1, y);
+        int comAbajo = valorCarreteraAbajo(x + 1, y);
+        if (comIzq < comDer) {
+            respuesta = mirarCarreteraIzq(x, y - 1);
+        } else {
+            if (comDer < comArriba) {
+                respuesta = mirarCarreteraDer(x, y + 1);
+            } else {
+                if (comArriba < comAbajo) {
+                    respuesta = mirarCarreteraArriba(x - 1, y);
+                } else {
+                    respuesta = mirarCarreteraAbajo(x + 1, y);
+                }
+            }
+        }
+        return respuesta;
+    }
+
+    public Componente mirarCarreteraIzq(int x, int y) {
+        Componente respuesta = null;
+        Boolean bandera = true;
+        while (y >= 0 && bandera) {
+            if (auxCiudad.getMatrizCiudad()[x][y] != null && !auxCiudad.getMatrizCiudad()[x][y].getTipoVia().equals("")) {
+                respuesta = auxCiudad.getMatrizCiudad()[x][y];
+                bandera = false;
+            }
+            y--;
+        }
+        return respuesta;
+    }
+
+    public Componente mirarCarreteraDer(int x, int y) {
+        Componente respuesta = null;
+        Boolean bandera = true;
+        while (y < auxCiudad.getMatrizCiudad().length && bandera) {
+            if (auxCiudad.getMatrizCiudad()[x][y] != null && !auxCiudad.getMatrizCiudad()[x][y].getTipoVia().equals("")) {
+                respuesta = auxCiudad.getMatrizCiudad()[x][y];
+                bandera = false;
+            }
+            y++;
+        }
+        return respuesta;
+
+    }
+
+    public Componente mirarCarreteraArriba(int x, int y) {
+        Componente respuesta = null;
+        Boolean bandera = true;
+        while (x >= 0 && bandera) {
+            if (auxCiudad.getMatrizCiudad()[x][y] != null && !auxCiudad.getMatrizCiudad()[x][y].getTipoVia().equals("")) {
+                respuesta = auxCiudad.getMatrizCiudad()[x][y];
+                bandera = false;
+            }
+            x--;
+        }
+        return respuesta;
+
+    }
+
+    public Componente mirarCarreteraAbajo(int x, int y) {
+        Componente respuesta = null;
+        Boolean bandera = true;
+        while (x < auxCiudad.getMatrizCiudad().length && bandera) {
+            if (auxCiudad.getMatrizCiudad()[x][y] != null && !auxCiudad.getMatrizCiudad()[x][y].getTipoVia().equals("")) {
+                respuesta = auxCiudad.getMatrizCiudad()[x][y];
+                bandera = false;
+            }
+            x++;
+        }
+        return respuesta;
+    }
+
+    public int valorCarreteraIzq(int x, int y) {
+        int respuesta = 0;
+        Boolean bandera = true;
+        while (y >= 0 && bandera) {
+            respuesta++;
+            if (auxCiudad.getMatrizCiudad()[x][y] != null && !auxCiudad.getMatrizCiudad()[x][y].getTipoVia().equals("")) {
+
+                bandera = false;
+            }
+            y--;
+        }
+        if (bandera) {
+            respuesta = Integer.MAX_VALUE;
+        }
+        return respuesta;
+    }
+
+    public int valorCarreteraDer(int x, int y) {
+        int respuesta = 0;
+        Boolean bandera = true;
+        while (y < auxCiudad.getMatrizCiudad().length && bandera) {
+            respuesta++;
+            if (auxCiudad.getMatrizCiudad()[x][y] != null && !auxCiudad.getMatrizCiudad()[x][y].getTipoVia().equals("")) {
+
+                bandera = false;
+            }
+            y++;
+        }
+        if (bandera) {
+            respuesta = Integer.MAX_VALUE;
+        }
+        return respuesta;
+
+    }
+
+    public int valorCarreteraArriba(int x, int y) {
+        int respuesta = 0;
+        Boolean bandera = true;
+        while (x >= 0 && bandera) {
+            respuesta++;
+            if (auxCiudad.getMatrizCiudad()[x][y] != null && !auxCiudad.getMatrizCiudad()[x][y].getTipoVia().equals("")) {
+                bandera = false;
+            }
+            x--;
+        }
+        if (bandera) {
+            respuesta = Integer.MAX_VALUE;
+        }
+        return respuesta;
+
+    }
+
+    public int valorCarreteraAbajo(int x, int y) {
+        int respuesta = 0;
+        Boolean bandera = true;
+        while (x < auxCiudad.getMatrizCiudad().length && bandera) {
+            respuesta++;
+            if (auxCiudad.getMatrizCiudad()[x][y] != null && !auxCiudad.getMatrizCiudad()[x][y].getTipoVia().equals("")) {
+                bandera = false;
+            }
+            x++;
+        }
+        if (bandera) {
+            respuesta = Integer.MAX_VALUE;
+        }
+        return respuesta;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

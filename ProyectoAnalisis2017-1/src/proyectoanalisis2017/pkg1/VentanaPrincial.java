@@ -214,7 +214,7 @@ public class VentanaPrincial extends javax.swing.JFrame {
                 }
             }
         }
-        ingresarCarro(new CarroMovimiento(this.cantidadCarros, ciudad.getAnchoCampo(), ciudad.getAltoCampo(), camino1, 1), auxGrafo1, ciudad);
+        ingresarCarro(new CarroMovimiento(cantidadCarros, ciudad, auxGrafo1, camino1, 0));
         this.cantidadCarros++;
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -397,11 +397,9 @@ public class VentanaPrincial extends javax.swing.JFrame {
      * @param carroAuto
      * @param auxGrafo1
      */
-    private void ingresarCarro(CarroMovimiento carroAuto, GrafoDirigido auxGrafo1, Ciudad auxCiudad1) {
+    private void ingresarCarro(CarroMovimiento carroAuto) {
         pnlVentana1.getCarrosMovimiento().add(carroAuto);
         pnlVentana1.getCarrosMovimiento().getLast().setPanel(pnlVentana1);
-        pnlVentana1.getCarrosMovimiento().getLast().setGrafo(auxGrafo1);
-        pnlVentana1.getCarrosMovimiento().getLast().setCiudad(auxCiudad1);
     }
 
 //    private void mostrarMatrizCiudad() {
