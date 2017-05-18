@@ -284,21 +284,25 @@ public class PanelVentana extends javax.swing.JPanel {
                     ciudad.modificarNodos();
                     for (int i = 0; i < carrosMovimiento.size(); i++) {
                         if (carrosMovimiento.get(i).getTipo() != 0) {
+                            
                             Ciudad auxCiudad1 = copiarCiudad(ciudad);
                             //HASTA AQUI COPIE LO DE ARRIBA
                             int auxNU = (int) (carrosMovimiento.get(i).getArea().getY() / ciudad.getAltoCampo());
                             int auxMU = (int) (carrosMovimiento.get(i).getArea().getX() / ciudad.getAnchoCampo());
                             auxCiudad1.marcarNodo(auxCiudad1.getMatrizCiudad()[auxNU][auxMU]);
-                            auxCiudad1.modificarNodos();
-                            GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());
-                            auxGrafo1.crearGrafo(copiarCiudad(auxCiudad1));
+                            carrosMovimiento.get(i).setCiudad(auxCiudad1);
+                            carrosMovimiento.get(i).recuperarDestinos();
+                            carrosMovimiento.get(i).getCiudad().modificarNodos();
+                            GrafoDirigido auxGrafo1 = new GrafoDirigido(carrosMovimiento.get(i).getCiudad().getCantidadNodos());
+                            auxGrafo1.crearGrafo(copiarCiudad(carrosMovimiento.get(i).getCiudad()));
                             carrosMovimiento.get(i).stop();
                             carrosMovimiento.get(i).setGrafo(auxGrafo1);
-//                            auxCiudad1.mostrarMatrizCiudad();
-                            carrosMovimiento.get(i).setCiudad(auxCiudad1);
+                            
                             carrosMovimiento.get(i).reconstruirUbicacion();
                             carrosMovimiento.get(i).getArea().setLocation((int) carrosMovimiento.get(i).getUbicacion().getArea().getX(), (int) carrosMovimiento.get(i).getUbicacion().getArea().getY());
                             carrosMovimiento.get(i).reconstruirDestinos();
+                            System.out.println("Muestro ciudad que queda");
+                            carrosMovimiento.get(i).getCiudad().mostrarMatrizCiudad();
                             AlgoritmoRuta auxRuta;
                             if (carrosMovimiento.get(i).getTipo() == 1) {
                                 auxRuta = new RutaCorta(carrosMovimiento.get(i).getCiudad().getCantidadNodos());

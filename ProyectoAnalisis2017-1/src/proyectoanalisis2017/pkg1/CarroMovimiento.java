@@ -282,6 +282,22 @@ public class CarroMovimiento extends Carro implements Runnable {
         int auxM = (int) (getArea().getX() / ciudad.getAnchoCampo());
         ubicacion = ciudad.getMatrizCiudad()[auxN][auxM];
     }
+    
+    public void recuperarDestinos()
+    {
+        for (int k = 0; k < destinos.size(); k++) {
+            for (int i = 0; i < ciudad.getMatrizCiudad().length; i++) {
+                for (int j = 0; j < ciudad.getMatrizCiudad()[i].length; j++) {
+                    if (ciudad.getMatrizCiudad()[i][j] != null) {
+                        if (destinos.get(k).getArea().getX() == ciudad.getMatrizCiudad()[i][j].getArea().getX() && destinos.get(k).getArea().getY() == ciudad.getMatrizCiudad()[i][j].getArea().getY()) {
+                            ciudad.marcarNodo(ciudad.getMatrizCiudad()[i][j]);
+                        }
+                    }
+
+                }
+            }
+        }
+    }
 
     public void reconstruirDestinos() {
         LinkedList<Componente> auxDestinos = new LinkedList<>();
