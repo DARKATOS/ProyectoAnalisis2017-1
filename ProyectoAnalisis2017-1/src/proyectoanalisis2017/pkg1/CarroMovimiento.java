@@ -24,14 +24,13 @@ public class CarroMovimiento extends Carro implements Runnable {
     private Ciudad ciudad;
     private Componente ubicacion;
     private LinkedList<Componente> destinos;
-    private boolean debug = false;
 
-    public CarroMovimiento(int id,Ciudad ciudad, GrafoDirigido grafo, LinkedList<Arista> camino, int tipo) {
+    public CarroMovimiento(int id, Ciudad ciudad, GrafoDirigido grafo, LinkedList<Arista> camino, int tipo) {
         super(id, ciudad.getAnchoCampo(), ciudad.getAltoCampo(), camino, tipo);
-        this.ciudad=ciudad;
-        this.grafo=grafo;
-        ubicacion=null;
-        destinos=new LinkedList<>();
+        this.ciudad = ciudad;
+        this.grafo = grafo;
+        ubicacion = null;
+        destinos = new LinkedList<>();
     }
 
     /**
@@ -60,20 +59,11 @@ public class CarroMovimiento extends Carro implements Runnable {
         this.panel = panel;
     }
 
-    public void setDebug(boolean debug) {
-        this.debug = debug;
-    }
-
     @Override
     public void run() {
         int velocidad;
         Boolean sentido;
         while (!getCamino().isEmpty()) {
-
-//            if(debug)
-//            {
-//                System.out.println("");
-//            }
             //Se obtiene la velocidad del camino
             velocidad = getCamino().getFirst().getVelocidad();
             sentido = false;
@@ -168,11 +158,12 @@ public class CarroMovimiento extends Carro implements Runnable {
                 getCamino().removeFirst();
             }
         }
-        if (getTipo()!=0) {
+        if (getTipo() != 0) {
             int m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
             buscarCamino(m);
+            System.out.println("Holaaaa");
             setTipo(0);
-            destinos=new LinkedList<>();
+            destinos = new LinkedList<>();
             setCiudad(panel.copiarCiudad(panel.getCiudad()));
             GrafoDirigido auxGrafo = new GrafoDirigido(ciudad.getCantidadNodos());
             auxGrafo.crearGrafo(panel.copiarCiudad(ciudad));
@@ -191,10 +182,22 @@ public class CarroMovimiento extends Carro implements Runnable {
         return ciudad.getMatrizCiudad()[auxX][auxY].getIdNodo();
     }
 
+//    public void volverObtenerCamino() {
+//        int m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
+//        buscarCamino(m);
+//        setTipo(0);
+//        destinos = new LinkedList<>();
+//        setCiudad(panel.copiarCiudad(panel.getCiudad()));
+//        GrafoDirigido auxGrafo = new GrafoDirigido(ciudad.getCantidadNodos());
+//        auxGrafo.crearGrafo(panel.copiarCiudad(ciudad));
+//        setGrafo(auxGrafo);
+//        start();
+//    }
+
     public void puedoPasar(int x, int y, int tipo) {
         int auxI;
         int auxJ;
-        if (tipo != 0) {
+        if (tipo == 0) {
             auxI = (y) / ciudad.getAltoCampo();
             auxJ = (x) / ciudad.getAnchoCampo();
         } else {
@@ -203,7 +206,7 @@ public class CarroMovimiento extends Carro implements Runnable {
         }
         Boolean paso = false;
 
-        if (tipo == 0) {
+        if (tipo == 1) {
             if (auxI + 1 < ciudad.getMatrizCiudad()[auxI].length && ciudad.getMatrizCiudad()[auxI + 1][auxJ] != null && ciudad.getMatrizCiudad()[auxI + 1][auxJ].getTipoVia().equals("cruce")) {
                 while (!paso) {
                     paso = true;
@@ -273,18 +276,15 @@ public class CarroMovimiento extends Carro implements Runnable {
             System.out.println("eeeeeeoorro");
         }
     }
-    
-    public void reconstruirUbicacion()
-    {
+
+    public void reconstruirUbicacion() {
         int auxN = (int) (getArea().getY() / ciudad.getAltoCampo());
         int auxM = (int) (getArea().getX() / ciudad.getAnchoCampo());
-        ubicacion=ciudad.getMatrizCiudad()[auxN][auxM];
-        getArea().setLocation((int) ubicacion.getArea().getX(), (int) ubicacion.getArea().getY());
+        ubicacion = ciudad.getMatrizCiudad()[auxN][auxM];
     }
-    
-    public void reconstruirDestinos()
-    {
-        LinkedList<Componente> auxDestinos=new LinkedList<>();
+
+    public void reconstruirDestinos() {
+        LinkedList<Componente> auxDestinos = new LinkedList<>();
         for (int k = 0; k < destinos.size(); k++) {
             for (int i = 0; i < ciudad.getMatrizCiudad().length; i++) {
                 for (int j = 0; j < ciudad.getMatrizCiudad()[i].length; j++) {
@@ -297,7 +297,7 @@ public class CarroMovimiento extends Carro implements Runnable {
                 }
             }
         }
-        destinos=auxDestinos;
+        destinos = auxDestinos;
     }
 
     public void setDestinos(LinkedList<Componente> destinos) {
@@ -321,7 +321,7 @@ public class CarroMovimiento extends Carro implements Runnable {
         }
         return respuesta;
     }
-    
+
     public LinkedList<Componente> getDestinos() {
         return destinos;
     }

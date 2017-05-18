@@ -9,7 +9,7 @@ package proyectoanalisis2017.pkg1;
  *
  * @author JORGE_ALEJANDRO
  */
-public class RutaTrafico extends AlgoritmosRuta2 {
+public class RutaTrafico extends AlgoritmoRuta {
 
     public RutaTrafico(int cantidadNodos) {
         super(cantidadNodos);

@@ -238,11 +238,10 @@ public class Ciudad implements Cloneable {
     }
 
     public void modificarNodos() {
-        int contador=0;
+        int contador = 0;
         for (int i = 0; i < this.n; i++) {
             for (int j = 0; j < this.m; j++) {
-                if(this.matrizCiudad[i][j]!=null&&this.matrizCiudad[i][j].getIdNodo()!=-1)
-                {
+                if (this.matrizCiudad[i][j] != null && this.matrizCiudad[i][j].getIdNodo() != -1) {
                     this.matrizCiudad[i][j].setIdNodo(contador);
                     contador++;
                 }
@@ -306,8 +305,11 @@ public class Ciudad implements Cloneable {
      * @param componente componente a marcar
      */
     public void marcarNodo(Componente componente) {
-        componente.setIdNodo(this.cantidadNodos);
-        this.cantidadNodos++;
+        if (componente.getIdNodo() == -1) {
+            componente.setIdNodo(this.cantidadNodos);
+            this.cantidadNodos++;
+        }
+
     }
 
     /**
@@ -325,10 +327,10 @@ public class Ciudad implements Cloneable {
         return resultado;
 
     }
-    
+
     public void mostrarMatrizCiudad() {
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j <m; j++) {
+            for (int j = 0; j < m; j++) {
                 if (matrizCiudad[i][j] != null) {
                     System.out.print(matrizCiudad[i][j].getIdNodo() + "\t");
                 } else {

@@ -12,12 +12,12 @@ import javax.swing.JOptionPane;
  *
  * @author JORGE_ALEJANDRO
  */
-public class AlgoritmosRuta2 {
+public class AlgoritmoRuta {
 
     protected int pesos[][];
     private int cantidadNodos;
 
-    public AlgoritmosRuta2(int cantidadNodos) {
+    public AlgoritmoRuta(int cantidadNodos) {
         this.cantidadNodos = cantidadNodos;
         this.pesos = new int[this.cantidadNodos][this.cantidadNodos];
 
@@ -54,32 +54,6 @@ public class AlgoritmosRuta2 {
         }
 
         return matrizNodos;
-
-//        int [][]matrizNodos=new int[pesos.length][pesos.length];
-//        for (int i = 0; i < cantidadNodos; i++) {
-//            pesos[i][i] = 0;
-//        }
-//        for (int i=0; i<cantidadNodos; i++)
-//        {
-//            for (int j=0; j<cantidadNodos; j++)
-//            {
-//                matrizNodos[j][i]=i;
-//            }
-//        }
-//
-//        for (int i = 0; i < cantidadNodos; i++) {
-//            for (int j = 0; j < cantidadNodos; j++) {
-//                for (int k = 0; k < cantidadNodos; k++) {
-//                    int dt = pesos[j][i] + pesos[i][k];
-//                    if (pesos[j][k] > dt) {
-//                        pesos[j][k] = dt;
-//                        matrizNodos[j][k]=i;
-//                    }
-//                }
-//            }
-//            
-//        }
-//        return matrizNodos;
     }
 
     public void mostrarPesos() {
@@ -102,7 +76,7 @@ public class AlgoritmosRuta2 {
      * aristas
      * @return LinkedList aristas que conforman el camino minimo
      */
-    public LinkedList<Arista> obtenerCaminoFloydWarshall(int matrizNodos[][], int origen, int destino, GrafoDirigido grafo) {
+    public LinkedList<Arista> obtenerCamino(int matrizNodos[][], int origen, int destino, GrafoDirigido grafo) {
 //        mostrarMatrizNodos(matrizNodos);
 //        System.out.println("");
         mostrarGrafo(grafo);
@@ -131,17 +105,16 @@ public class AlgoritmosRuta2 {
             //Si la arista es nula no se agrega
             if (arista != null) {
                 camino.add(arista);
-            }
-            else 
-            {
-                camino=new LinkedList<>();
+            } else {
+                camino = new LinkedList<>();
                 JOptionPane.showMessageDialog(null, "No existe un camino disponible", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         return camino;
-    }
 
-    public void setCantidadNodos(int cantidadNodos) {
+}
+
+public void setCantidadNodos(int cantidadNodos) {
         this.cantidadNodos = cantidadNodos;
     }
 
