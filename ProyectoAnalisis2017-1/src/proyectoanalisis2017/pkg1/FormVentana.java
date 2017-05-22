@@ -13,7 +13,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
@@ -31,13 +30,13 @@ public class FormVentana extends javax.swing.JFrame {
 
     public FormVentana() {
         initComponents();
-
         //Indica la cantidad de carros puestos
         this.cantidadCarros = 0;
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
         pnlVentana1.setFocusable(true);
         JOptionPane.showMessageDialog(rootPane, "OJO con copia de codigo(GIT HUB)!!!!");
+        // Muestra un menu donde es posible seleccionar si se crea una ciudad nueva o se carga desde un archivo txt.
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
         if (opcion == 1) {
             cargarCiudad();
@@ -182,6 +181,7 @@ public class FormVentana extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        //Se obtiene un nombre de archivo para almacenar el .txt
         String nombreArchivo = JOptionPane.showInputDialog("ingrese nombre archivo");
         GuardarCiudad(nombreArchivo);
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -191,7 +191,8 @@ public class FormVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_pnlVentana1KeyReleased
 
     private void pnlVentana1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnlVentana1KeyPressed
-       pnlVentana1.girarItem();
+       //Realiza un rotacion de item
+        pnlVentana1.girarItem();
     }//GEN-LAST:event_pnlVentana1KeyPressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -201,6 +202,7 @@ public class FormVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        //Permite ingresar un carro en tipo automatico a la ciudad
         GrafoDirigido auxGrafo1=new GrafoDirigido(ciudad.getCantidadNodos());
         Ciudad auxCiudad1 = pnlVentana1.copiarCiudad(ciudad);
         auxGrafo1.crearGrafo(auxCiudad1);
@@ -219,7 +221,8 @@ public class FormVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        pnlVentana1.getCarrosMovimiento().getLast().start();
+        //inicia el movimiento del carro
+        pnlVentana1.getCarrosMovimiento().getLast().iniciar();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void pnlVentana1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVentana1MouseReleased
@@ -229,6 +232,7 @@ public class FormVentana extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
         if (pnlVentana1.getOpciones() == 0) {
+            //Seleccion del camino minimo en forma de camino mas corto, camino veloz, camiono de menor trafico
             int tipoCamino = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 camino corto \n 2 camino veloz \n 3 camino trafico", "Menu", JOptionPane.INFORMATION_MESSAGE));
             pnlVentana1.setOpciones(2);
             pnlVentana1.setTipoCamino(tipoCamino);
@@ -286,6 +290,7 @@ public class FormVentana extends javax.swing.JFrame {
 
     /**
      * Permite guardar en un archivo txt la ciudad. Para que en otra ocasion pueda ser cargada
+     * Se recorre la matriz de la ciudad y se almacenan los nombres de cada uno de los componentes
      */
     private void GuardarCiudad(String nombreArchivo) {
         String linea;
@@ -326,6 +331,7 @@ public class FormVentana extends javax.swing.JFrame {
 
     /**
      * Permite cargar desde un archivo txt la ciudad.
+     * Se recorre un archivo de texto y de acuerdo a la nomeclatura de los componentes se reconstruyen en la matriz de la ciudad
      */
     private void cargarCiudad() {
         String nombreArchivo = JOptionPane.showInputDialog("ingrese nombre archivo");
@@ -382,7 +388,7 @@ public class FormVentana extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     * Grafica el area de items para construir la ciudad
      */
     private void graficarAreaItems() {
         int anchoAreaItemsX1 = ciudad.getN() * ciudad.getAnchoCampo();
@@ -395,21 +401,10 @@ public class FormVentana extends javax.swing.JFrame {
     /**
      * Permite añadir un carro a la lista de carros en movimiento y asignarle un
      * grafo.
-     * @param carroAuto
-     * @param auxGrafo1
+     * @param carroAuto Vehiculo que se va a agregar a la lista de carros de movimiento
      */
     private void ingresarCarro(CarroMovimiento carroAuto) {
         pnlVentana1.getCarrosMovimiento().add(carroAuto);
         pnlVentana1.getCarrosMovimiento().getLast().setPanel(pnlVentana1);
     }
-
-//    private void mostrarMatrizCiudad() {
-//        for (int i = 0; i < ciudad.getN(); i++) {
-//            for (int j = 0; j < ciudad.getM(); j++) {
-//                if (ciudad.getMatrizCiudad()[i][j] != null) {
-//                    System.out.println(ciudad.getMatrizCiudad()[i][j].getIdNodo());
-//                }
-//            }
-//        }
-//    }
 }

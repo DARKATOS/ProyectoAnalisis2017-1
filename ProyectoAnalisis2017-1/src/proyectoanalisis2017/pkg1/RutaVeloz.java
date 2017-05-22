@@ -15,6 +15,10 @@ public class RutaVeloz extends AlgoritmoRuta {
         super(cantidadNodos);
     }
 
+    /**
+     * Permite llenar la matriz de pesos con las velocidades de las aristas
+     * @param grafo con el que se va a obtener el peso de las aristas para llenar la matriz
+     */
     @Override
     public void llenarPesos(GrafoDirigido grafo) {
         for (int i=0; i<pesos.length; i++)

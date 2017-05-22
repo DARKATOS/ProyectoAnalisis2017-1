@@ -5,6 +5,7 @@
  */
 package proyectoanalisis2017.pkg1;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.LinkedList;
@@ -20,10 +21,10 @@ public class CarroMovimiento extends Carro implements Runnable {
 
     private PanelVentana panel;
     private Thread hilo;
-    private GrafoDirigido grafo;
-    private Ciudad ciudad;
-    private Componente ubicacion;
-    private LinkedList<Componente> destinos;
+    private GrafoDirigido grafo; //Grafo que reconoce el vehiculo y trabaja con la ciudad
+    private Ciudad ciudad; //Ciudad que el vehiculo reconoce y trabaja en conjunto con el grafo
+    private Componente ubicacion; //Ultima ubicacion conocida del vehiculo
+    private LinkedList<Componente> destinos; //Lista de destinos del vedhiculo en una ruta especifica
 
     public CarroMovimiento(int id, Ciudad ciudad, GrafoDirigido grafo, LinkedList<Arista> camino, int tipo) {
         super(id, ciudad.getAnchoCampo(), ciudad.getAltoCampo(), camino, tipo);
@@ -36,7 +37,7 @@ public class CarroMovimiento extends Carro implements Runnable {
     /**
      * Permite iniciar el hilo del carro
      */
-    public void start() {
+    public void iniciar() {
         this.hilo = new Thread(this);
         this.hilo.start();
     }
@@ -44,11 +45,8 @@ public class CarroMovimiento extends Carro implements Runnable {
     /**
      * Permite pausar el hilo del carro
      */
-    public void stop() {
+    public void parar() {
         this.hilo.stop();
-    }
-
-    public CarroMovimiento() {
     }
 
     public void setGrafo(GrafoDirigido grafo) {
@@ -59,6 +57,9 @@ public class CarroMovimiento extends Carro implements Runnable {
         this.panel = panel;
     }
 
+    /**
+     * Permite el movimiento del carro en la ciudad segun su camino que es una lista de aristas
+     */
     @Override
     public void run() {
         int velocidad;
@@ -82,7 +83,7 @@ public class CarroMovimiento extends Carro implements Runnable {
                 if (sentido) {
                     while ((int) getArea().getY() < auxY) {
                         try {
-                            puedoPasar((int) getArea().getX(), (int) getArea().getY() + (int) getArea().getHeight(), 1);
+                            pasar((int) getArea().getX(), (int) getArea().getY() + (int) getArea().getHeight(), 1);
                             getArea().setLocation((int) getArea().getX(), (int) getArea().getY() + 10);
                             Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
                         } catch (InterruptedException ex) {
@@ -95,7 +96,7 @@ public class CarroMovimiento extends Carro implements Runnable {
                 } else {
                     while ((int) getArea().getY() > auxY) {
                         try {
-                            puedoPasar((int) getArea().getX(), (int) getArea().getY(), 0);
+                            pasar((int) getArea().getX(), (int) getArea().getY(), 0);
                             getArea().setLocation((int) getArea().getX(), (int) getArea().getY() - 10);
                             Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
                         } catch (InterruptedException ex) {
@@ -168,7 +169,7 @@ public class CarroMovimiento extends Carro implements Runnable {
             GrafoDirigido auxGrafo = new GrafoDirigido(ciudad.getCantidadNodos());
             auxGrafo.crearGrafo(panel.copiarCiudad(ciudad));
             setGrafo(auxGrafo);
-            start();
+            iniciar();
         }
     }
 
@@ -176,25 +177,26 @@ public class CarroMovimiento extends Carro implements Runnable {
         return ciudad;
     }
 
+    /**
+     * Permite obtener el id de un nodo de la matriz de la ciudad
+     * @param x 
+     * @param y
+     * Posicion de la matriz al que se quiere obtener el id de nodo
+     * @return id de nodo
+     */
     public int idNodoComponente(int x, int y) {
         int auxX = y / this.panel.getCiudad().getAltoCampo();
         int auxY = x / this.panel.getCiudad().getAnchoCampo();
         return ciudad.getMatrizCiudad()[auxX][auxY].getIdNodo();
     }
 
-//    public void volverObtenerCamino() {
-//        int m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
-//        buscarCamino(m);
-//        setTipo(0);
-//        destinos = new LinkedList<>();
-//        setCiudad(panel.copiarCiudad(panel.getCiudad()));
-//        GrafoDirigido auxGrafo = new GrafoDirigido(ciudad.getCantidadNodos());
-//        auxGrafo.crearGrafo(panel.copiarCiudad(ciudad));
-//        setGrafo(auxGrafo);
-//        start();
-//    }
-
-    public void puedoPasar(int x, int y, int tipo) {
+    /**
+     * Permite establecer cual vehiculo puede pasar en un cruce (Semaforos inteligentes)
+     * @param x 
+     * @param y
+     * @param tipo 
+     */
+    public void pasar(int x, int y, int tipo) {
         int auxI;
         int auxJ;
         if (tipo == 0) {
@@ -211,16 +213,16 @@ public class CarroMovimiento extends Carro implements Runnable {
                 while (!paso) {
                     paso = true;
                     if (paso && auxJ - 1 >= 0 && auxI + 1 < ciudad.getN() && ciudad.getMatrizCiudad()[auxI + 1][auxJ - 1] != null && (ciudad.getMatrizCiudad()[auxI + 1][auxJ - 1].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI + 1][auxJ - 1].getTipoVia().equals("carretera"))) {
-                        paso = hayCarro(auxI + 1, auxJ - 1);
+                        paso = existeCarro(auxI + 1, auxJ - 1);
                     }
 //                    if (auxI + 2 < ciudad.getM() && ciudad.getMatrizCiudad()[auxI + 2][auxJ] != null && (ciudad.getMatrizCiudad()[auxI + 2][auxJ].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI + 2][auxJ].getTipoVia().equals("carretera"))) {
 //                        paso = hayCarro(auxI + 2, auxJ);
 //                    }
                     if (paso && auxI + 1 < ciudad.getN() && auxJ + 1 < ciudad.getM() && ciudad.getMatrizCiudad()[auxI + 1][auxJ + 1] != null && (ciudad.getMatrizCiudad()[auxI + 1][auxJ + 1].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI + 1][auxJ + 1].getTipoVia().equals("carretera"))) {
-                        paso = hayCarro(auxI + 1, auxJ + 1);
+                        paso = existeCarro(auxI + 1, auxJ + 1);
                     }
                     if (paso && auxI + 1 < ciudad.getN() && ciudad.getMatrizCiudad()[auxI + 1][auxJ] != null && (ciudad.getMatrizCiudad()[auxI + 1][auxJ].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI + 1][auxJ].getTipoVia().equals("carretera"))) {
-                        paso = hayCarro(auxI + 1, auxJ);
+                        paso = existeCarro(auxI + 1, auxJ);
                     }
                     if (!paso) {
                         try {
@@ -237,13 +239,13 @@ public class CarroMovimiento extends Carro implements Runnable {
 
                     paso = true;
                     if (auxJ - 1 >= 0 && auxI - 1 < ciudad.getN() && ciudad.getMatrizCiudad()[auxI - 1][auxJ - 1] != null && (ciudad.getMatrizCiudad()[auxI - 1][auxJ - 1].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI - 1][auxJ - 1].getTipoVia().equals("carretera"))) {
-                        paso = hayCarro(auxI - 1, auxJ - 1);
+                        paso = existeCarro(auxI - 1, auxJ - 1);
                     }
                     if (paso && auxI - 1 < ciudad.getN() && auxJ + 1 < ciudad.getM() && ciudad.getMatrizCiudad()[auxI - 1][auxJ + 1] != null && (ciudad.getMatrizCiudad()[auxI - 1][auxJ + 1].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI - 1][auxJ + 1].getTipoVia().equals("carretera"))) {
-                        paso = hayCarro(auxI - 1, auxJ + 1);
+                        paso = existeCarro(auxI - 1, auxJ + 1);
                     }
                     if (paso && auxI - 1 >= 0 && ciudad.getMatrizCiudad()[auxI - 1][auxJ] != null && (ciudad.getMatrizCiudad()[auxI - 1][auxJ].getTipoVia().equals("calle") || ciudad.getMatrizCiudad()[auxI - 1][auxJ].getTipoVia().equals("carretera"))) {
-                        paso = hayCarro(auxI - 1, auxJ);
+                        paso = existeCarro(auxI - 1, auxJ);
                     }
                     if (!paso) {
                         try {
@@ -258,6 +260,10 @@ public class CarroMovimiento extends Carro implements Runnable {
 
     }
 
+    /**
+     * Permite buscar un camino aleatorio cuando un vehiculo queda sin aristas por recorrer
+     * @param m Posicion del vehiculo en el grafo
+     */
     public void buscarCamino(int m) {
         try {
             LinkedList<Arista> posiblesCaminos = new LinkedList<>();
@@ -276,13 +282,48 @@ public class CarroMovimiento extends Carro implements Runnable {
             System.out.println("eeeeeeoorro");
         }
     }
+    
+    /**
+     * Permite seleccionar un color para trazar el camino de un vehiculo
+     * @param color 
+     */
+    public void obtenerCaminoPintar(String color)
+    {
+        if ("amarillo".equals(color))
+        {
+            setColor(Color.YELLOW);
+        }
+        else if ("azul".equals(color))
+        {
+            setColor(Color.BLUE);
+        }
+        else if ("verde".equals(color))
+        {
+            setColor(Color.GREEN);
+        }
+        else
+        {
+            setColor(Color.RED);
+        }
+        for (int i=0; i<getCamino().size(); i++)
+        {
+            getCaminoPintar().add((Arista) getCamino().get(i).clone());
+        }
+    }
 
+    /**
+     * Obtiene la ubicacion actual del vehiculo
+     */
     public void reconstruirUbicacion() {
         int auxN = (int) (getArea().getY() / ciudad.getAltoCampo());
         int auxM = (int) (getArea().getX() / ciudad.getAnchoCampo());
         ubicacion = ciudad.getMatrizCiudad()[auxN][auxM];
     }
     
+    /**
+     * Permite reconstruir los destinos marcados en una ciudad luego de una interrupcion
+     * Recorriendo la matriz de la ciudad y los destinos verificando que las posiciones x y y sean igual y posteriormente marcando como nodo el componente en la ciudad
+     */
     public void recuperarDestinos()
     {
         for (int k = 0; k < destinos.size(); k++) {
@@ -299,6 +340,10 @@ public class CarroMovimiento extends Carro implements Runnable {
         }
     }
 
+    /**
+     * Permite reconstruir la lista de destinos luego de alguna interrupcion
+     * recorriendo la ciudad y los destinos verificando que sus posiciones en x y y sean iguales y posteriormente añadiendo a la lista de destinos el componente
+     */
     public void reconstruirDestinos() {
         LinkedList<Componente> auxDestinos = new LinkedList<>();
         for (int k = 0; k < destinos.size(); k++) {
@@ -328,7 +373,14 @@ public class CarroMovimiento extends Carro implements Runnable {
         this.ciudad = ciudad;
     }
 
-    private Boolean hayCarro(int i, int j) {
+    /**
+     * Permite verificar si en alguna posición determinada de la matriz existe un carro.
+     * @param i 
+     * @param j
+     * Posiciones de la matriz en donde se verifica si en ese momento existe un carro
+     * @return true o false si existe un carro en la posicion de la matriz
+     */
+    private Boolean existeCarro(int i, int j) {
         Boolean respuesta = true;
         for (int k = 0; k < panel.getCarrosMovimiento().size() && respuesta; k++) {
             if (ciudad.getMatrizCiudad()[i][j].getArea().contains(new Point((int) panel.getCarrosMovimiento().get(k).getArea().getX(), (int) panel.getCarrosMovimiento().get(k).getArea().getY()))) {

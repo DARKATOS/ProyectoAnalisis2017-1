@@ -17,7 +17,10 @@ public class RutaCorta extends AlgoritmoRuta{
     }
     
 
-   
+   /**
+    * Permite llenar la matriz de pesos con las distancias de las aristas
+    * @param grafo con el que se va a obtener el peso de las aristas para llenar la matriz
+    */
     @Override
     public void llenarPesos(GrafoDirigido grafo)
     {

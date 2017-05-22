@@ -22,11 +22,17 @@ public class Ciudad implements Cloneable {
     private int anchoCiudad;//indica el ancho del area de la ciudad 
     private int altoCiudad;//indica el alto del area de la ciudad
     private int cantidadNodos;//contiene la cantidad de nodos que tiene la ciudad
-    private LinkedList<Interrupcion> listaInterrupciones;
+    private LinkedList<Interrupcion> interrupciones;
 
     public Ciudad() {
     }
 
+    /**
+     * Permite inicializar la matriz de la ciudad y su tamaño
+     * @param matrizCiudad matriz de componentes de la ciudad
+     * @param n Tamaño en filas de la ciudad
+     * @param m Tamaño en columnas de la ciudad
+     */
     public Ciudad(Componente[][] matrizCiudad, int n, int m) {
         this.matrizCiudad = matrizCiudad;
         this.n = n;
@@ -36,7 +42,7 @@ public class Ciudad implements Cloneable {
         this.altoCampo = 0;
         this.anchoCiudad = 0;
         this.altoCiudad = 0;
-        this.listaInterrupciones = new LinkedList<>();
+        this.interrupciones = new LinkedList<>();
     }
 
     public void setMatrizCiudad(Componente[][] matrizCiudad) {
@@ -237,6 +243,9 @@ public class Ciudad implements Cloneable {
         }
     }
 
+    /**
+     * Reorganiza los identificadores de los nodos existentes en la ciudad
+     */
     public void modificarNodos() {
         int contador = 0;
         for (int i = 0; i < this.n; i++) {
@@ -327,7 +336,11 @@ public class Ciudad implements Cloneable {
         return resultado;
 
     }
-
+    
+    /**
+     * Muestra los nodos existentes en la ciudad
+     * recorriendo la matriz y obteniendo el id de nodo de cada componente
+     */
     public void mostrarMatrizCiudad() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -363,12 +376,12 @@ public class Ciudad implements Cloneable {
         return cantidadNodos;
     }
 
-    public LinkedList<Interrupcion> getListaInterrupciones() {
-        return listaInterrupciones;
+    public LinkedList<Interrupcion> getInterrupciones() {
+        return interrupciones;
     }
 
-    public void setListaInterrupciones(LinkedList<Interrupcion> listaInterrupciones) {
-        this.listaInterrupciones = listaInterrupciones;
+    public void setInterrupciones(LinkedList<Interrupcion> interrupciones) {
+        this.interrupciones = interrupciones;
     }
 
 }

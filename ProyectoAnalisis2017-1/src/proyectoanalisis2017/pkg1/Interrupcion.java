@@ -10,9 +10,10 @@ package proyectoanalisis2017.pkg1;
  * @author root
  */
 public class Interrupcion {
-    Componente componenteAnterior;
-    int i;
+    Componente componenteAnterior; //Componente anterior a la ubicacion de la interrucpion
+    int i; 
     int j;
+    //Posicion de la interrupcion
 
     public Interrupcion() {
     }

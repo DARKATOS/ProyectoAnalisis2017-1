@@ -18,11 +18,15 @@ public class Componente implements Cloneable {
     private String ruta; //nos indica donde esta la imagen para pintarla en el panel    
     private String nombre;// nos indica el nombre del compoente 
     private int idNodo;//si es -1 no es nodo y >=0 si es un nodo y el valor es el identificador del nodo
-    private Rectangle area;
+    private Rectangle area; //Area que tiene el componente dentro de la ciudad
 
     public Componente() {
     }
 
+    /**
+     * Permite la construcción de un componente
+     * @param nombre para obtener la ruta de la imagen
+     */
     public Componente(String nombre) {
         this.nombre = nombre;
         this.tipo = 0;

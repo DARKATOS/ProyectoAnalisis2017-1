@@ -5,6 +5,7 @@
  */
 package proyectoanalisis2017.pkg1;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
@@ -13,22 +14,42 @@ import java.util.LinkedList;
  * @author root
  */
 public class Carro  {
-    private int id;
-    private String ruta;
-    private Rectangle area;
-    private LinkedList<Arista> camino;
-    private int tipo;
+    private int id; //identificador de vehiculo
+    private String ruta; //Ruta de la imagen del vehiculo
+    private Rectangle area; //Area del vehiculo dentro de la ciudad
+    private LinkedList<Arista> camino; //Lista de aristas que corresponden al camino que recorre el vehiculo
+    private LinkedList<Arista> caminoPintar; //Traza la ruta del camino que recorre el vehiculo
+    private Color color; //Color de la traza de la ruta
+    private int tipo; //Determina si el carro esta en tipo automatico o con ruta especifica
     public Carro() {
     }
 
-    
+    public LinkedList<Arista> getCaminoPintar() {
+        return caminoPintar;
+    }
+
+    public void setCaminoPintar(LinkedList<Arista> caminoPintar) {
+        this.caminoPintar = caminoPintar;
+    }
+
+
+    /**
+     * 
+     * @param id Indentificador del vbehiculo
+     * @param ancho Ancho de la imagen del vehiculo
+     * @param alto Alto de la imagen del vehiculo
+     * @param camino Lista de aristas que recorrera el vehiculo
+     * @param tipo Tipo automatico o con ruta especifica
+     */
     public Carro(int id, int ancho,int alto, LinkedList<Arista> camino,int tipo) {
         this.id = id;
         this.camino = camino;
         this.ruta = "../ImgComponentes/car_ari_abj1.png";
         this.tipo=tipo;
         this.area= new Rectangle(camino.getFirst().getX1(),camino.getFirst().getY1() , ancho, alto);
+        caminoPintar=new LinkedList<>();
     }
+    
 
     public LinkedList<Arista> getCamino() {
         return camino;
@@ -64,6 +85,16 @@ public class Carro  {
 
     public void setId(int id) {
         this.id = id;
-    }   
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    
+    
     
 }

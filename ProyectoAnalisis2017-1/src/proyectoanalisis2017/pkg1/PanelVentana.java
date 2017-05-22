@@ -12,6 +12,7 @@ import java.awt.Rectangle;
 
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -43,7 +44,7 @@ public class PanelVentana extends javax.swing.JPanel {
         estaSelecionadoComponente = false;
         opciones = 0;
         tipoCamino = 0;
-        auxCarro = new CarroMovimiento();
+        auxCarro=null;
 //        auxUbicacion = new Componente();
     }
 
@@ -115,7 +116,7 @@ public class PanelVentana extends javax.swing.JPanel {
                         if (carrosMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
                             auxCarro = carrosMovimiento.get(i);
                             auxCarro.setUbicacion(auxUbicacion);
-                            auxCarro.stop();
+                            auxCarro.parar();
                             auxCarro.getArea().setLocation((int) auxCarro.getUbicacion().getArea().getX(), (int) auxCarro.getUbicacion().getArea().getY());
                         }
                     }
@@ -203,7 +204,7 @@ public class PanelVentana extends javax.swing.JPanel {
                 //Si ciudad en la posicion i, j del evento es diferente de null y si es una via y el componente tomado del area de items uno de las dos interrupciones
                 if (ciudad.getMatrizCiudad()[auxN][auxM] != null && ciudad.esVia(ciudad.getMatrizCiudad()[auxN][auxM]) && (auxComponente.getNombre().equals("XX") || auxComponente.getNombre().equals("YY"))) {
                     //Se añade la interrupcion a la lista de interrupciones de la ciudad, con el componente anterior al de la interrupcion y la posicion en donde esta
-                    ciudad.getListaInterrupciones().add(new Interrupcion((Componente) ciudad.getMatrizCiudad()[auxN][auxM].clone(), auxN, auxM));
+                    ciudad.getInterrupciones().add(new Interrupcion((Componente) ciudad.getMatrizCiudad()[auxN][auxM].clone(), auxN, auxM));
                     //Se establece la interrupcion en la posicion i, j de la matriz de la ciudad
                     ciudad.getMatrizCiudad()[auxN][auxM] = auxComponente;
                     //Marca los nodos adyacentes a la interrupción
@@ -214,7 +215,7 @@ public class PanelVentana extends javax.swing.JPanel {
                         //Aqui si se mandara el grafo completo
                         if (carrosMovimiento.get(i).getTipo() != 0) {
                             Ciudad auxCiudad1 = copiarCiudad(carrosMovimiento.get(i).getCiudad());
-                            auxCiudad1.getListaInterrupciones().add(new Interrupcion((Componente) auxCiudad1.getMatrizCiudad()[auxN][auxM].clone(), auxN, auxM));
+                            auxCiudad1.getInterrupciones().add(new Interrupcion((Componente) auxCiudad1.getMatrizCiudad()[auxN][auxM].clone(), auxN, auxM));
                             //Se establece la interrupcion en la posicion i, j de la matriz de la ciudad
                             auxCiudad1.getMatrizCiudad()[auxN][auxM] = auxComponente;
                             //Marca los nodos adyacentes a la interrupción
@@ -226,7 +227,7 @@ public class PanelVentana extends javax.swing.JPanel {
                             auxCiudad1.modificarNodos();
                             GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());
                             auxGrafo1.crearGrafo(copiarCiudad(auxCiudad1));
-                            carrosMovimiento.get(i).stop();
+                            carrosMovimiento.get(i).parar();
                             carrosMovimiento.get(i).setGrafo(auxGrafo1);
 //                            auxCiudad1.mostrarMatrizCiudad();
                             carrosMovimiento.get(i).setCiudad(auxCiudad1);
@@ -258,7 +259,7 @@ public class PanelVentana extends javax.swing.JPanel {
                                 origen = carrosMovimiento.get(i).getDestinos().get(k).getIdNodo();
                             }
                             carrosMovimiento.get(i).setCamino(auxCamino);
-                            carrosMovimiento.get(i).start();
+                            carrosMovimiento.get(i).iniciar();
 
                         } else {
                             Ciudad auxCiudad1 = copiarCiudad(ciudad);
@@ -272,11 +273,11 @@ public class PanelVentana extends javax.swing.JPanel {
                 } //Si la ciudad en la posicion i,j es diferente de null y el componente tomado del area de items es el que remueve interrupciones y donde se tomo el evento en la posicion i, j es alguna de las interrupciones
                 else if (ciudad.getMatrizCiudad()[auxN][auxM] != null && auxComponente.getNombre().equals("XXX") && (ciudad.getMatrizCiudad()[auxN][auxM].getNombre().equals("XX") || ciudad.getMatrizCiudad()[auxN][auxM].getNombre().equals("YY"))) {
                     //Recorro la lista de interrupciones para obtener la interrupciion
-                    for (int i = 0; i < ciudad.getListaInterrupciones().size(); i++) {
+                    for (int i = 0; i < ciudad.getInterrupciones().size(); i++) {
                         //Si para cada interrupcion en i, j es igual a la posicion del evento
-                        if (ciudad.getListaInterrupciones().get(i).getI() == auxN && ciudad.getListaInterrupciones().get(i).getJ() == auxM) {
+                        if (ciudad.getInterrupciones().get(i).getI() == auxN && ciudad.getInterrupciones().get(i).getJ() == auxM) {
                             //Le asigno el anterior componente a la posicion i, j de la matriz de la ciudad.
-                            ciudad.getMatrizCiudad()[auxN][auxM] = ciudad.getListaInterrupciones().get(i).getComponenteAnterior();
+                            ciudad.getMatrizCiudad()[auxN][auxM] = ciudad.getInterrupciones().get(i).getComponenteAnterior();
                         }
                     }
                     //Procedo con la eliminacion de nodos adyacentes.
@@ -284,7 +285,7 @@ public class PanelVentana extends javax.swing.JPanel {
                     ciudad.modificarNodos();
                     for (int i = 0; i < carrosMovimiento.size(); i++) {
                         if (carrosMovimiento.get(i).getTipo() != 0) {
-                            
+
                             Ciudad auxCiudad1 = copiarCiudad(ciudad);
                             //HASTA AQUI COPIE LO DE ARRIBA
                             int auxNU = (int) (carrosMovimiento.get(i).getArea().getY() / ciudad.getAltoCampo());
@@ -295,9 +296,9 @@ public class PanelVentana extends javax.swing.JPanel {
                             carrosMovimiento.get(i).getCiudad().modificarNodos();
                             GrafoDirigido auxGrafo1 = new GrafoDirigido(carrosMovimiento.get(i).getCiudad().getCantidadNodos());
                             auxGrafo1.crearGrafo(copiarCiudad(carrosMovimiento.get(i).getCiudad()));
-                            carrosMovimiento.get(i).stop();
+                            carrosMovimiento.get(i).parar();
                             carrosMovimiento.get(i).setGrafo(auxGrafo1);
-                            
+
                             carrosMovimiento.get(i).reconstruirUbicacion();
                             carrosMovimiento.get(i).getArea().setLocation((int) carrosMovimiento.get(i).getUbicacion().getArea().getX(), (int) carrosMovimiento.get(i).getUbicacion().getArea().getY());
                             carrosMovimiento.get(i).reconstruirDestinos();
@@ -328,7 +329,7 @@ public class PanelVentana extends javax.swing.JPanel {
                                 origen = carrosMovimiento.get(i).getDestinos().get(k).getIdNodo();
                             }
                             carrosMovimiento.get(i).setCamino(auxCamino);
-                            carrosMovimiento.get(i).start();
+                            carrosMovimiento.get(i).iniciar();
                         } else if (carrosMovimiento.get(i).getCamino().isEmpty()) { //Si el carro esta sin camino es porque esta parado
                             Ciudad auxCiudad1 = copiarCiudad(ciudad); //Copio la ciudad para el caso especifico del carro
                             int auxN2 = (int) (carrosMovimiento.get(i).getArea().getY() / ciudad.getAltoCampo());
@@ -343,7 +344,7 @@ public class PanelVentana extends javax.swing.JPanel {
 
                             int m = auxCiudad1.getMatrizCiudad()[auxN2][auxM2].getIdNodo();
                             carrosMovimiento.get(i).buscarCamino(m);
-                            carrosMovimiento.get(i).start();
+                            carrosMovimiento.get(i).iniciar();
                         } else {
                             Ciudad auxCiudad1 = copiarCiudad(ciudad); //Copio la ciudad para el caso especifico del carro
                             GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());
@@ -373,6 +374,11 @@ public class PanelVentana extends javax.swing.JPanel {
 
     }//GEN-LAST:event_formKeyPressed
 
+    /**
+     * Permite hacer una copia de la ciudad para cada vehiculo y la reconstrucción del grafo
+     * @param ciudad que se va a copiar
+     * @return una ciudad copiada
+     */
     public Ciudad copiarCiudad(Ciudad ciudad) {
         Ciudad copiaCiudad = (Ciudad) ciudad.clone();
         copiaCiudad.setMatrizCiudad(null);
@@ -388,6 +394,10 @@ public class PanelVentana extends javax.swing.JPanel {
         return copiaCiudad;
     }
 
+    /**
+     * Permite la modificación de la ciudad y el grafo con el nodo de ubicacion del vehiculo y sus destinos
+     * ademas calcula el camino mino segun el tipo de ruta selecionado
+     */
     public void ModificarGrafo() {
         auxCiudad.modificarNodos();
         Ciudad auxCiudad1 = copiarCiudad(auxCiudad);
@@ -426,9 +436,16 @@ public class PanelVentana extends javax.swing.JPanel {
             origen = auxCarro.getDestinos().get(i).getIdNodo();
         }
         auxCarro.setCamino(auxCamino);
-        auxCarro.start();
+        String color=JOptionPane.showInputDialog(this, "Ingese el color", "Color", JOptionPane.INFORMATION_MESSAGE);
+        auxCarro.obtenerCaminoPintar(color);
+        auxCarro.iniciar();
     }
 
+    /**
+     * Se obtiene el trafico de la ciudad para el grafo en un momento determinado
+     * Se inicializa el trafico de las aristas con 0 y se procede a realizar un recorrido del grafo obteniendo el numero de vehiculos en cada arista 
+     * @param carro
+     */
     public void obtenerTrafico(CarroMovimiento carro) {
         for (int j = 0; j < carro.getGrafo().getGrafo().length; j++) {
             for (int k = 0; k < carro.getGrafo().getGrafo()[j].length; k++) {
@@ -456,15 +473,18 @@ public class PanelVentana extends javax.swing.JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
         if (ciudad != null && areaItems != null) {
+            //Se pinta el fondo
             g.drawImage(new ImageIcon(getClass().getResource("../ImgComponentes/Fondo.jpg")).getImage(), 0, 0, ciudad.getAnchoCiudad(), ciudad.getAltoCiudad(), this);
             g.setColor(Color.decode("#FC4600"));
             g.fillRect(areaItems.getAnchoListaComponentesX1(), 0, (areaItems.getAnchoListaComponentesX2() - ciudad.getAnchoCiudad()) * 2, ciudad.getAltoCiudad());
             g.setColor(Color.BLACK);
+            //Se pinta el area de items
             pintarComponentes(g);
             // lineas de referencia de las areas de la aplicacion
             g.drawRect(0, 0, ciudad.getAnchoCiudad(), ciudad.getAltoCiudad());
+            //Se pinta la ciudad
             pintarCiudad(g);
-            //pitnar carros automaticos
+            //pinta los carros automaticos
             for (int i = 0; i < this.carrosMovimiento.size(); i++) {
                 g.drawImage(new ImageIcon(getClass().getResource(this.carrosMovimiento.get(i).getRuta())).getImage(), (int) this.carrosMovimiento.get(i).getArea().getX(), (int) this.carrosMovimiento.get(i).getArea().getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), this);
 
@@ -477,13 +497,13 @@ public class PanelVentana extends javax.swing.JPanel {
                 int auxM = xImgSelecionada / ciudad.getAnchoCampo();
                 g.drawRect(auxM * ciudad.getAnchoCampo(), auxN * ciudad.getAltoCampo(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
             }
+            pintarCamino(g);
         }
 
     }
 
     /**
      * pintamos la lista de los item que podemos selecionar y poner en la ciudad
-     *
      * @param g grafico del panel que sirve como lienzo
      */
     private void pintarComponentes(Graphics g) {
@@ -491,6 +511,25 @@ public class PanelVentana extends javax.swing.JPanel {
             Item auxItem;
             auxItem = areaItems.getListaItems().get(i);
             g.drawImage(new ImageIcon(getClass().getResource(auxItem.getLstComponentes().getFirst().getRuta())).getImage(), auxItem.getArea().x, auxItem.getArea().y, auxItem.getArea().width, auxItem.getArea().height, this);
+        }
+    }
+
+    /**
+     * Permite trazar el camino de un vehiculo segun las aristas que recorrera
+     * @param g 
+     */
+    private void pintarCamino(Graphics g) {
+        for (int i = 0; i < carrosMovimiento.size(); i++) {
+            if (!carrosMovimiento.get(i).getCaminoPintar().isEmpty()) {
+                g.setColor(carrosMovimiento.get(i).getColor());
+                for (int j = 0; j < carrosMovimiento.get(i).getCaminoPintar().size(); j++) {
+                    int x1 = carrosMovimiento.get(i).getCaminoPintar().get(j).getX1();
+                    int y1 = carrosMovimiento.get(i).getCaminoPintar().get(j).getY1();
+                    int x2 = carrosMovimiento.get(i).getCaminoPintar().get(j).getX2();
+                    int y2=carrosMovimiento.get(i).getCaminoPintar().get(j).getY2();
+                    g.drawLine(x1, y1, x2, y2);
+                }
+            }
         }
     }
 
@@ -523,6 +562,9 @@ public class PanelVentana extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Permite rotar un componente
+     */
     public void girarItem() {
         if (itemSeleccionado.getContador() == itemSeleccionado.getLstComponentes().size() - 1) {
             this.itemSeleccionado.setContador(0);
@@ -552,20 +594,13 @@ public class PanelVentana extends javax.swing.JPanel {
         return ciudad;
     }
 
-    private void mostrarGrafo(GrafoDirigido grafo) {
-        for (int i = 0; i < grafo.getGrafo().length; i++) {
-            for (int j = 0; j < grafo.getGrafo()[i].length; j++) {
-                if (grafo.getGrafo()[i][j] == null) {
-                    System.out.print("-\t");
-                } else {
-                    System.out.print(i + ":" + j + "\t");
-                }
-            }
-            System.out.println("");
-        }
-    }
-
-    //GIAN PRO
+    /**
+     * Permite buscar la carretera mas cerca al destino seleccionado
+     * @param x
+     * @param y
+     * Posiciones del destino
+     * @return el componente carretera mas cercano al destino seleccionado
+     */
     private Componente buscarCarreteraCercana(int x, int y) {
         Componente respuesta = null;
         int comIzq = valorCarreteraIzq(x, y - 1);
@@ -588,6 +623,13 @@ public class PanelVentana extends javax.swing.JPanel {
         return respuesta;
     }
 
+    /**
+     * Verifica si es posible obtener una carretera a la izquierda
+     * @param x
+     * @param y
+     * Posiciones del destino
+     * @return un componente carretera a la izquierda si existe
+     */
     public Componente mirarCarreteraIzq(int x, int y) {
         Componente respuesta = null;
         Boolean bandera = true;
@@ -601,6 +643,13 @@ public class PanelVentana extends javax.swing.JPanel {
         return respuesta;
     }
 
+    /**
+     * Verifica si es posible obtener una carretera a la derecha
+     * @param x
+     * @param y
+     * Posiciones del destino
+     * @return un componente carretera a la derecha si existe
+     */
     public Componente mirarCarreteraDer(int x, int y) {
         Componente respuesta = null;
         Boolean bandera = true;
@@ -615,6 +664,13 @@ public class PanelVentana extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Verifica si es posible obtener una carretera hacia arriba del destino
+     * @param x
+     * @param y
+     * Posiciones del destino
+     * @return un componente carretera arriba del destino si existe
+     */
     public Componente mirarCarreteraArriba(int x, int y) {
         Componente respuesta = null;
         Boolean bandera = true;
@@ -629,6 +685,13 @@ public class PanelVentana extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Verifica si es posible obtener una carretera hacia abajo del destino
+     * @param x
+     * @param y
+     * Posiciones del destino
+     * @return un componente carretera abajo del destino si existe
+     */
     public Componente mirarCarreteraAbajo(int x, int y) {
         Componente respuesta = null;
         Boolean bandera = true;
@@ -648,7 +711,6 @@ public class PanelVentana extends javax.swing.JPanel {
         while (y >= 0 && bandera) {
             respuesta++;
             if (auxCiudad.getMatrizCiudad()[x][y] != null && !auxCiudad.getMatrizCiudad()[x][y].getTipoVia().equals("")) {
-
                 bandera = false;
             }
             y--;

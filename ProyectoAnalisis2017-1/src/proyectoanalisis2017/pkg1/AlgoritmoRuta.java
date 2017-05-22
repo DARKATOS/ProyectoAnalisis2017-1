@@ -23,6 +23,12 @@ public class AlgoritmoRuta {
 
     }
 
+    /**
+     * Metodo que se sobreescribe en cada una de la rutas para la matriz de
+     * pesos
+     *
+     * @param grafo para obt5ener el peso de las aristas.
+     */
     public void llenarPesos(GrafoDirigido grafo) {
 
     }
@@ -32,7 +38,7 @@ public class AlgoritmoRuta {
      * todos los nodos.
      *
      * @return int[][] matrizVertices con la matriz de nodos que permiten
-     * obtener el camino minimo.
+     * obtener el camino minimo
      */
     public int[][] floydWarshall() {
         int[][] matrizNodos = new int[cantidadNodos][cantidadNodos];
@@ -56,6 +62,9 @@ public class AlgoritmoRuta {
         return matrizNodos;
     }
 
+    /**
+     * Permite mostrar a traves de consola el estado de la matriz de pesos
+     */
     public void mostrarPesos() {
         for (int i = 0; i < pesos.length; i++) {
             for (int j = 0; j < pesos[i].length; j++) {
@@ -112,9 +121,9 @@ public class AlgoritmoRuta {
         }
         return camino;
 
-}
+    }
 
-public void setCantidadNodos(int cantidadNodos) {
+    public void setCantidadNodos(int cantidadNodos) {
         this.cantidadNodos = cantidadNodos;
     }
 
@@ -130,6 +139,10 @@ public void setCantidadNodos(int cantidadNodos) {
         return pesos;
     }
 
+    /**
+     * Permite mostrar a traves de consola el estado de un grafo
+     * @param grafo que se va a mostrar por consola
+     */
     private void mostrarGrafo(GrafoDirigido grafo) {
         for (int i = 0; i < grafo.getGrafo().length; i++) {
             for (int j = 0; j < grafo.getGrafo()[i].length; j++) {
@@ -143,6 +156,10 @@ public void setCantidadNodos(int cantidadNodos) {
         }
     }
 
+    /**
+     * Permite mostrar la matriz de nodos de caminos obtenida al realizar el algoritmo de camino minimo.
+     * @param matrizNodos que se va a mostrar.
+     */
     private void mostrarMatrizNodos(int matrizNodos[][]) {
         for (int i = 0; i < cantidadNodos; i++) {
             for (int j = 0; j < cantidadNodos; j++) {
@@ -152,6 +169,10 @@ public void setCantidadNodos(int cantidadNodos) {
         }
     }
 
+    /**
+     * Muestra un camino de nodos desde un nodo origen hasta un destino
+     * @param caminoNodos Lista de nodos a mostrar
+     */
     private void mostrarCaminoNodos(LinkedList<Integer> caminoNodos) {
         for (int i = 0; i < caminoNodos.size(); i++) {
             System.out.println(caminoNodos.get(i));

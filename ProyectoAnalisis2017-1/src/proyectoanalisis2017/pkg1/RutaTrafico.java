@@ -14,6 +14,11 @@ public class RutaTrafico extends AlgoritmoRuta {
     public RutaTrafico(int cantidadNodos) {
         super(cantidadNodos);
     }
+    
+    /**
+     * Permite llenar la matriz de pesos con los traficos que se presentan en un momento en las aristas
+    * @param grafo con el que se va a obtener el peso de las aristas para llenar la matriz
+     */
     @Override
     public void llenarPesos(GrafoDirigido grafo)
     {

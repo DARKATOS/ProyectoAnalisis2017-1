@@ -37,13 +37,13 @@ public class GrafoDirigido implements Cloneable {
         return obj;
     }
 
-    /**
-     * Inicializo la matriz del grafo en nulos.
-     */
-
+    
     public GrafoDirigido() {
     }
 
+    /**
+     * Inicializo la matriz del grafo en nulos.
+     */
     public void iniciarlizarGrafo() {
         for (int i = 0; i < grafo.length; i++) {
             for (int j = 0; j < grafo.length; j++) {

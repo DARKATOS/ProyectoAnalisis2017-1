@@ -14,9 +14,10 @@ import java.util.LinkedList;
  * @author JORGE_ALEJANDRO
  */
 public class AreaItems implements Serializable{
-    private final ArrayList<Item>listaItems;
+    private final ArrayList<Item>listaItems; //Lista que contendra los items para el area de items
     private final int anchoListaComponentesX1;
     private final int anchoListaComponentesX2;
+    //Ancho de la lista de componentes
 
     public AreaItems(int anchoListaComponentesX1, int anchoListaComponentesX2) {
         this.listaItems =new ArrayList<>();

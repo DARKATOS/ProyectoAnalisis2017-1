@@ -1,0 +1,12 @@
+10
+10
+C,U,C,A,U,C,C,C,A,C
+I,X,R.4,X,V.2,V.2,V.2,X,V.2,V.2
+A,R.3,-,V.1,U,U,A,V.1,A,I
+C,R.3,-,V.1,A,-,I,V.1,C,U
+C,R.3,-,V.1,C,C,A,V.1,I,C
+C,X,-,X,V.2,V.2,V.2,X,V.2,V.2
+A,R.3,-,R.1,C,I,C,H.1,A,A
+A,R.3,-,R.1,U,-,A,H.1,A,I
+I,R.3,-,R.1,C,-,U,H.1,A,U
+A,X,R.2,X,A,A,I,H.1,C,C
