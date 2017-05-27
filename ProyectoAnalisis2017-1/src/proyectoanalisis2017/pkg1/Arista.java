@@ -23,7 +23,7 @@ public class Arista implements Cloneable {
     private int longitud;//tamaño de desplazamiento de un nodo al otro
     private int trafico; //Cantidad de trafico que existe en un momento en la arista
     private int direccion;////1 abajo-arriba;2arriba-abajo;3izq-Der;4der-izq;5doblehorizontal;6doblevertical
-    private LinkedList<Componente> lstComponentes; //Lista de componentes que conforman la arista
+    private LinkedList<Componente> componentes; //Lista de componentes que conforman la arista
 
     public Arista() {
     }
@@ -46,9 +46,9 @@ public class Arista implements Cloneable {
      * @param y2 Punto en y de final de la arista
      * @param velocidad Velocidad de la arista
      * @param direccion De un sentido o de doble sentido
-     * @param lstComponentes Componentes que conforma la arista
+     * @param componentes Componentes que conforma la arista
      */
-    public Arista(int x1, int x2, int y1, int y2, int velocidad, int direccion, LinkedList<Componente> lstComponentes) {
+    public Arista(int x1, int x2, int y1, int y2, int velocidad, int direccion, LinkedList<Componente> componentes) {
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
@@ -69,7 +69,7 @@ public class Arista implements Cloneable {
             }
         }
         this.direccion = direccion;
-        this.lstComponentes = lstComponentes;
+        this.componentes = componentes;
     }
 
     public int getDireccion() {

@@ -34,7 +34,7 @@ public class FormVentana extends javax.swing.JFrame {
         this.cantidadCarros = 0;
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
-        pnlVentana1.setFocusable(true);
+        panelVentana.setFocusable(true);
         JOptionPane.showMessageDialog(rootPane, "OJO con copia de codigo(GIT HUB)!!!!");
         // Muestra un menu donde es posible seleccionar si se crea una ciudad nueva o se carga desde un archivo txt.
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 para cargar \n 2 para crear nueva ciudad", "Menu", JOptionPane.INFORMATION_MESSAGE));
@@ -65,7 +65,7 @@ public class FormVentana extends javax.swing.JFrame {
         //El alto de la ciudad es el numero de filas por el alto del campo.
         ciudad.setAltoCiudad(ciudad.getAltoCampo() * ciudad.getN());
         //Seteo la ciudad.
-        pnlVentana1.setCiudad(ciudad);
+        panelVentana.setCiudad(ciudad);
 
     }
 
@@ -78,91 +78,91 @@ public class FormVentana extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlVentana1 = new proyectoanalisis2017.pkg1.PanelVentana();
-        btnGuardar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        panelVentana = new proyectoanalisis2017.pkg1.PanelVentana();
+        btnGuardarCiudad = new javax.swing.JButton();
+        btnCrearGrafo = new javax.swing.JButton();
+        btnIngresarCarro = new javax.swing.JButton();
+        btnIniciarCarro = new javax.swing.JButton();
+        btnCamino = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        pnlVentana1.addMouseListener(new java.awt.event.MouseAdapter() {
+        panelVentana.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                pnlVentana1MouseReleased(evt);
+                panelVentanaMouseReleased(evt);
             }
         });
-        pnlVentana1.addKeyListener(new java.awt.event.KeyAdapter() {
+        panelVentana.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                pnlVentana1KeyPressed(evt);
+                panelVentanaKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                pnlVentana1KeyReleased(evt);
+                panelVentanaKeyReleased(evt);
             }
         });
 
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarCiudad.setText("Guardar");
+        btnGuardarCiudad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                btnGuardarCiudadActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Crear Grafo");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCrearGrafo.setText("Crear Grafo");
+        btnCrearGrafo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCrearGrafoActionPerformed(evt);
             }
         });
 
-        jButton5.setText("IngresarC");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnIngresarCarro.setText("IngresarC");
+        btnIngresarCarro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnIngresarCarroActionPerformed(evt);
             }
         });
 
-        jButton6.setText("Iniciar");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btnIniciarCarro.setText("Iniciar");
+        btnIniciarCarro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btnIniciarCarroActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Camino");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnCamino.setText("Camino");
+        btnCamino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnCaminoActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout pnlVentana1Layout = new javax.swing.GroupLayout(pnlVentana1);
-        pnlVentana1.setLayout(pnlVentana1Layout);
-        pnlVentana1Layout.setHorizontalGroup(
-            pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlVentana1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelVentanaLayout = new javax.swing.GroupLayout(panelVentana);
+        panelVentana.setLayout(panelVentanaLayout);
+        panelVentanaLayout.setHorizontalGroup(
+            panelVentanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelVentanaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnGuardarCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCrearGrafo, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
+                .addComponent(btnIngresarCarro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnIniciarCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnCamino)
                 .addContainerGap(438, Short.MAX_VALUE))
         );
-        pnlVentana1Layout.setVerticalGroup(
-            pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlVentana1Layout.createSequentialGroup()
+        panelVentanaLayout.setVerticalGroup(
+            panelVentanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelVentanaLayout.createSequentialGroup()
                 .addContainerGap(549, Short.MAX_VALUE)
-                .addGroup(pnlVentana1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(jButton1)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6)
-                    .addComponent(jButton2))
+                .addGroup(panelVentanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardarCiudad)
+                    .addComponent(btnCrearGrafo)
+                    .addComponent(btnIngresarCarro)
+                    .addComponent(btnIniciarCarro)
+                    .addComponent(btnCamino))
                 .addContainerGap())
         );
 
@@ -170,41 +170,41 @@ public class FormVentana extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlVentana1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelVentana, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlVentana1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelVentana, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    private void btnGuardarCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCiudadActionPerformed
         //Se obtiene un nombre de archivo para almacenar el .txt
         String nombreArchivo = JOptionPane.showInputDialog("ingrese nombre archivo");
         GuardarCiudad(nombreArchivo);
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    }//GEN-LAST:event_btnGuardarCiudadActionPerformed
 
-    private void pnlVentana1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnlVentana1KeyReleased
+    private void panelVentanaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_panelVentanaKeyReleased
         // TODO add your handling code here:sd
-    }//GEN-LAST:event_pnlVentana1KeyReleased
+    }//GEN-LAST:event_panelVentanaKeyReleased
 
-    private void pnlVentana1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnlVentana1KeyPressed
+    private void panelVentanaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_panelVentanaKeyPressed
        //Realiza un rotacion de item
-        pnlVentana1.girarItem();
-    }//GEN-LAST:event_pnlVentana1KeyPressed
+        panelVentana.girarItem();
+    }//GEN-LAST:event_panelVentanaKeyPressed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCrearGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearGrafoActionPerformed
         //Actualizo la ciudad para obtener los nodos.
         ciudad.actualizarCiudad();
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCrearGrafoActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnIngresarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarCarroActionPerformed
         //Permite ingresar un carro en tipo automatico a la ciudad
         GrafoDirigido auxGrafo1=new GrafoDirigido(ciudad.getCantidadNodos());
-        Ciudad auxCiudad1 = pnlVentana1.copiarCiudad(ciudad);
+        Ciudad auxCiudad1 = panelVentana.copiarCiudad(ciudad);
         auxGrafo1.crearGrafo(auxCiudad1);
         LinkedList<Arista> camino1 = new LinkedList<>();
         boolean bandera = false;
@@ -218,29 +218,29 @@ public class FormVentana extends javax.swing.JFrame {
         }
         ingresarCarro(new CarroMovimiento(cantidadCarros, ciudad, auxGrafo1, camino1, 0));
         this.cantidadCarros++;
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnIngresarCarroActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btnIniciarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarCarroActionPerformed
         //inicia el movimiento del carro
-        pnlVentana1.getCarrosMovimiento().getLast().iniciar();
-    }//GEN-LAST:event_jButton6ActionPerformed
+        panelVentana.getCarrosMovimiento().getLast().iniciar();
+    }//GEN-LAST:event_btnIniciarCarroActionPerformed
 
-    private void pnlVentana1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVentana1MouseReleased
+    private void panelVentanaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelVentanaMouseReleased
       
-    }//GEN-LAST:event_pnlVentana1MouseReleased
+    }//GEN-LAST:event_panelVentanaMouseReleased
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnCaminoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaminoActionPerformed
         
-        if (pnlVentana1.getOpciones() == 0) {
+        if (panelVentana.getOpciones() == 0) {
             //Seleccion del camino minimo en forma de camino mas corto, camino veloz, camiono de menor trafico
             int tipoCamino = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 camino corto \n 2 camino veloz \n 3 camino trafico", "Menu", JOptionPane.INFORMATION_MESSAGE));
-            pnlVentana1.setOpciones(2);
-            pnlVentana1.setTipoCamino(tipoCamino);
-        } else if (pnlVentana1.getOpciones() == 3) {
-            pnlVentana1.ModificarGrafo();
-            pnlVentana1.setOpciones(0);
+            panelVentana.setOpciones(2);
+            panelVentana.setTipoCamino(tipoCamino);
+        } else if (panelVentana.getOpciones() == 3) {
+            panelVentana.modificarGrafo();
+            panelVentana.setOpciones(0);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnCaminoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -280,12 +280,12 @@ public class FormVentana extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private proyectoanalisis2017.pkg1.PanelVentana pnlVentana1;
+    private javax.swing.JButton btnCamino;
+    private javax.swing.JButton btnCrearGrafo;
+    private javax.swing.JButton btnGuardarCiudad;
+    private javax.swing.JButton btnIngresarCarro;
+    private javax.swing.JButton btnIniciarCarro;
+    private proyectoanalisis2017.pkg1.PanelVentana panelVentana;
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -395,16 +395,16 @@ public class FormVentana extends javax.swing.JFrame {
         int anchoAreaItemsX2 = this.getWidth() - (int) (this.getWidth() * 0.05);
         areaItems = new AreaItems(anchoAreaItemsX1, anchoAreaItemsX2);
         areaItems.cargarComponentes();
-        pnlVentana1.setAreaItems(areaItems);
+        panelVentana.setAreaItems(areaItems);
     }
     
     /**
      * Permite añadir un carro a la lista de carros en movimiento y asignarle un
      * grafo.
-     * @param carroAuto Vehiculo que se va a agregar a la lista de carros de movimiento
+     * @param carro Vehiculo que se va a agregar a la lista de carros de movimiento
      */
-    private void ingresarCarro(CarroMovimiento carroAuto) {
-        pnlVentana1.getCarrosMovimiento().add(carroAuto);
-        pnlVentana1.getCarrosMovimiento().getLast().setPanel(pnlVentana1);
+    private void ingresarCarro(CarroMovimiento carro) {
+        panelVentana.getCarrosMovimiento().add(carro);
+        panelVentana.getCarrosMovimiento().getLast().setPanel(panelVentana);
     }
 }

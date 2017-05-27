@@ -379,9 +379,4 @@ public class Ciudad implements Cloneable {
     public LinkedList<Interrupcion> getInterrupciones() {
         return interrupciones;
     }
-
-    public void setInterrupciones(LinkedList<Interrupcion> interrupciones) {
-        this.interrupciones = interrupciones;
-    }
-
 }

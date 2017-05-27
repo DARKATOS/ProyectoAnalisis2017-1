@@ -30,14 +30,11 @@ public class PanelVentana extends javax.swing.JPanel {
     private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
     private Ciudad auxCiudad;
     private int tipoCamino;
-//    private LinkedList<Componente> destinos;
     private CarroMovimiento auxCarro;
-//    private Componente auxUbicacion;
 
     public PanelVentana() {
         initComponents();
         carrosMovimiento = new LinkedList<>();
-//        destinos = new LinkedList<>();
         xImgSelecionada = 0;
         yImgSelecionada = 0;
         itemSeleccionado = new Item();
@@ -45,7 +42,6 @@ public class PanelVentana extends javax.swing.JPanel {
         opciones = 0;
         tipoCamino = 0;
         auxCarro=null;
-//        auxUbicacion = new Componente();
     }
 
     /**
@@ -99,7 +95,7 @@ public class PanelVentana extends javax.swing.JPanel {
         //Si opciones es igual a 2 es porque el usuario va a realizar un camino.
         if (opciones == 2) {
             auxCiudad = copiarCiudad(ciudad);
-            Componente auxUbicacion = null;
+            Componente auxUbicacion;
             auxCarro = null;
 //            destinos = new LinkedList<>();
             //Verificamos que el evento se de dentro del ancho y alto de la ciudad.
@@ -198,7 +194,7 @@ public class PanelVentana extends javax.swing.JPanel {
                 this.yImgSelecionada = 0;
                 int auxN = evt.getY() / ciudad.getAltoCampo();
                 int auxM = evt.getX() / ciudad.getAnchoCampo();
-                Componente auxComponente = new Componente(itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getNombre());
+                Componente auxComponente = new Componente(itemSeleccionado.getComponentes().get(itemSeleccionado.getContador()).getNombre());
                 Rectangle area = new Rectangle(evt.getX(), evt.getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
                 auxComponente.setArea(area);
                 //Si ciudad en la posicion i, j del evento es diferente de null y si es una via y el componente tomado del area de items uno de las dos interrupciones
@@ -398,7 +394,7 @@ public class PanelVentana extends javax.swing.JPanel {
      * Permite la modificación de la ciudad y el grafo con el nodo de ubicacion del vehiculo y sus destinos
      * ademas calcula el camino mino segun el tipo de ruta selecionado
      */
-    public void ModificarGrafo() {
+    public void modificarGrafo() {
         auxCiudad.modificarNodos();
         Ciudad auxCiudad1 = copiarCiudad(auxCiudad);
         GrafoDirigido auxGrafo1 = new GrafoDirigido(auxCiudad1.getCantidadNodos());  // Creo un grafo que se le asignara al carro
@@ -492,7 +488,7 @@ public class PanelVentana extends javax.swing.JPanel {
             //pinta la anamiacion de colocar imagen en el tablero
             //El 0 es el X1 de la ciudad.
             if (this.estaSelecionadoComponente && this.xImgSelecionada > 0 && this.xImgSelecionada < ciudad.getAnchoCiudad() && this.yImgSelecionada > 0 && this.yImgSelecionada < ciudad.getAltoCiudad()) {
-                g.drawImage(new ImageIcon(getClass().getResource(itemSeleccionado.getLstComponentes().get(itemSeleccionado.getContador()).getRuta())).getImage(), this.xImgSelecionada, this.yImgSelecionada, 100, 100, this);
+                g.drawImage(new ImageIcon(getClass().getResource(itemSeleccionado.getComponentes().get(itemSeleccionado.getContador()).getRuta())).getImage(), this.xImgSelecionada, this.yImgSelecionada, 100, 100, this);
                 int auxN = yImgSelecionada / ciudad.getAltoCampo();
                 int auxM = xImgSelecionada / ciudad.getAnchoCampo();
                 g.drawRect(auxM * ciudad.getAnchoCampo(), auxN * ciudad.getAltoCampo(), ciudad.getAnchoCampo(), ciudad.getAltoCampo());
@@ -510,7 +506,7 @@ public class PanelVentana extends javax.swing.JPanel {
         for (int i = 0; i < areaItems.getListaItems().size(); i++) {
             Item auxItem;
             auxItem = areaItems.getListaItems().get(i);
-            g.drawImage(new ImageIcon(getClass().getResource(auxItem.getLstComponentes().getFirst().getRuta())).getImage(), auxItem.getArea().x, auxItem.getArea().y, auxItem.getArea().width, auxItem.getArea().height, this);
+            g.drawImage(new ImageIcon(getClass().getResource(auxItem.getComponentes().getFirst().getRuta())).getImage(), auxItem.getArea().x, auxItem.getArea().y, auxItem.getArea().width, auxItem.getArea().height, this);
         }
     }
 
@@ -566,7 +562,7 @@ public class PanelVentana extends javax.swing.JPanel {
      * Permite rotar un componente
      */
     public void girarItem() {
-        if (itemSeleccionado.getContador() == itemSeleccionado.getLstComponentes().size() - 1) {
+        if (itemSeleccionado.getContador() == itemSeleccionado.getComponentes().size() - 1) {
             this.itemSeleccionado.setContador(0);
         } else {
             itemSeleccionado.setContador(itemSeleccionado.getContador() + 1);

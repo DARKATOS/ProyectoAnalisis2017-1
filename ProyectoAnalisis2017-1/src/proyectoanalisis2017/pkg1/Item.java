@@ -14,7 +14,7 @@ import java.util.LinkedList;
  */
 public class Item{
     private int id; //Identificador del componente
-    private LinkedList<Componente> lstComponentes ; //Cada una de las rotaciones del componente conforman esta lista
+    private LinkedList<Componente> componentes ; //Cada una de las rotaciones del componente conforman esta lista
     private Rectangle area; //area que forma el item
     private int contador;
     
@@ -31,7 +31,7 @@ public class Item{
      */
     public Item(int id, LinkedList<Componente> lstComponentes, int x, int y) {
         this.id = id;
-        this.lstComponentes = lstComponentes;
+        this.componentes = lstComponentes;
         this.area = new Rectangle(x,y,70,100);
         this.contador=1;
     }
@@ -48,8 +48,8 @@ public class Item{
         return id;
     }
 
-    public LinkedList<Componente> getLstComponentes() {
-        return lstComponentes;
+    public LinkedList<Componente> getComponentes() {
+        return componentes;
     }
 
     public void setContador(int contador) {
