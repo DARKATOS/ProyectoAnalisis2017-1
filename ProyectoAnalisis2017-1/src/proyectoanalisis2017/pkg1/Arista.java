@@ -112,6 +112,11 @@ public class Arista implements Cloneable {
         this.x = x;
     }
 
+    public LinkedList<Componente> getComponentes() {
+        return componentes;
+    }
+    
+
     public int getX2() {
         return x2;
     }

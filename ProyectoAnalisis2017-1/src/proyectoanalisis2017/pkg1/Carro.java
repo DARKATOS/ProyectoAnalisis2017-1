@@ -41,10 +41,10 @@ public class Carro  {
      * @param camino Lista de aristas que recorrera el vehiculo
      * @param tipo Tipo automatico o con ruta especifica
      */
-    public Carro(int id, int ancho,int alto, LinkedList<Arista> camino,int tipo) {
+    public Carro(int id, int ancho,int alto,String ruta, LinkedList<Arista> camino,int tipo) {
         this.id = id;
         this.camino = camino;
-        this.ruta = "../ImgComponentes/car_ari_abj1.png";
+        this.ruta = ruta;
         this.tipo=tipo;
         this.area= new Rectangle(camino.getFirst().getX1(),camino.getFirst().getY1() , ancho, alto);
         caminoPintar=new LinkedList<>();

@@ -21,12 +21,14 @@ import javax.swing.JOptionPane;
 public class PanelVentana extends javax.swing.JPanel {
 
     private Ciudad ciudad;
+    private Ciudad ciudadPersonas;
     private AreaItems areaItems;
     private Boolean estaSelecionadoComponente;
     private Item itemSeleccionado;
     private int xImgSelecionada;
     private int yImgSelecionada;
     private final LinkedList<CarroMovimiento> carrosMovimiento;
+    private LinkedList<PersonaMovimiento> persomasMovimiento;
     private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
     private Ciudad auxCiudad;
     private int tipoCamino;
@@ -35,13 +37,14 @@ public class PanelVentana extends javax.swing.JPanel {
     public PanelVentana() {
         initComponents();
         carrosMovimiento = new LinkedList<>();
+        this.persomasMovimiento= new LinkedList<>();
         xImgSelecionada = 0;
         yImgSelecionada = 0;
         itemSeleccionado = new Item();
         estaSelecionadoComponente = false;
         opciones = 0;
         tipoCamino = 0;
-        auxCarro=null;
+        auxCarro = null;
     }
 
     /**
@@ -371,7 +374,9 @@ public class PanelVentana extends javax.swing.JPanel {
     }//GEN-LAST:event_formKeyPressed
 
     /**
-     * Permite hacer una copia de la ciudad para cada vehiculo y la reconstrucción del grafo
+     * Permite hacer una copia de la ciudad para cada vehiculo y la
+     * reconstrucción del grafo
+     *
      * @param ciudad que se va a copiar
      * @return una ciudad copiada
      */
@@ -391,8 +396,9 @@ public class PanelVentana extends javax.swing.JPanel {
     }
 
     /**
-     * Permite la modificación de la ciudad y el grafo con el nodo de ubicacion del vehiculo y sus destinos
-     * ademas calcula el camino mino segun el tipo de ruta selecionado
+     * Permite la modificación de la ciudad y el grafo con el nodo de ubicacion
+     * del vehiculo y sus destinos ademas calcula el camino mino segun el tipo
+     * de ruta selecionado
      */
     public void modificarGrafo() {
         auxCiudad.modificarNodos();
@@ -432,14 +438,17 @@ public class PanelVentana extends javax.swing.JPanel {
             origen = auxCarro.getDestinos().get(i).getIdNodo();
         }
         auxCarro.setCamino(auxCamino);
-        String color=JOptionPane.showInputDialog(this, "Ingese el color", "Color", JOptionPane.INFORMATION_MESSAGE);
+        String color = JOptionPane.showInputDialog(this, "Ingese el color", "Color", JOptionPane.INFORMATION_MESSAGE);
         auxCarro.obtenerCaminoPintar(color);
         auxCarro.iniciar();
     }
 
     /**
-     * Se obtiene el trafico de la ciudad para el grafo en un momento determinado
-     * Se inicializa el trafico de las aristas con 0 y se procede a realizar un recorrido del grafo obteniendo el numero de vehiculos en cada arista 
+     * Se obtiene el trafico de la ciudad para el grafo en un momento
+     * determinado Se inicializa el trafico de las aristas con 0 y se procede a
+     * realizar un recorrido del grafo obteniendo el numero de vehiculos en cada
+     * arista
+     *
      * @param carro
      */
     public void obtenerTrafico(CarroMovimiento carro) {
@@ -485,6 +494,11 @@ public class PanelVentana extends javax.swing.JPanel {
                 g.drawImage(new ImageIcon(getClass().getResource(this.carrosMovimiento.get(i).getRuta())).getImage(), (int) this.carrosMovimiento.get(i).getArea().getX(), (int) this.carrosMovimiento.get(i).getArea().getY(), ciudad.getAnchoCampo(), ciudad.getAltoCampo(), this);
 
             }
+            //pinta las personas en movimiento
+            for (int i = 0; i < this.persomasMovimiento.size(); i++) {
+                g.drawImage(new ImageIcon(getClass().getResource(this.persomasMovimiento.get(i).getRuta())).getImage(), (int) this.persomasMovimiento.get(i).getArea().getX(), (int) this.persomasMovimiento.get(i).getArea().getY(), 10,10, this);
+
+            }
             //pinta la anamiacion de colocar imagen en el tablero
             //El 0 es el X1 de la ciudad.
             if (this.estaSelecionadoComponente && this.xImgSelecionada > 0 && this.xImgSelecionada < ciudad.getAnchoCiudad() && this.yImgSelecionada > 0 && this.yImgSelecionada < ciudad.getAltoCiudad()) {
@@ -500,6 +514,7 @@ public class PanelVentana extends javax.swing.JPanel {
 
     /**
      * pintamos la lista de los item que podemos selecionar y poner en la ciudad
+     *
      * @param g grafico del panel que sirve como lienzo
      */
     private void pintarComponentes(Graphics g) {
@@ -512,7 +527,8 @@ public class PanelVentana extends javax.swing.JPanel {
 
     /**
      * Permite trazar el camino de un vehiculo segun las aristas que recorrera
-     * @param g 
+     *
+     * @param g
      */
     private void pintarCamino(Graphics g) {
         for (int i = 0; i < carrosMovimiento.size(); i++) {
@@ -522,7 +538,7 @@ public class PanelVentana extends javax.swing.JPanel {
                     int x1 = carrosMovimiento.get(i).getCaminoPintar().get(j).getX1();
                     int y1 = carrosMovimiento.get(i).getCaminoPintar().get(j).getY1();
                     int x2 = carrosMovimiento.get(i).getCaminoPintar().get(j).getX2();
-                    int y2=carrosMovimiento.get(i).getCaminoPintar().get(j).getY2();
+                    int y2 = carrosMovimiento.get(i).getCaminoPintar().get(j).getY2();
                     g.drawLine(x1, y1, x2, y2);
                 }
             }
@@ -592,9 +608,9 @@ public class PanelVentana extends javax.swing.JPanel {
 
     /**
      * Permite buscar la carretera mas cerca al destino seleccionado
+     *
      * @param x
-     * @param y
-     * Posiciones del destino
+     * @param y Posiciones del destino
      * @return el componente carretera mas cercano al destino seleccionado
      */
     private Componente buscarCarreteraCercana(int x, int y) {
@@ -621,9 +637,9 @@ public class PanelVentana extends javax.swing.JPanel {
 
     /**
      * Verifica si es posible obtener una carretera a la izquierda
+     *
      * @param x
-     * @param y
-     * Posiciones del destino
+     * @param y Posiciones del destino
      * @return un componente carretera a la izquierda si existe
      */
     public Componente mirarCarreteraIzq(int x, int y) {
@@ -641,9 +657,9 @@ public class PanelVentana extends javax.swing.JPanel {
 
     /**
      * Verifica si es posible obtener una carretera a la derecha
+     *
      * @param x
-     * @param y
-     * Posiciones del destino
+     * @param y Posiciones del destino
      * @return un componente carretera a la derecha si existe
      */
     public Componente mirarCarreteraDer(int x, int y) {
@@ -662,9 +678,9 @@ public class PanelVentana extends javax.swing.JPanel {
 
     /**
      * Verifica si es posible obtener una carretera hacia arriba del destino
+     *
      * @param x
-     * @param y
-     * Posiciones del destino
+     * @param y Posiciones del destino
      * @return un componente carretera arriba del destino si existe
      */
     public Componente mirarCarreteraArriba(int x, int y) {
@@ -683,9 +699,9 @@ public class PanelVentana extends javax.swing.JPanel {
 
     /**
      * Verifica si es posible obtener una carretera hacia abajo del destino
+     *
      * @param x
-     * @param y
-     * Posiciones del destino
+     * @param y Posiciones del destino
      * @return un componente carretera abajo del destino si existe
      */
     public Componente mirarCarreteraAbajo(int x, int y) {
@@ -767,6 +783,23 @@ public class PanelVentana extends javax.swing.JPanel {
         }
         return respuesta;
     }
+
+    public Ciudad getCiudadPersonas() {
+        return ciudadPersonas;
+    }
+
+    public void setCiudadPersonas(Ciudad ciudadPersonas) {
+        this.ciudadPersonas = ciudadPersonas;
+    }
+
+    public LinkedList<PersonaMovimiento> getPersomasMovimiento() {
+        return persomasMovimiento;
+    }
+
+    public void setPersomasMovimiento(LinkedList<PersonaMovimiento> persomasMovimiento) {
+        this.persomasMovimiento = persomasMovimiento;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

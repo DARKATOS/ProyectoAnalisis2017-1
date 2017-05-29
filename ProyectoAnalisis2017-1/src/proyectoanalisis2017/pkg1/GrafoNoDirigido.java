@@ -5,14 +5,13 @@
  */
 package proyectoanalisis2017.pkg1;
 
-
 import java.util.LinkedList;
 
 /**
  *
  * @author JORGE_ALEJANDRO
  */
-public class GrafoDirigido implements Cloneable {
+public class GrafoNoDirigido implements Cloneable {
 
     //Matriz grafo de tipo arista, cada una de las filas representa un id de alguno de los cruces.
     Arista grafo[][];
@@ -23,7 +22,7 @@ public class GrafoDirigido implements Cloneable {
      * @param numeroCruces Es el numero de cruces obtenido de la matriz de la
      * ciudad
      */
-    public GrafoDirigido(int numeroCruces) {
+    public GrafoNoDirigido(int numeroCruces) {
         grafo = new Arista[numeroCruces][numeroCruces];
     }
 
@@ -37,8 +36,7 @@ public class GrafoDirigido implements Cloneable {
         return obj;
     }
 
-    
-    public GrafoDirigido() {
+    public GrafoNoDirigido() {
     }
 
     /**
@@ -62,27 +60,62 @@ public class GrafoDirigido implements Cloneable {
      * @param matrizCiudad matriz de la ciudad que tenemos diseñada
      */
     public void crearGrafo(Ciudad auxCiudad) {
-        Componente [][]matrizCiudad=auxCiudad.getMatrizCiudad();
+        Componente[][] matrizCiudad = auxCiudad.getMatrizCiudad();
         for (int i = 0; i < matrizCiudad.length; i++) {
             for (int j = 0; j < matrizCiudad[i].length; j++) {
                 if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1) {
-                    if (j - 1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getTipoVia().equals("calle") || matrizCiudad[i][j - 1].getTipoVia().equals("carretera")|| matrizCiudad[i][j - 1].getTipoVia().equals("cebra"))) {
+                    if (j - 1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getTipoVia().equals("calle") || matrizCiudad[i][j - 1].getTipoVia().equals("carretera") || matrizCiudad[i][j - 1].getTipoVia().equals("cebra"))) {
                         verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 2);
                     }
-                    if (j + 1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getTipoVia().equals("calle") || matrizCiudad[i][j + 1].getTipoVia().equals("carretera")|| matrizCiudad[i][j +1].getTipoVia().equals("cebra"))) {
+                    if (j + 1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getTipoVia().equals("calle") || matrizCiudad[i][j + 1].getTipoVia().equals("carretera") || matrizCiudad[i][j + 1].getTipoVia().equals("cebra"))) {
 
                         verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 1);
                     }
-                    if (i - 1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getTipoVia().equals("calle") || matrizCiudad[i - 1][j].getTipoVia().equals("carretera")|| matrizCiudad[i-1][j].getTipoVia().equals("cebra"))) {
+                    if (i - 1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getTipoVia().equals("calle") || matrizCiudad[i - 1][j].getTipoVia().equals("carretera") || matrizCiudad[i - 1][j].getTipoVia().equals("cebra"))) {
                         verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 3);
                     }
-                    if (i + 1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getTipoVia().equals("calle") || matrizCiudad[i + 1][j].getTipoVia().equals("carretera")|| matrizCiudad[i+1][j].getTipoVia().equals("cebra"))) {
+                    if (i + 1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getTipoVia().equals("calle") || matrizCiudad[i + 1][j].getTipoVia().equals("carretera") || matrizCiudad[i + 1][j].getTipoVia().equals("cebra"))) {
                         verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 4);
                     }
                 }
             }
         }
     }
+
+    public void completarGrafo() {
+//        for (int i = 0; i < this.grafo.length; i++) {
+//            for (int j = 0; j < grafo[i].length; j++) {
+//                if (grafo[i][j] != null) {
+//                    if()
+//                    {
+//                        
+//                    }
+//                }
+//            }
+//        }
+        Componente x = grafo[0][4].getX();
+        Componente y = grafo[0][4].getY();
+        int auxx = 0;
+        int auxy = 0;
+        if (x.getTipoVia().equals("cebra") || x.getTipoVia().equals("calle") || x.getTipoVia().equals("carretera")) {
+            auxx = x.getIdNodo() + 1;
+        }
+        if (y.getTipoVia().equals("cebra") || y.getTipoVia().equals("calle") || y.getTipoVia().equals("carretera")) {
+            auxy = y.getIdNodo() + 1;
+        }
+        if (x.getArea().x == y.getArea().getX()) {
+            grafo[x.getIdNodo()][auxy] = new Arista((int) x.getArea().getX() + 20, (int) y.getArea().getX() + 20, (int) x.getArea().getY(), (int) y.getArea().getY(), grafo[0][4].getDireccion(), grafo[0][4].getVelocidad(), grafo[0][4].getComponentes());
+        } else {
+            grafo[auxx][auxy] = new Arista((int) x.getArea().getX() + 20, (int) y.getArea().getX() + 20, (int) x.getArea().getY(), (int) y.getArea().getY(), grafo[0][4].getDireccion(), grafo[0][4].getVelocidad(), grafo[0][4].getComponentes());
+
+        }
+        if (y.getTipoVia().equals("cebra")) {
+            grafo[y.getIdNodo()][auxy] = new Arista((int) y.getArea().getX(), (int) y.getArea().getX() + 20, (int) y.getArea().getY(), (int) y.getArea().getY(), 30, 1, new LinkedList<>());
+
+        }
+
+    }
+
 //    public void crearGrafo(Componente[][] matrizCiudad, int anchoCuadroCiudad, int altoCuadroCiudad) {
 //        for (int i = 0; i < matrizCiudad.length; i++) {
 //            for (int j = 0; j < matrizCiudad[i].length; j++) {
@@ -104,7 +137,6 @@ public class GrafoDirigido implements Cloneable {
 //            }
 //        }
 //    }
-
     /**
      * Procedemos a crear la arista que se va asignar al grafo validado si es
      * carretera o caller para la velocidad
@@ -136,56 +168,15 @@ public class GrafoDirigido implements Cloneable {
      * @param arista arista a asignar
      */
     private void añadirArista(Componente x, Componente y, Arista arista) {
-        if (arista.getDireccion() == 5 || arista.getDireccion() == 6) {
-            arista.setX(x);
-            arista.setY(y);
-            this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
-            Arista aris = (Arista) arista.clone();
-            aris.setX(y);
-            aris.setY(x);
-            this.grafo[y.getIdNodo()][x.getIdNodo()] = aris;
-        } else if (arista.getDireccion() == 1) {
-            if (x.getIdNodo() < y.getIdNodo()) {
-                arista.setX(y);
-                arista.setY(x);
-                this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
 
-            } else {
-                arista.setX(x);
-                arista.setY(y);
-                this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
-            }
-        } else if (arista.getDireccion() == 2) {
-            if (x.getIdNodo() < y.getIdNodo()) {
-                arista.setX(x);
-                arista.setY(y);
-                this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
-            } else {
-                arista.setX(y);
-                arista.setY(x);
-                this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
-            }
-        } else if (arista.getDireccion() == 3) {
-            if (x.getIdNodo() < y.getIdNodo()) {
-                arista.setX(x);
-                arista.setY(y);
-                this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
-            } else {
-                arista.setX(y);
-                arista.setY(x);
-                this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
-            }
-        } else if (arista.getDireccion() == 4) {
-            if (x.getIdNodo() < y.getIdNodo()) {
-                arista.setX(y);
-                arista.setY(x);
-                this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
-            } else {
-                arista.setX(x);
-                arista.setY(y);
-                this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
-            }
-        }
+        arista.setX(x);
+        arista.setY(y);
+        this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
+        Arista aris = (Arista) arista.clone();
+        aris.setX(y);
+        aris.setY(x);
+        this.grafo[y.getIdNodo()][x.getIdNodo()] = aris;
+
     }
 
     /**
@@ -242,7 +233,7 @@ public class GrafoDirigido implements Cloneable {
         auxArista = crearArista(yOrigen * ancho, xOrigen * alto, j * ancho, i * alto, auxListaComponentes);
         añadirArista(idNodoorigen, matrizCiudad[i][j], auxArista);
     }
-    
+
     public Arista[][] getGrafo() {
         return grafo;
     }

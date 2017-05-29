@@ -17,16 +17,16 @@ import java.util.logging.Logger;
  *
  * @author root
  */
-public class CarroMovimiento extends Carro implements Runnable {
+public class PersonaMovimiento extends Carro implements Runnable {
 
     private PanelVentana panel;
     private Thread hilo;
-    private GrafoDirigido grafo; //Grafo que reconoce el vehiculo y trabaja con la ciudad
+    private GrafoNoDirigido grafo; //Grafo que reconoce el vehiculo y trabaja con la ciudad
     private Ciudad ciudad; //Ciudad que el vehiculo reconoce y trabaja en conjunto con el grafo
     private Componente ubicacion; //Ultima ubicacion conocida del vehiculo
     private LinkedList<Componente> destinos; //Lista de destinos del vedhiculo en una ruta especifica
 
-    public CarroMovimiento(int id, Ciudad ciudad, GrafoDirigido grafo, String ruta, LinkedList<Arista> camino, int tipo) {
+    public PersonaMovimiento(int id, Ciudad ciudad, GrafoNoDirigido grafo, String ruta, LinkedList<Arista> camino, int tipo) {
         super(id, ciudad.getAnchoCampo(), ciudad.getAltoCampo(), ruta, camino, tipo);
         this.ciudad = ciudad;
         this.grafo = grafo;
@@ -49,7 +49,7 @@ public class CarroMovimiento extends Carro implements Runnable {
         this.hilo.stop();
     }
 
-    public void setGrafo(GrafoDirigido grafo) {
+    public void setGrafo(GrafoNoDirigido grafo) {
         this.grafo = grafo;
     }
 
@@ -166,7 +166,7 @@ public class CarroMovimiento extends Carro implements Runnable {
             setTipo(0);
             destinos = new LinkedList<>();
             setCiudad(panel.copiarCiudad(panel.getCiudad()));
-            GrafoDirigido auxGrafo = new GrafoDirigido(ciudad.getCantidadNodos());
+            GrafoNoDirigido auxGrafo = new GrafoNoDirigido(ciudad.getCantidadNodos());
             auxGrafo.crearGrafo(panel.copiarCiudad(ciudad));
             setGrafo(auxGrafo);
             iniciar();
@@ -230,7 +230,7 @@ public class CarroMovimiento extends Carro implements Runnable {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(CarroMovimiento.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(PersonaMovimiento.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
@@ -253,7 +253,7 @@ public class CarroMovimiento extends Carro implements Runnable {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(CarroMovimiento.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(PersonaMovimiento.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
@@ -364,7 +364,7 @@ public class CarroMovimiento extends Carro implements Runnable {
         this.destinos = destinos;
     }
 
-    public GrafoDirigido getGrafo() {
+    public GrafoNoDirigido getGrafo() {
         return grafo;
     }
 

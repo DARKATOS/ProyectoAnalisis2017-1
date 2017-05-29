@@ -29,6 +29,7 @@ public class Ciudad implements Cloneable {
 
     /**
      * Permite inicializar la matriz de la ciudad y su tamaño
+     *
      * @param matrizCiudad matriz de componentes de la ciudad
      * @param n Tamaño en filas de la ciudad
      * @param m Tamaño en columnas de la ciudad
@@ -146,6 +147,25 @@ public class Ciudad implements Cloneable {
     }
 
     /**
+     *
+     * @param componente
+     * @return
+     */
+    private boolean esCebra(Componente componente) {
+        boolean resultado = false;
+        if (componente.getNombre().equals("B.1")) {
+            componente.setTipo(1);
+            System.out.println("aa");
+            resultado = true;
+        } else if (componente.getNombre().equals("B.2")) {
+            componente.setTipo(2);
+            System.out.println("aabb");
+            resultado = true;
+        }
+        return resultado;
+    }
+
+    /**
      * Permite marcar los nodos adyacentes a una interrupcion, i y j es la
      * posicion de la interrupcion
      *
@@ -215,7 +235,7 @@ public class Ciudad implements Cloneable {
      * carretera ademas va asigandole si es es nodo el id del nodo que va tener
      * en el grafo
      */
-    public void actualizarCiudad() {
+    public void actualizarCiudadCarro() {
         this.cantidadNodos = 0;
         for (int i = 0; i < this.n; i++) {
             for (int j = 0; j < this.m; j++) {
@@ -224,6 +244,7 @@ public class Ciudad implements Cloneable {
                         matrizCiudad[i][j].setTipoVia("cruce");
                         marcarNodo(matrizCiudad[i][j]);
                     } else {
+                        matrizCiudad[i][j].setIdNodo(-1);
                         if (esCalle(this.matrizCiudad[i][j])) {
                             matrizCiudad[i][j].setTipoVia("calle");
                             if (esViaCortada(i, j)) {
@@ -234,6 +255,53 @@ public class Ciudad implements Cloneable {
                             if (esViaCortada(i, j)) {
                                 marcarNodo(matrizCiudad[i][j]);
                             }
+                        } else if (esCebra(this.matrizCiudad[i][j])) {
+
+                            matrizCiudad[i][j].setTipoVia("cebra");
+                            if (esViaCortada(i, j)) {
+                                marcarNodo(matrizCiudad[i][j]);
+                            }
+                        }
+                    }
+                    Rectangle area = new Rectangle(anchoCampo * j, altoCampo * i, anchoCampo, altoCampo);
+                    matrizCiudad[i][j].setArea(area);
+                }
+            }
+        }
+    }
+
+    public void actualizarCiudadPersona() {
+        this.cantidadNodos = 0;
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.m; j++) {
+
+                if (this.matrizCiudad[i][j] != null) {
+                    if (esCebra(this.matrizCiudad[i][j])) {
+                        matrizCiudad[i][j].setTipoVia("cebra");
+                        marcarNodo(matrizCiudad[i][j]);
+                        this.cantidadNodos++;
+                    } else {
+                        matrizCiudad[i][j].setIdNodo(-1);
+                        if (esCalle(this.matrizCiudad[i][j])) {
+                            matrizCiudad[i][j].setTipoVia("calle");
+                            if (esViaCortada(i, j)) {
+                                marcarNodo(matrizCiudad[i][j]);
+                                this.cantidadNodos++;
+                            }
+                        } else if (esCarretera(this.matrizCiudad[i][j])) {
+                            matrizCiudad[i][j].setTipoVia("carretera");
+                            if (esViaCortada(i, j)) {
+                                marcarNodo(matrizCiudad[i][j]);
+                                this.cantidadNodos++;
+                            }
+                        } else if (esCruce(this.matrizCiudad[i][j])) {
+
+                            matrizCiudad[i][j].setTipoVia("cruce");
+
+                            marcarNodo(matrizCiudad[i][j]);
+                            this.cantidadNodos++;
+                            this.cantidadNodos++;
+                            this.cantidadNodos++;
                         }
                     }
                     Rectangle area = new Rectangle(anchoCampo * j, altoCampo * i, anchoCampo, altoCampo);
@@ -266,7 +334,7 @@ public class Ciudad implements Cloneable {
      */
     public Boolean esVia(Componente componente) {
         Boolean resultado = false;
-        if (esCarretera(componente) || esCalle(componente) || esCruce(componente)) {
+        if (esCarretera(componente) || esCalle(componente) || esCruce(componente) || esCebra(componente)) {
             resultado = true;
         }
         return resultado;
@@ -336,10 +404,10 @@ public class Ciudad implements Cloneable {
         return resultado;
 
     }
-    
+
     /**
-     * Muestra los nodos existentes en la ciudad
-     * recorriendo la matriz y obteniendo el id de nodo de cada componente
+     * Muestra los nodos existentes en la ciudad recorriendo la matriz y
+     * obteniendo el id de nodo de cada componente
      */
     public void mostrarMatrizCiudad() {
         for (int i = 0; i < n; i++) {
@@ -379,4 +447,5 @@ public class Ciudad implements Cloneable {
     public LinkedList<Interrupcion> getInterrupciones() {
         return interrupciones;
     }
+
 }
