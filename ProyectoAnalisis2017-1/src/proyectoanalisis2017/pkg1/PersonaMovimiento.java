@@ -17,16 +17,16 @@ import java.util.logging.Logger;
  *
  * @author root
  */
-public class CarroMovimiento extends EntidadMovimiento implements Runnable {
+public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
 
     private PanelVentana panel;
     private Thread hilo;
-    private GrafoDirigido grafo; //Grafo que reconoce el vehiculo y trabaja con la ciudad
+    private GrafoNoDirigido grafo; //Grafo que reconoce el vehiculo y trabaja con la ciudad
     private Ciudad ciudad; //Ciudad que el vehiculo reconoce y trabaja en conjunto con el grafo
     private Componente ubicacion; //Ultima ubicacion conocida del vehiculo
     private LinkedList<Componente> destinos; //Lista de destinos del vedhiculo en una ruta especifica
 
-    public CarroMovimiento(int id, Ciudad ciudad, GrafoDirigido grafo, String ruta, LinkedList<Arista> camino, int tipo) {
+    public PersonaMovimiento(int id, Ciudad ciudad, GrafoNoDirigido grafo, String ruta, LinkedList<Arista> camino, int tipo) {
         super(id, ciudad.getAnchoCampo(), ciudad.getAltoCampo(), ruta, camino, tipo);
         this.ciudad = ciudad;
         this.grafo = grafo;
@@ -49,7 +49,7 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
         this.hilo.stop();
     }
 
-    public void setGrafo(GrafoDirigido grafo) {
+    public void setGrafo(GrafoNoDirigido grafo) {
         this.grafo = grafo;
     }
 
@@ -67,7 +67,7 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
         Boolean sentido;
         while (!getCamino().isEmpty()) {
             //Se obtiene la velocidad del camino
-            velocidad = getCamino().getFirst().getVelocidad();
+            velocidad=40;
             sentido = false;
             if (getCamino().getFirst().getX1() == getCamino().getFirst().getX2()) {
                 int auxY;
@@ -153,7 +153,7 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
                 }
             }
             if (getTipo() == 0) {
-                int m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
+                int m = getCamino().getFirst().getY();
                 getCamino().removeFirst();
                 buscarCamino(m);
             } else {
@@ -166,7 +166,7 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
             setTipo(0);
             destinos = new LinkedList<>();
             setCiudad(panel.copiarCiudad(panel.getCiudad()));
-            GrafoDirigido auxGrafo = new GrafoDirigido(ciudad.getCantidadNodos());
+            GrafoNoDirigido auxGrafo = new GrafoNoDirigido(ciudad.getCantidadNodos());
             auxGrafo.crearGrafo(panel.copiarCiudad(ciudad));
             setGrafo(auxGrafo);
             iniciar();
@@ -185,6 +185,7 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
      * @return id de nodo
      */
     public int idNodoComponente(int x, int y) {
+        x=x-5;
         int auxX = y / this.panel.getCiudad().getAltoCampo();
         int auxY = x / this.panel.getCiudad().getAnchoCampo();
         return ciudad.getMatrizCiudad()[auxX][auxY].getIdNodo();
@@ -230,7 +231,7 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(CarroMovimiento.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(PersonaMovimiento.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
@@ -253,7 +254,7 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(CarroMovimiento.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(PersonaMovimiento.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
@@ -364,7 +365,7 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
         this.destinos = destinos;
     }
 
-    public GrafoDirigido getGrafo() {
+    public GrafoNoDirigido getGrafo() {
         return grafo;
     }
 

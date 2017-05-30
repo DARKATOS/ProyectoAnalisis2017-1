@@ -93,5 +93,9 @@ public class AreaItems implements Serializable{
         auxLista= new LinkedList<>();
         auxLista.add(new Componente("XXX"));
         listaItems.add(new Item(13, auxLista, anchoListaComponentesX1 + 30+80+80, 4 * auxAltura+40));
+        auxLista= new LinkedList<>();
+        auxLista.add(new Componente("B.1"));
+        auxLista.add(new Componente("B.2"));
+        listaItems.add(new Item(14, auxLista, anchoListaComponentesX1 + 30+80+80, 5 * auxAltura+40));
     }
 }

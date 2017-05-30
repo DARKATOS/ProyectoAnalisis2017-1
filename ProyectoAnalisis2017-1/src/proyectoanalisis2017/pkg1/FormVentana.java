@@ -22,7 +22,8 @@ import javax.swing.JOptionPane;
  */
 public class FormVentana extends javax.swing.JFrame {
 
-    Ciudad ciudad;
+    Ciudad ciudadCarros;
+    Ciudad ciudadPersonas;
     AreaItems areaItems;
     GraphicsDevice grafica;
     GrafoDirigido grafo;
@@ -53,19 +54,23 @@ public class FormVentana extends javax.swing.JFrame {
 
     private void graficarCiudad() {
         //Obtengo el ancho de campo de acuerdo al numero de columnas de la matriz ciudad.
-        int anchoCampo = (int) ((this.getWidth() * 0.8) / ciudad.getM());
+        int anchoCampo = (int) ((this.getWidth() * 0.8) / ciudadCarros.getM());
         //obtengo el alto del campo de acuerdo al numero de filas de la matriz ciudad.
-        int altoCampo = (int) ((this.getHeight() - 100) / ciudad.getN());
+        int altoCampo = (int) ((this.getHeight() - 100) / ciudadCarros.getN());
         //Seteo el ancho del campo para la ciudad.
-        ciudad.setAnchoCampo(anchoCampo);
+        ciudadCarros.setAnchoCampo(anchoCampo);
+        ciudadPersonas.setAnchoCampo(anchoCampo);
         //Seteo el alto del campo para la ciudad
-        ciudad.setAltoCampo(altoCampo);
+        ciudadCarros.setAltoCampo(altoCampo);
+        ciudadPersonas.setAltoCampo(altoCampo);
         //El ancho de la ciudad es el numero de columnas por el ancho del campo.
-        ciudad.setAnchoCiudad(ciudad.getM() * ciudad.getAnchoCampo());
+        ciudadCarros.setAnchoCiudad(ciudadCarros.getM() * ciudadCarros.getAnchoCampo());
         //El alto de la ciudad es el numero de filas por el alto del campo.
-        ciudad.setAltoCiudad(ciudad.getAltoCampo() * ciudad.getN());
+        ciudadCarros.setAltoCiudad(ciudadCarros.getAltoCampo() * ciudadCarros.getN());
+        ciudadPersonas.setAltoCiudad(ciudadCarros.getAltoCampo() * ciudadCarros.getN());
         //Seteo la ciudad.
-        panelVentana.setCiudad(ciudad);
+        panelVentana.setCiudad(ciudadCarros);
+        panelVentana.setCiudadPersonas(ciudadPersonas);
 
     }
 
@@ -84,6 +89,9 @@ public class FormVentana extends javax.swing.JFrame {
         btnIngresarCarro = new javax.swing.JButton();
         btnIniciarCarro = new javax.swing.JButton();
         btnCamino = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        btnIngresarP = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,6 +144,27 @@ public class FormVentana extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Crear Grafo P");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        btnIngresarP.setText("IngresarP");
+        btnIngresarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarPActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("IniciarP");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelVentanaLayout = new javax.swing.GroupLayout(panelVentana);
         panelVentana.setLayout(panelVentanaLayout);
         panelVentanaLayout.setHorizontalGroup(
@@ -146,12 +175,18 @@ public class FormVentana extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCrearGrafo, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnIngresarCarro)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnIngresarP)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnIniciarCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCamino)
-                .addContainerGap(438, Short.MAX_VALUE))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
         panelVentanaLayout.setVerticalGroup(
             panelVentanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,7 +197,10 @@ public class FormVentana extends javax.swing.JFrame {
                     .addComponent(btnCrearGrafo)
                     .addComponent(btnIngresarCarro)
                     .addComponent(btnIniciarCarro)
-                    .addComponent(btnCamino))
+                    .addComponent(btnCamino)
+                    .addComponent(jButton1)
+                    .addComponent(btnIngresarP)
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
@@ -191,20 +229,20 @@ public class FormVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_panelVentanaKeyReleased
 
     private void panelVentanaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_panelVentanaKeyPressed
-       //Realiza un rotacion de item
+        //Realiza un rotacion de item
         panelVentana.girarItem();
     }//GEN-LAST:event_panelVentanaKeyPressed
 
     private void btnCrearGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearGrafoActionPerformed
         //Actualizo la ciudad para obtener los nodos.
-        ciudad.actualizarCiudad();
-        
+        ciudadCarros.actualizarCiudadCarro();
+
     }//GEN-LAST:event_btnCrearGrafoActionPerformed
 
     private void btnIngresarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarCarroActionPerformed
         //Permite ingresar un carro en tipo automatico a la ciudad
-        GrafoDirigido auxGrafo1=new GrafoDirigido(ciudad.getCantidadNodos());
-        Ciudad auxCiudad1 = panelVentana.copiarCiudad(ciudad);
+        GrafoDirigido auxGrafo1 = new GrafoDirigido(ciudadCarros.getCantidadNodos());
+        Ciudad auxCiudad1 = panelVentana.copiarCiudad(ciudadCarros);
         auxGrafo1.crearGrafo(auxCiudad1);
         LinkedList<Arista> camino1 = new LinkedList<>();
         boolean bandera = false;
@@ -216,7 +254,7 @@ public class FormVentana extends javax.swing.JFrame {
                 }
             }
         }
-        ingresarCarro(new CarroMovimiento(cantidadCarros, ciudad, auxGrafo1, camino1, 0));
+        ingresarCarro(new CarroMovimiento(cantidadCarros, ciudadCarros, auxGrafo1, "../ImgComponentes/car_ari_abj1.png", camino1, 0));
         this.cantidadCarros++;
     }//GEN-LAST:event_btnIngresarCarroActionPerformed
 
@@ -226,11 +264,11 @@ public class FormVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIniciarCarroActionPerformed
 
     private void panelVentanaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelVentanaMouseReleased
-      
+
     }//GEN-LAST:event_panelVentanaMouseReleased
 
     private void btnCaminoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaminoActionPerformed
-        
+
         if (panelVentana.getOpciones() == 0) {
             //Seleccion del camino minimo en forma de camino mas corto, camino veloz, camiono de menor trafico
             int tipoCamino = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 camino corto \n 2 camino veloz \n 3 camino trafico", "Menu", JOptionPane.INFORMATION_MESSAGE));
@@ -241,6 +279,36 @@ public class FormVentana extends javax.swing.JFrame {
             panelVentana.setOpciones(0);
         }
     }//GEN-LAST:event_btnCaminoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ciudadPersonas.actualizarCiudadPersona();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnIngresarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarPActionPerformed
+        //Permite ingresar un carro en tipo automatico a la ciudad
+        GrafoNoDirigido auxGrafo1 = new GrafoNoDirigido(ciudadPersonas.getCantidadNodos());
+        Ciudad auxCiudad1 = panelVentana.copiarCiudad(ciudadPersonas);
+        auxGrafo1.crearGrafo(auxCiudad1);
+        Ciudad auxCiudad2 = panelVentana.copiarCiudad(ciudadPersonas);
+        auxGrafo1.completarGrafo(auxCiudad2);
+        LinkedList<Arista> camino1 = new LinkedList<>();
+        boolean bandera = false;
+        for (int i = 0; i < auxGrafo1.getGrafo().length && !bandera; i++) {
+            for (int j = 0; j < auxGrafo1.getGrafo().length && !bandera; j++) {
+                if (auxGrafo1.getGrafo()[i][j] != null) {
+                    camino1.add(auxGrafo1.getGrafo()[i][j]);
+                    bandera = true;
+                }
+            }
+        }
+        ingresarPersona(new PersonaMovimiento(cantidadCarros, ciudadCarros, auxGrafo1, "../ImgComponentes/per1.png", camino1, 0));
+        this.cantidadCarros++;
+    }//GEN-LAST:event_btnIngresarPActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //inicia el movimiento del carro
+        panelVentana.getPersonasMovimiento().getLast().iniciar();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -284,13 +352,17 @@ public class FormVentana extends javax.swing.JFrame {
     private javax.swing.JButton btnCrearGrafo;
     private javax.swing.JButton btnGuardarCiudad;
     private javax.swing.JButton btnIngresarCarro;
+    private javax.swing.JButton btnIngresarP;
     private javax.swing.JButton btnIniciarCarro;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private proyectoanalisis2017.pkg1.PanelVentana panelVentana;
     // End of variables declaration//GEN-END:variables
 
     /**
-     * Permite guardar en un archivo txt la ciudad. Para que en otra ocasion pueda ser cargada
-     * Se recorre la matriz de la ciudad y se almacenan los nombres de cada uno de los componentes
+     * Permite guardar en un archivo txt la ciudad. Para que en otra ocasion
+     * pueda ser cargada Se recorre la matriz de la ciudad y se almacenan los
+     * nombres de cada uno de los componentes
      */
     private void GuardarCiudad(String nombreArchivo) {
         String linea;
@@ -299,17 +371,17 @@ public class FormVentana extends javax.swing.JFrame {
         try {
             fichero = new FileWriter(nombreArchivo + ".txt");
             pw = new PrintWriter(fichero);
-            linea = String.valueOf(ciudad.getMatrizCiudad().length);
+            linea = String.valueOf(ciudadCarros.getMatrizCiudad().length);
             pw.println(linea);
-            linea = String.valueOf(ciudad.getMatrizCiudad()[0].length);
+            linea = String.valueOf(ciudadCarros.getMatrizCiudad()[0].length);
             pw.println(linea);
             linea = "";
-            for (int i = 0; i < ciudad.getMatrizCiudad().length; i++) {
-                for (int j = 0; j < ciudad.getMatrizCiudad().length; j++) {
-                    if (ciudad.getMatrizCiudad()[i][j] == null) {
+            for (int i = 0; i < ciudadCarros.getMatrizCiudad().length; i++) {
+                for (int j = 0; j < ciudadCarros.getMatrizCiudad().length; j++) {
+                    if (ciudadCarros.getMatrizCiudad()[i][j] == null) {
                         linea = linea + "-,";
                     } else {
-                        linea = linea + ciudad.getMatrizCiudad()[i][j].getNombre() + ",";
+                        linea = linea + ciudadCarros.getMatrizCiudad()[i][j].getNombre() + ",";
                     }
                 }
                 linea = linea.substring(0, linea.length() - 1);
@@ -330,8 +402,9 @@ public class FormVentana extends javax.swing.JFrame {
     }
 
     /**
-     * Permite cargar desde un archivo txt la ciudad.
-     * Se recorre un archivo de texto y de acuerdo a la nomeclatura de los componentes se reconstruyen en la matriz de la ciudad
+     * Permite cargar desde un archivo txt la ciudad. Se recorre un archivo de
+     * texto y de acuerdo a la nomeclatura de los componentes se reconstruyen en
+     * la matriz de la ciudad
      */
     private void cargarCiudad() {
         String nombreArchivo = JOptionPane.showInputDialog("ingrese nombre archivo");
@@ -358,7 +431,8 @@ public class FormVentana extends javax.swing.JFrame {
                 }
                 filas++;
             }
-            ciudad = new Ciudad(matrizCiudad, n, m);
+            ciudadCarros = new Ciudad(matrizCiudad, n, m);
+            ciudadPersonas = new Ciudad(matrizCiudad, n, m);
         } catch (IOException | NumberFormatException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -384,27 +458,34 @@ public class FormVentana extends javax.swing.JFrame {
                 matriz[i][j] = null;
             }
         }
-        ciudad = new Ciudad(matriz, n, m);
+        ciudadCarros = new Ciudad(matriz, n, m);
+        ciudadPersonas = new Ciudad(matriz, n, m);
     }
 
     /**
      * Grafica el area de items para construir la ciudad
      */
     private void graficarAreaItems() {
-        int anchoAreaItemsX1 = ciudad.getN() * ciudad.getAnchoCampo();
+        int anchoAreaItemsX1 = ciudadCarros.getN() * ciudadCarros.getAnchoCampo();
         int anchoAreaItemsX2 = this.getWidth() - (int) (this.getWidth() * 0.05);
         areaItems = new AreaItems(anchoAreaItemsX1, anchoAreaItemsX2);
         areaItems.cargarComponentes();
         panelVentana.setAreaItems(areaItems);
     }
-    
+
     /**
      * Permite añadir un carro a la lista de carros en movimiento y asignarle un
      * grafo.
-     * @param carro Vehiculo que se va a agregar a la lista de carros de movimiento
+     *
+     * @param carro Vehiculo que se va a agregar a la lista de carros de
+     * movimiento
      */
     private void ingresarCarro(CarroMovimiento carro) {
         panelVentana.getCarrosMovimiento().add(carro);
         panelVentana.getCarrosMovimiento().getLast().setPanel(panelVentana);
+    }
+    private void ingresarPersona(PersonaMovimiento persona) {
+        panelVentana.getPersonasMovimiento().add(persona);
+        panelVentana.getPersonasMovimiento().getLast().setPanel(panelVentana);
     }
 }
