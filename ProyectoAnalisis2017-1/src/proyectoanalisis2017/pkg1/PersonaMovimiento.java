@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author root
  */
-public class PersonaMovimiento extends Carro implements Runnable {
+public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
 
     private PanelVentana panel;
     private Thread hilo;
@@ -67,7 +67,7 @@ public class PersonaMovimiento extends Carro implements Runnable {
         Boolean sentido;
         while (!getCamino().isEmpty()) {
             //Se obtiene la velocidad del camino
-            velocidad = getCamino().getFirst().getVelocidad();
+            velocidad=40;
             sentido = false;
             if (getCamino().getFirst().getX1() == getCamino().getFirst().getX2()) {
                 int auxY;
@@ -153,7 +153,7 @@ public class PersonaMovimiento extends Carro implements Runnable {
                 }
             }
             if (getTipo() == 0) {
-                int m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
+                int m = getCamino().getFirst().getY();
                 getCamino().removeFirst();
                 buscarCamino(m);
             } else {
@@ -185,6 +185,7 @@ public class PersonaMovimiento extends Carro implements Runnable {
      * @return id de nodo
      */
     public int idNodoComponente(int x, int y) {
+        x=x-5;
         int auxX = y / this.panel.getCiudad().getAltoCampo();
         int auxY = x / this.panel.getCiudad().getAnchoCampo();
         return ciudad.getMatrizCiudad()[auxX][auxY].getIdNodo();

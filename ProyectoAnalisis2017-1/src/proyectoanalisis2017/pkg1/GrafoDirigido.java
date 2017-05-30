@@ -137,52 +137,52 @@ public class GrafoDirigido implements Cloneable {
      */
     private void añadirArista(Componente x, Componente y, Arista arista) {
         if (arista.getDireccion() == 5 || arista.getDireccion() == 6) {
-            arista.setX(x);
-            arista.setY(y);
+            arista.setX(x.getIdNodo());
+            arista.setY(y.getIdNodo());
             this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
             Arista aris = (Arista) arista.clone();
-            aris.setX(y);
-            aris.setY(x);
+            aris.setX(y.getIdNodo());
+            aris.setY(x.getIdNodo());
             this.grafo[y.getIdNodo()][x.getIdNodo()] = aris;
         } else if (arista.getDireccion() == 1) {
             if (x.getIdNodo() < y.getIdNodo()) {
-                arista.setX(y);
-                arista.setY(x);
+                arista.setX(y.getIdNodo());
+                arista.setY(x.getIdNodo());
                 this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
 
             } else {
-                arista.setX(x);
-                arista.setY(y);
+                arista.setX(x.getIdNodo());
+                arista.setY(y.getIdNodo());
                 this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
             }
         } else if (arista.getDireccion() == 2) {
             if (x.getIdNodo() < y.getIdNodo()) {
-                arista.setX(x);
-                arista.setY(y);
+                arista.setX(x.getIdNodo());
+                arista.setY(y.getIdNodo());
                 this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
             } else {
-                arista.setX(y);
-                arista.setY(x);
+                arista.setX(y.getIdNodo());
+                arista.setY(x.getIdNodo());
                 this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
             }
         } else if (arista.getDireccion() == 3) {
             if (x.getIdNodo() < y.getIdNodo()) {
-                arista.setX(x);
-                arista.setY(y);
+                arista.setX(x.getIdNodo());
+                arista.setY(y.getIdNodo());
                 this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
             } else {
-                arista.setX(y);
-                arista.setY(x);
+                arista.setX(y.getIdNodo());
+                arista.setY(x.getIdNodo());
                 this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
             }
         } else if (arista.getDireccion() == 4) {
             if (x.getIdNodo() < y.getIdNodo()) {
-                arista.setX(y);
-                arista.setY(x);
+                arista.setX(y.getIdNodo());
+                arista.setY(x.getIdNodo());
                 this.grafo[y.getIdNodo()][x.getIdNodo()] = arista;
             } else {
-                arista.setX(x);
-                arista.setY(y);
+                arista.setX(x.getIdNodo());
+                arista.setY(y.getIdNodo());
                 this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
             }
         }

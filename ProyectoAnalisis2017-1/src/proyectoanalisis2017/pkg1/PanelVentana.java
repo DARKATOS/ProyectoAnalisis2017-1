@@ -28,7 +28,7 @@ public class PanelVentana extends javax.swing.JPanel {
     private int xImgSelecionada;
     private int yImgSelecionada;
     private final LinkedList<CarroMovimiento> carrosMovimiento;
-    private LinkedList<PersonaMovimiento> persomasMovimiento;
+    private LinkedList<PersonaMovimiento> personasMovimiento;
     private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
     private Ciudad auxCiudad;
     private int tipoCamino;
@@ -37,7 +37,7 @@ public class PanelVentana extends javax.swing.JPanel {
     public PanelVentana() {
         initComponents();
         carrosMovimiento = new LinkedList<>();
-        this.persomasMovimiento= new LinkedList<>();
+        this.personasMovimiento = new LinkedList<>();
         xImgSelecionada = 0;
         yImgSelecionada = 0;
         itemSeleccionado = new Item();
@@ -251,8 +251,8 @@ public class PanelVentana extends javax.swing.JPanel {
                             for (int k = 0; k < carrosMovimiento.get(i).getDestinos().size(); k++) {
                                 LinkedList<Arista> auxCamino1 = auxRuta.obtenerCamino(matrizVertices, origen, carrosMovimiento.get(i).getDestinos().get(k).getIdNodo(), carrosMovimiento.get(i).getGrafo());
                                 for (int j = 0; j < auxCamino1.size(); j++) {
-                                    System.out.println("camino: A" + auxCamino1.get(j).getX().getIdNodo());
-                                    System.out.println("camino: B" + auxCamino1.get(j).getY().getIdNodo());
+                                    System.out.println("camino: A" + auxCamino1.get(j).getX());
+                                    System.out.println("camino: B" + auxCamino1.get(j).getY());
                                     auxCamino.add(auxCamino1.get(j));
                                 }
                                 origen = carrosMovimiento.get(i).getDestinos().get(k).getIdNodo();
@@ -321,8 +321,8 @@ public class PanelVentana extends javax.swing.JPanel {
                             for (int k = 0; k < carrosMovimiento.get(i).getDestinos().size(); k++) {
                                 LinkedList<Arista> auxCamino1 = auxRuta.obtenerCamino(matrizVertices, origen, carrosMovimiento.get(i).getDestinos().get(k).getIdNodo(), carrosMovimiento.get(i).getGrafo());
                                 for (int j = 0; j < auxCamino1.size(); j++) {
-                                    System.out.println("camino: A" + auxCamino1.get(j).getX().getIdNodo());
-                                    System.out.println("camino: B" + auxCamino1.get(j).getY().getIdNodo());
+                                    System.out.println("camino: A" + auxCamino1.get(j).getX());
+                                    System.out.println("camino: B" + auxCamino1.get(j).getY());
                                     auxCamino.add(auxCamino1.get(j));
                                 }
                                 origen = carrosMovimiento.get(i).getDestinos().get(k).getIdNodo();
@@ -431,8 +431,8 @@ public class PanelVentana extends javax.swing.JPanel {
         for (int i = 0; i < auxCarro.getDestinos().size(); i++) {
             LinkedList<Arista> auxCamino1 = auxRuta.obtenerCamino(matrizVertices, origen, auxCarro.getDestinos().get(i).getIdNodo(), auxCarro.getGrafo());
             for (int j = 0; j < auxCamino1.size(); j++) {
-                System.out.println("camino: A" + auxCamino1.get(j).getX().getIdNodo());
-                System.out.println("camino: B" + auxCamino1.get(j).getY().getIdNodo());
+                System.out.println("camino: A" + auxCamino1.get(j).getX());
+                System.out.println("camino: B" + auxCamino1.get(j).getY());
                 auxCamino.add(auxCamino1.get(j));
             }
             origen = auxCarro.getDestinos().get(i).getIdNodo();
@@ -464,8 +464,8 @@ public class PanelVentana extends javax.swing.JPanel {
                 Arista arista = carrosMovimiento.get(i).getCamino().getFirst();
                 for (int j = 0; j < carro.getGrafo().getGrafo().length; j++) {
                     for (int k = 0; k < carro.getGrafo().getGrafo()[j].length; k++) {
-                        if (carro.getGrafo().getGrafo()[j][k] != null && arista.getX().getIdNodo() == carro.getGrafo().getGrafo()[j][k].getX().getIdNodo()
-                                && arista.getY().getIdNodo() == carro.getGrafo().getGrafo()[j][k].getY().getIdNodo()) {
+                        if (carro.getGrafo().getGrafo()[j][k] != null && arista.getX() == carro.getGrafo().getGrafo()[j][k].getX()
+                                && arista.getY() == carro.getGrafo().getGrafo()[j][k].getY()) {
                             carro.getGrafo().getGrafo()[j][k].setTrafico(carro.getGrafo().getGrafo()[j][k].getTrafico() + 1);
                         }
                     }
@@ -495,8 +495,8 @@ public class PanelVentana extends javax.swing.JPanel {
 
             }
             //pinta las personas en movimiento
-            for (int i = 0; i < this.persomasMovimiento.size(); i++) {
-                g.drawImage(new ImageIcon(getClass().getResource(this.persomasMovimiento.get(i).getRuta())).getImage(), (int) this.persomasMovimiento.get(i).getArea().getX(), (int) this.persomasMovimiento.get(i).getArea().getY(), 10,10, this);
+            for (int i = 0; i < this.personasMovimiento.size(); i++) {
+                g.drawImage(new ImageIcon(getClass().getResource(this.personasMovimiento.get(i).getRuta())).getImage(), (int) this.personasMovimiento.get(i).getArea().getX(), (int) this.personasMovimiento.get(i).getArea().getY(), (int) ((int)ciudad.getAnchoCampo()*0.50), (int) ( ciudad.getAltoCampo()*(0.50)), this);
 
             }
             //pinta la anamiacion de colocar imagen en el tablero
@@ -792,12 +792,12 @@ public class PanelVentana extends javax.swing.JPanel {
         this.ciudadPersonas = ciudadPersonas;
     }
 
-    public LinkedList<PersonaMovimiento> getPersomasMovimiento() {
-        return persomasMovimiento;
+    public LinkedList<PersonaMovimiento> getPersonasMovimiento() {
+        return personasMovimiento;
     }
 
-    public void setPersomasMovimiento(LinkedList<PersonaMovimiento> persomasMovimiento) {
-        this.persomasMovimiento = persomasMovimiento;
+    public void setPersonasMovimiento(LinkedList<PersonaMovimiento> personasMovimiento) {
+        this.personasMovimiento = personasMovimiento;
     }
 
 

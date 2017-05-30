@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author root
  */
-public class CarroMovimiento extends Carro implements Runnable {
+public class CarroMovimiento extends EntidadMovimiento implements Runnable {
 
     private PanelVentana panel;
     private Thread hilo;

@@ -282,8 +282,6 @@ public class FormVentana extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ciudadPersonas.actualizarCiudadPersona();
-        System.out.println(ciudadPersonas.getCantidadNodos());
-        System.out.println("a");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnIngresarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarPActionPerformed
@@ -291,7 +289,8 @@ public class FormVentana extends javax.swing.JFrame {
         GrafoNoDirigido auxGrafo1 = new GrafoNoDirigido(ciudadPersonas.getCantidadNodos());
         Ciudad auxCiudad1 = panelVentana.copiarCiudad(ciudadPersonas);
         auxGrafo1.crearGrafo(auxCiudad1);
-        auxGrafo1.completarGrafo();
+        Ciudad auxCiudad2 = panelVentana.copiarCiudad(ciudadPersonas);
+        auxGrafo1.completarGrafo(auxCiudad2);
         LinkedList<Arista> camino1 = new LinkedList<>();
         boolean bandera = false;
         for (int i = 0; i < auxGrafo1.getGrafo().length && !bandera; i++) {
@@ -302,13 +301,13 @@ public class FormVentana extends javax.swing.JFrame {
                 }
             }
         }
-        ingresarPersona(new PersonaMovimiento(cantidadCarros, ciudadCarros, auxGrafo1, "../ImgComponentes/car_ari_abj1.png", camino1, 0));
+        ingresarPersona(new PersonaMovimiento(cantidadCarros, ciudadCarros, auxGrafo1, "../ImgComponentes/per1.png", camino1, 0));
         this.cantidadCarros++;
     }//GEN-LAST:event_btnIngresarPActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //inicia el movimiento del carro
-        panelVentana.getPersomasMovimiento().getLast().iniciar();
+        panelVentana.getPersonasMovimiento().getLast().iniciar();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -486,7 +485,7 @@ public class FormVentana extends javax.swing.JFrame {
         panelVentana.getCarrosMovimiento().getLast().setPanel(panelVentana);
     }
     private void ingresarPersona(PersonaMovimiento persona) {
-        panelVentana.getPersomasMovimiento().add(persona);
-        panelVentana.getPersomasMovimiento().getLast().setPanel(panelVentana);
+        panelVentana.getPersonasMovimiento().add(persona);
+        panelVentana.getPersonasMovimiento().getLast().setPanel(panelVentana);
     }
 }

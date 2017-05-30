@@ -64,17 +64,17 @@ public class GrafoNoDirigido implements Cloneable {
         for (int i = 0; i < matrizCiudad.length; i++) {
             for (int j = 0; j < matrizCiudad[i].length; j++) {
                 if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1) {
-                    if (j - 1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getTipoVia().equals("calle") || matrizCiudad[i][j - 1].getTipoVia().equals("carretera") || matrizCiudad[i][j - 1].getTipoVia().equals("cebra"))) {
-                        verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 2);
-                    }
-                    if (j + 1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getTipoVia().equals("calle") || matrizCiudad[i][j + 1].getTipoVia().equals("carretera") || matrizCiudad[i][j + 1].getTipoVia().equals("cebra"))) {
+//                    if (j - 1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getTipoVia().equals("calle") || matrizCiudad[i][j - 1].getTipoVia().equals("carretera") || matrizCiudad[i][j - 1].getTipoVia().equals("cebra"))) {
+//                        verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 2);
+//                    }
+                    if (j + 1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getTipoVia().equals("calle") || matrizCiudad[i][j + 1].getTipoVia().equals("carretera") || matrizCiudad[i][j + 1].getTipoVia().equals("cebra") || matrizCiudad[i][j + 1].getTipoVia().equals("cruce"))) {
 
                         verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 1);
                     }
-                    if (i - 1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getTipoVia().equals("calle") || matrizCiudad[i - 1][j].getTipoVia().equals("carretera") || matrizCiudad[i - 1][j].getTipoVia().equals("cebra"))) {
-                        verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 3);
-                    }
-                    if (i + 1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getTipoVia().equals("calle") || matrizCiudad[i + 1][j].getTipoVia().equals("carretera") || matrizCiudad[i + 1][j].getTipoVia().equals("cebra"))) {
+//                    if (i - 1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getTipoVia().equals("calle") || matrizCiudad[i - 1][j].getTipoVia().equals("carretera") || matrizCiudad[i - 1][j].getTipoVia().equals("cebra"))) {
+//                        verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 3);
+//                    }
+                    if (i + 1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getTipoVia().equals("calle") || matrizCiudad[i + 1][j].getTipoVia().equals("carretera") || matrizCiudad[i + 1][j].getTipoVia().equals("cebra") || matrizCiudad[i + 1][j].getTipoVia().equals("cruce"))) {
                         verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j], i, j, auxCiudad.getAnchoCampo(), auxCiudad.getAltoCampo(), 4);
                     }
                 }
@@ -82,61 +82,61 @@ public class GrafoNoDirigido implements Cloneable {
         }
     }
 
-    public void completarGrafo() {
-//        for (int i = 0; i < this.grafo.length; i++) {
-//            for (int j = 0; j < grafo[i].length; j++) {
-//                if (grafo[i][j] != null) {
-//                    if()
-//                    {
-//                        
-//                    }
-//                }
-//            }
-//        }
-        Componente x = grafo[0][4].getX();
-        Componente y = grafo[0][4].getY();
-        int auxx = 0;
-        int auxy = 0;
-        if (x.getTipoVia().equals("cebra") || x.getTipoVia().equals("calle") || x.getTipoVia().equals("carretera")) {
-            auxx = x.getIdNodo() + 1;
-        }
-        if (y.getTipoVia().equals("cebra") || y.getTipoVia().equals("calle") || y.getTipoVia().equals("carretera")) {
-            auxy = y.getIdNodo() + 1;
-        }
-        if (x.getArea().x == y.getArea().getX()) {
-            grafo[x.getIdNodo()][auxy] = new Arista((int) x.getArea().getX() + 20, (int) y.getArea().getX() + 20, (int) x.getArea().getY(), (int) y.getArea().getY(), grafo[0][4].getDireccion(), grafo[0][4].getVelocidad(), grafo[0][4].getComponentes());
-        } else {
-            grafo[auxx][auxy] = new Arista((int) x.getArea().getX() + 20, (int) y.getArea().getX() + 20, (int) x.getArea().getY(), (int) y.getArea().getY(), grafo[0][4].getDireccion(), grafo[0][4].getVelocidad(), grafo[0][4].getComponentes());
+    public void completarGrafo(Ciudad auxCiudad) {
+        Componente[][] matrizCiudad = auxCiudad.getMatrizCiudad();
+        for (int i = 0; i < matrizCiudad.length; i++) {
+            for (int j = 0; j < matrizCiudad[i].length; j++) {
+                if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1 && matrizCiudad[i][j].getTipoVia().equals("cruce")) {
+                    if (j - 1 < 0 || matrizCiudad[i][j - 1] == null || (!matrizCiudad[i][j - 1].getTipoVia().equals("calle") && !matrizCiudad[i][j - 1].getTipoVia().equals("carretera") && !matrizCiudad[i][j - 1].getTipoVia().equals("cebra") && !matrizCiudad[i - 1][j].getTipoVia().equals("cebra"))) {
+                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY() + auxCiudad.getAltoCampo(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 2);
+                    }
+                    if (j + 1 >= matrizCiudad[i].length || matrizCiudad[i][j + 1] == null || (!matrizCiudad[i][j + 1].getTipoVia().equals("calle") && !matrizCiudad[i][j + 1].getTipoVia().equals("carretera") && !matrizCiudad[i][j + 1].getTipoVia().equals("cebra") && !matrizCiudad[i][j + 1].getTipoVia().equals("cruce"))) {
+
+                        añadirArista(new Arista((int) matrizCiudad[i][j].getArea().getX() + auxCiudad.getAnchoCampo(), (int) matrizCiudad[i][j].getArea().getX() + auxCiudad.getAnchoCampo(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY() + auxCiudad.getAltoCampo(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo() + 1, matrizCiudad[i][j].getIdNodo() + 3);
+                    }
+                    if (i - 1 < 0 || matrizCiudad[i - 1][j] == null || (!matrizCiudad[i - 1][j].getTipoVia().equals("calle") && !matrizCiudad[i - 1][j].getTipoVia().equals("carretera") && !matrizCiudad[i - 1][j].getTipoVia().equals("cebra"))) {
+                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX() + auxCiudad.getAnchoCampo(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 1);
+                    }
+                    if (i + 1 >= matrizCiudad.length || matrizCiudad[i + 1][j] == null || (!matrizCiudad[i + 1][j].getTipoVia().equals("calle") && !matrizCiudad[i + 1][j].getTipoVia().equals("carretera") && !matrizCiudad[i + 1][j].getTipoVia().equals("cebra") && !matrizCiudad[i + 1][j].getTipoVia().equals("cruce"))) {
+                        añadirArista(new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX() + auxCiudad.getAnchoCampo(), (int) matrizCiudad[i][j].getArea().getY() + auxCiudad.getAltoCampo(), (int) matrizCiudad[i][j].getArea().getY() + auxCiudad.getAltoCampo(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo() + 2, matrizCiudad[i][j].getIdNodo() + 3);
+                    }
+                }
+                if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1 && matrizCiudad[i][j].getTipoVia().equals("cebra")) {
+
+                    if (matrizCiudad[i][j].getNombre().equals("B.1")) {
+                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX() + auxCiudad.getAnchoCampo(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 1);
+
+                    } else {
+                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY() + auxCiudad.getAltoCampo(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 1);
+
+                    }
+                }
+            }
 
         }
-        if (y.getTipoVia().equals("cebra")) {
-            grafo[y.getIdNodo()][auxy] = new Arista((int) y.getArea().getX(), (int) y.getArea().getX() + 20, (int) y.getArea().getY(), (int) y.getArea().getY(), 30, 1, new LinkedList<>());
-
-        }
-
     }
+    //    public void crearGrafo(Componente[][] matrizCiudad, int anchoCuadroCiudad, int altoCuadroCiudad) {
+    //        for (int i = 0; i < matrizCiudad.length; i++) {
+    //            for (int j = 0; j < matrizCiudad[i].length; j++) {
+    //                if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1) {
+    //                    if (j - 1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getTipoVia().equals("calle") || matrizCiudad[i][j - 1].getTipoVia().equals("carretera"))) {
+    //                        verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 2);
+    //                    }
+    //                    if (j + 1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getTipoVia().equals("calle") || matrizCiudad[i][j + 1].getTipoVia().equals("carretera"))) {
+    //
+    //                        verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 1);
+    //                    }
+    //                    if (i - 1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getTipoVia().equals("calle") || matrizCiudad[i - 1][j].getTipoVia().equals("carretera"))) {
+    //                        verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 3);
+    //                    }
+    //                    if (i + 1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getTipoVia().equals("calle") || matrizCiudad[i + 1][j].getTipoVia().equals("carretera"))) {
+    //                        verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 4);
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
 
-//    public void crearGrafo(Componente[][] matrizCiudad, int anchoCuadroCiudad, int altoCuadroCiudad) {
-//        for (int i = 0; i < matrizCiudad.length; i++) {
-//            for (int j = 0; j < matrizCiudad[i].length; j++) {
-//                if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1) {
-//                    if (j - 1 >= 0 && matrizCiudad[i][j - 1] != null && (matrizCiudad[i][j - 1].getTipoVia().equals("calle") || matrizCiudad[i][j - 1].getTipoVia().equals("carretera"))) {
-//                        verArista(matrizCiudad, i, j - 1, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 2);
-//                    }
-//                    if (j + 1 < matrizCiudad[i].length && matrizCiudad[i][j + 1] != null && (matrizCiudad[i][j + 1].getTipoVia().equals("calle") || matrizCiudad[i][j + 1].getTipoVia().equals("carretera"))) {
-//
-//                        verArista(matrizCiudad, i, j + 1, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 1);
-//                    }
-//                    if (i - 1 >= 0 && matrizCiudad[i - 1][j] != null && (matrizCiudad[i - 1][j].getTipoVia().equals("calle") || matrizCiudad[i - 1][j].getTipoVia().equals("carretera"))) {
-//                        verArista(matrizCiudad, i - 1, j, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 3);
-//                    }
-//                    if (i + 1 < matrizCiudad.length && matrizCiudad[i + 1][j] != null && (matrizCiudad[i + 1][j].getTipoVia().equals("calle") || matrizCiudad[i + 1][j].getTipoVia().equals("carretera"))) {
-//                        verArista(matrizCiudad, i + 1, j, matrizCiudad[i][j], i, j, anchoCuadroCiudad, altoCuadroCiudad, 4);
-//                    }
-//                }
-//            }
-//        }
-//    }
     /**
      * Procedemos a crear la arista que se va asignar al grafo validado si es
      * carretera o caller para la velocidad
@@ -167,15 +167,15 @@ public class GrafoNoDirigido implements Cloneable {
      * @param y identidicador del segundo nodo
      * @param arista arista a asignar
      */
-    private void añadirArista(Componente x, Componente y, Arista arista) {
+    private void añadirArista (Arista arista, int idOrigen, int idDestino) {
 
-        arista.setX(x);
-        arista.setY(y);
-        this.grafo[x.getIdNodo()][y.getIdNodo()] = arista;
+        arista.setX(idOrigen);
+        arista.setY(idDestino);
+        this.grafo[idOrigen][idDestino] = arista;
         Arista aris = (Arista) arista.clone();
-        aris.setX(y);
-        aris.setY(x);
-        this.grafo[y.getIdNodo()][x.getIdNodo()] = aris;
+        aris.setX(idDestino);
+        aris.setY(idOrigen);
+        this.grafo[idDestino][idOrigen] = aris;
 
     }
 
@@ -198,6 +198,7 @@ public class GrafoNoDirigido implements Cloneable {
     private void verArista(Componente[][] matrizCiudad, int i, int j, Componente idNodoorigen, int xOrigen, int yOrigen, int ancho, int alto, int opcion) {
         LinkedList<Componente> auxListaComponentes = new LinkedList<>();
         Arista auxArista;
+        Arista auxArista1;
         Boolean bandera = false;
         while (i >= 0 && i <= matrizCiudad.length - 1 && j >= 0 && j < matrizCiudad[0].length - 1 && matrizCiudad[i][j].getIdNodo() == -1) {
             bandera = true;
@@ -206,12 +207,6 @@ public class GrafoNoDirigido implements Cloneable {
             switch (opcion) {
                 case 1:
                     j++;
-                    break;
-                case 2:
-                    j--;
-                    break;
-                case 3:
-                    i--;
                     break;
                 case 4:
                     i++;
@@ -230,8 +225,184 @@ public class GrafoNoDirigido implements Cloneable {
         if (bandera == false) {
             auxListaComponentes.add(matrizCiudad[i][j]);
         }
-        auxArista = crearArista(yOrigen * ancho, xOrigen * alto, j * ancho, i * alto, auxListaComponentes);
-        añadirArista(idNodoorigen, matrizCiudad[i][j], auxArista);
+        Componente destino = matrizCiudad[i][j];
+        int auxOrigen = 0;
+        int auxDestino = 0;
+        int auxOrigen1 = 0;
+        int auxDestino1 = 0;
+        int x1, y1, x2, y2 = 0;
+        int x3, y3, x4, y4 = 0;
+        if (esVertical(yOrigen * ancho, j * ancho)) {
+            if (destinoCalle(idNodoorigen)) {
+                x1 = (int) idNodoorigen.getArea().getX();
+                y1 = (int) idNodoorigen.getArea().getY();
+                x2 = x1 + ancho;
+                y2 = y1;
+                auxOrigen = idNodoorigen.getIdNodo();
+                auxOrigen1 = idNodoorigen.getIdNodo() + 1;
+                if (destino.getTipoVia().equals("cebra") || destino.getTipoVia().equals("cruce")) {
+                    x3 = (int) destino.getArea().getX();
+                    y3 = (int) destino.getArea().getY();
+                    x4 = x3 + ancho;
+                    y4 = y3;
+                    auxDestino = destino.getIdNodo();
+                    auxDestino1 = destino.getIdNodo() + 1;
+                    auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
+                    auxArista1 = new Arista(x2, x4, y2, y4, -1, -1, auxListaComponentes);
+                    añadirArista(auxArista, auxOrigen, auxDestino);
+                    añadirArista(auxArista1, auxOrigen1, auxDestino1);
+                } else {
+                    x3 = (int) destino.getArea().getX();
+                    y3 = (int) destino.getArea().getY() + alto;
+                    x4 = x3 + ancho;
+                    y4 = y3 + alto;
+                    auxDestino = destino.getIdNodo();
+                    auxDestino1 = destino.getIdNodo() + 1;
+                    auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
+                    auxArista1 = new Arista(x2, x4, y2, y4, -1, -1, auxListaComponentes);
+                    añadirArista(auxArista, auxOrigen, auxDestino);
+                    añadirArista( auxArista1, auxOrigen1, auxDestino1);
+                }
+
+            } else {
+                x1 = (int) idNodoorigen.getArea().getX();
+                y1 = (int) idNodoorigen.getArea().getY() + alto;
+                x2 = x1 + ancho;
+                y2 = y1;
+                auxOrigen = idNodoorigen.getIdNodo() + 2;
+                auxOrigen1 = idNodoorigen.getIdNodo() + 3;
+                if (destino.getTipoVia().equals("cebra") || destino.getTipoVia().equals("cruce")) {
+                    x3 = (int) destino.getArea().getX();
+                    y3 = (int) destino.getArea().getY();
+                    x4 = x3 + ancho;
+                    y4 = y3;
+                    auxDestino = destino.getIdNodo();
+                    auxDestino1 = destino.getIdNodo() + 1;
+                    auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
+                    auxArista1 = new Arista(x2, x4, y2, y4, -1, -1, auxListaComponentes);
+                    añadirArista( auxArista, auxOrigen, auxDestino);
+                    añadirArista( auxArista1, auxOrigen1, auxDestino1);
+                } else {
+                    x3 = (int) destino.getArea().getX();
+                    y3 = (int) destino.getArea().getY() + alto;
+                    x4 = x3 + ancho;
+                    y4 = y3;
+                    auxDestino = destino.getIdNodo();
+                    auxDestino1 = destino.getIdNodo() + 1;
+                    auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
+                    auxArista1 = new Arista(x2, x4, y2, y4, -1, -1, auxListaComponentes);
+                    añadirArista(auxArista, auxOrigen, auxDestino);
+                    añadirArista(auxArista1, auxOrigen1, auxDestino1);
+                }
+
+            }
+            //        if (yOrigen * ancho == j * ancho) {
+//            auxArista1 = crearArista(yOrigen * ancho, (xOrigen * alto) + alto, j * ancho, (i * alto) + alto, auxListaComponentes);
+//        } else {
+//            auxArista1 = crearArista((yOrigen * ancho) + ancho, xOrigen * alto, (j * ancho) + ancho, i * alto, auxListaComponentes);
+//        }
+
+        } else {
+            if (destinoCalle(idNodoorigen)) {
+                x1 = (int) idNodoorigen.getArea().getX();
+                y1 = (int) idNodoorigen.getArea().getY();
+                x2 = x1;
+                y2 = y1 + alto;
+                auxOrigen = idNodoorigen.getIdNodo();
+                auxOrigen1 = idNodoorigen.getIdNodo() + 1;
+                if (destino.getTipoVia().equals("cebra")) {
+                    x3 = (int) destino.getArea().getX();
+                    y3 = (int) destino.getArea().getY();
+                    x4 = x3;
+                    y4 = y3 + alto;
+                    auxDestino = destino.getIdNodo();
+                    auxDestino1 = destino.getIdNodo() + 1;
+                    auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
+                    auxArista1 = new Arista(x2, x4, y2, y4, -1, -1, auxListaComponentes);
+                    añadirArista( auxArista, auxOrigen, auxDestino);
+                    añadirArista(auxArista1, auxOrigen1, auxDestino1);
+                } else if (destino.getTipoVia().equals("cruce")) {
+                    x3 = (int) destino.getArea().getX();
+                    y3 = (int) destino.getArea().getY();
+                    x4 = x3;
+                    y4 = y3 + alto;
+                    auxDestino = destino.getIdNodo();
+                    auxDestino1 = destino.getIdNodo() + 2;
+                    auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
+                    auxArista1 = new Arista(x2, x4, y2, y4, -1, -1, auxListaComponentes);
+                    añadirArista(auxArista, auxOrigen, auxDestino);
+                    añadirArista( auxArista1, auxOrigen1, auxDestino1);
+                } else {
+                    x3 = (int) destino.getArea().getX() + ancho;
+                    y3 = (int) destino.getArea().getY();
+                    x4 = x3;
+                    y4 = y3 + alto;
+                    auxDestino = destino.getIdNodo();
+                    auxDestino1 = destino.getIdNodo() + 1;
+                    auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
+                    auxArista1 = new Arista(x2, x4, y2, y4, -1, -1, auxListaComponentes);
+                    añadirArista(auxArista, auxOrigen, auxDestino);
+                    añadirArista( auxArista1, auxOrigen1, auxDestino1);
+                }
+
+            } else {
+                x1 = (int) idNodoorigen.getArea().getX() + ancho;
+                y1 = (int) idNodoorigen.getArea().getY();
+                x2 = x1;
+                y2 = y1 + alto;
+                auxOrigen = idNodoorigen.getIdNodo() + 1;
+                auxOrigen1 = idNodoorigen.getIdNodo() + 3;
+                if (destino.getTipoVia().equals("cebra")) {
+                    x3 = (int) destino.getArea().getX();
+                    y3 = (int) destino.getArea().getY();
+                    x4 = x3;
+                    y4 = y3 + alto;
+                    auxDestino = destino.getIdNodo();
+                    auxDestino1 = destino.getIdNodo() + 1;
+                    auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
+                    auxArista1 = new Arista(x2, x4, y2, y4, -1, -1, auxListaComponentes);
+                    añadirArista( auxArista, auxOrigen, auxDestino);
+                    añadirArista( auxArista1, auxOrigen1, auxDestino1);
+                } else if (destino.getTipoVia().equals("cruce")) {
+                    x3 = (int) destino.getArea().getX();
+                    y3 = (int) destino.getArea().getY();
+                    x4 = x3;
+                    y4 = y3 + alto;
+                    auxDestino = destino.getIdNodo();
+                    auxDestino1 = destino.getIdNodo() + 2;
+                    auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
+                    auxArista1 = new Arista(x2, x4, y2, y4, -1, -1, auxListaComponentes);
+                    añadirArista( auxArista, auxOrigen, auxDestino);
+                    añadirArista( auxArista1, auxOrigen1, auxDestino1);
+                } else {
+                    x3 = (int) destino.getArea().getX() + ancho;
+                    y3 = (int) destino.getArea().getY();
+                    x4 = x3;
+                    y4 = y3 + alto;
+                    auxDestino = destino.getIdNodo();
+                    auxDestino1 = destino.getIdNodo() + 1;
+                    auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
+                    auxArista1 = new Arista(x2, x4, y2, y4, -1, -1, auxListaComponentes);
+                    añadirArista(auxArista, auxOrigen, auxDestino);
+                    añadirArista(auxArista1, auxOrigen1, auxDestino1);
+                }
+
+            }
+        }
+    }
+
+    public Boolean destinoCalle(Componente destino) {
+        if (destino.getTipoVia().equals("carretera") || destino.getTipoVia().equals("calle") || destino.getTipoVia().equals("cebra")) {
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean esVertical(int x1, int x2) {
+        if (x1 == x2) {
+            return true;
+        }
+        return false;
     }
 
     public Arista[][] getGrafo() {

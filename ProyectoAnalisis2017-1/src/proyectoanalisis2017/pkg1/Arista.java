@@ -17,8 +17,8 @@ public class Arista implements Cloneable {
     private int x2;
     private int y1;
     private int y2;
-    private Componente x; //Componente d einicio de la arista
-    private Componente y; //componente final e la arista
+    private int x; //Componente d einicio de la arista
+    private int y; //componente final e la arista
     private int velocidad;//depende del tipo de la via si es carretera o calle
     private int longitud;//tamaño de desplazamiento de un nodo al otro
     private int trafico; //Cantidad de trafico que existe en un momento en la arista
@@ -39,7 +39,7 @@ public class Arista implements Cloneable {
     }
 
     /**
-     * 
+     *
      * @param x1 Puinto en x de inicio de la arista
      * @param x2 Punto en x final de la arista
      * @param y1 Punto en y de inicio de la arista
@@ -96,26 +96,25 @@ public class Arista implements Cloneable {
         return y1;
     }
 
-    public Componente getX() {
+    public int getX() {
         return x;
     }
 
-    public Componente getY() {
+    public int getY() {
         return y;
     }
 
-    public void setY(Componente y) {
-        this.y = y;
+    public void setComponentes(LinkedList<Componente> componentes) {
+        this.componentes = componentes;
     }
 
-    public void setX(Componente x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public LinkedList<Componente> getComponentes() {
-        return componentes;
+    public void setY(int y) {
+        this.y = y;
     }
-    
 
     public int getX2() {
         return x2;

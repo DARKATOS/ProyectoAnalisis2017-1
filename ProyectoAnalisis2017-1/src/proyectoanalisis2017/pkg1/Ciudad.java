@@ -155,11 +155,9 @@ public class Ciudad implements Cloneable {
         boolean resultado = false;
         if (componente.getNombre().equals("B.1")) {
             componente.setTipo(1);
-            System.out.println("aa");
             resultado = true;
         } else if (componente.getNombre().equals("B.2")) {
             componente.setTipo(2);
-            System.out.println("aabb");
             resultado = true;
         }
         return resultado;
@@ -274,7 +272,6 @@ public class Ciudad implements Cloneable {
         this.cantidadNodos = 0;
         for (int i = 0; i < this.n; i++) {
             for (int j = 0; j < this.m; j++) {
-
                 if (this.matrizCiudad[i][j] != null) {
                     if (esCebra(this.matrizCiudad[i][j])) {
                         matrizCiudad[i][j].setTipoVia("cebra");
@@ -297,7 +294,6 @@ public class Ciudad implements Cloneable {
                         } else if (esCruce(this.matrizCiudad[i][j])) {
 
                             matrizCiudad[i][j].setTipoVia("cruce");
-
                             marcarNodo(matrizCiudad[i][j]);
                             this.cantidadNodos++;
                             this.cantidadNodos++;

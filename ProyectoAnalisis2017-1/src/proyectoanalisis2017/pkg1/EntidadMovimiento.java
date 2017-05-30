@@ -13,7 +13,7 @@ import java.util.LinkedList;
  *
  * @author root
  */
-public class Carro  {
+public class EntidadMovimiento  {
     private int id; //identificador de vehiculo
     private String ruta; //Ruta de la imagen del vehiculo
     private Rectangle area; //Area del vehiculo dentro de la ciudad
@@ -21,7 +21,7 @@ public class Carro  {
     private LinkedList<Arista> caminoPintar; //Traza la ruta del camino que recorre el vehiculo
     private Color color; //Color de la traza de la ruta
     private int tipo; //Determina si el carro esta en tipo automatico o con ruta especifica
-    public Carro() {
+    public EntidadMovimiento() {
     }
 
     public LinkedList<Arista> getCaminoPintar() {
@@ -41,7 +41,7 @@ public class Carro  {
      * @param camino Lista de aristas que recorrera el vehiculo
      * @param tipo Tipo automatico o con ruta especifica
      */
-    public Carro(int id, int ancho,int alto,String ruta, LinkedList<Arista> camino,int tipo) {
+    public EntidadMovimiento(int id, int ancho,int alto,String ruta, LinkedList<Arista> camino,int tipo) {
         this.id = id;
         this.camino = camino;
         this.ruta = ruta;
