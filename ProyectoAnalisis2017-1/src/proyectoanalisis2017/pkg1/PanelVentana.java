@@ -246,6 +246,7 @@ public class PanelVentana extends javax.swing.JPanel {
                             auxRuta.llenarPesos(carrosMovimiento.get(i).getGrafo());
                             //auxRuta.mostrarPesos();
                             int matrizVertices[][] = auxRuta.floydWarshall();
+
                             int origen = carrosMovimiento.get(i).getUbicacion().getIdNodo();
                             LinkedList<Arista> auxCamino = new LinkedList<>();
                             for (int k = 0; k < carrosMovimiento.get(i).getDestinos().size(); k++) {
@@ -426,6 +427,46 @@ public class PanelVentana extends javax.swing.JPanel {
         auxRuta.llenarPesos(auxCarro.getGrafo());
         //auxRuta.mostrarPesos();
         int matrizVertices[][] = auxRuta.floydWarshall();
+        int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 Destinos secuencia \n 2 Destinos cerca", "Destinos", JOptionPane.INFORMATION_MESSAGE));
+        if (opcion == 1) {
+            destinosSecuencia(auxRuta, matrizVertices);
+        } else {
+            destinosCerca(auxRuta, matrizVertices);
+        }
+    }
+
+    public void destinosCerca(AlgoritmoRuta auxRuta, int matrizVertices[][]) {
+        int origen = auxCarro.getUbicacion().getIdNodo();
+        LinkedList<Arista> auxCamino = new LinkedList<>();
+        while (!auxCarro.getDestinos().isEmpty()) {
+            int posicionDestino = -1;
+            int pesoDestino = 999999;
+            for (int i = 0; i < auxCarro.getDestinos().size(); i++) {
+                if (origen != auxCarro.getDestinos().get(i).getIdNodo()) {
+                    int peso = auxRuta.getPesos()[origen][auxCarro.getDestinos().get(i).getIdNodo()];
+                    if (peso < pesoDestino) {
+                        posicionDestino = i;
+                        pesoDestino = peso;
+                    }
+                }
+            }
+            
+            LinkedList<Arista> auxCamino1 = auxRuta.obtenerCamino(matrizVertices, origen, auxCarro.getDestinos().get(posicionDestino).getIdNodo(), auxCarro.getGrafo());
+            for (int j = 0; j < auxCamino1.size(); j++) {
+                System.out.println("camino: A" + auxCamino1.get(j).getX());
+                System.out.println("camino: B" + auxCamino1.get(j).getY());
+                auxCamino.add(auxCamino1.get(j));
+            }
+            origen = auxCarro.getDestinos().get(posicionDestino).getIdNodo();
+            auxCarro.getDestinos().remove(posicionDestino);
+        }
+        auxCarro.setCamino(auxCamino);
+        String color = JOptionPane.showInputDialog(this, "Ingese el color", "Color", JOptionPane.INFORMATION_MESSAGE);
+        auxCarro.obtenerCaminoPintar(color);
+        auxCarro.iniciar();
+    }
+
+    public void destinosSecuencia(AlgoritmoRuta auxRuta, int matrizVertices[][]) {
         int origen = auxCarro.getUbicacion().getIdNodo();
         LinkedList<Arista> auxCamino = new LinkedList<>();
         for (int i = 0; i < auxCarro.getDestinos().size(); i++) {
@@ -496,7 +537,7 @@ public class PanelVentana extends javax.swing.JPanel {
             }
             //pinta las personas en movimiento
             for (int i = 0; i < this.personasMovimiento.size(); i++) {
-                g.drawImage(new ImageIcon(getClass().getResource(this.personasMovimiento.get(i).getRuta())).getImage(), (int) this.personasMovimiento.get(i).getArea().getX(), (int) this.personasMovimiento.get(i).getArea().getY(), (int) ((int)ciudad.getAnchoCampo()*0.50), (int) ( ciudad.getAltoCampo()*(0.50)), this);
+                g.drawImage(new ImageIcon(getClass().getResource(this.personasMovimiento.get(i).getRuta())).getImage(), (int) this.personasMovimiento.get(i).getArea().getX(), (int) this.personasMovimiento.get(i).getArea().getY(), (int) ((int) ciudad.getAnchoCampo() * 0.50), (int) (ciudad.getAltoCampo() * (0.50)), this);
 
             }
             //pinta la anamiacion de colocar imagen en el tablero

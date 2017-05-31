@@ -93,7 +93,6 @@ public class AlgoritmoRuta {
         LinkedList<Integer> caminoNodos = new LinkedList<>();
         boolean bandera = true;
         int nuevoOrigen = origen;
-
         while (bandera) {
             int nuevoDestino = matrizNodos[nuevoOrigen][destino];
             if (destino == nuevoDestino) {
@@ -120,7 +119,11 @@ public class AlgoritmoRuta {
             }
         }
         return camino;
-
+    }
+    
+    public void multiplesDestinos()
+    {
+        
     }
 
     public void setCantidadNodos(int cantidadNodos) {
