@@ -115,7 +115,7 @@ public class AlgoritmoRuta {
                 camino.add(arista);
             } else {
                 camino = new LinkedList<>();
-                JOptionPane.showMessageDialog(null, "No existe un camino disponible", "Error", JOptionPane.ERROR_MESSAGE);
+//                JOptionPane.showMessageDialog(null, "No existe un camino disponible", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         return camino;
