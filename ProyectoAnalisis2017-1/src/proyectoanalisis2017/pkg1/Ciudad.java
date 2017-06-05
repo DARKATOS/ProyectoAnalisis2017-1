@@ -227,6 +227,7 @@ public class Ciudad implements Cloneable {
         }
 
     }
+    
 
     /**
      * Este metodo nos recorre toda la ciduad,marcando si es cruce,calle o
@@ -443,5 +444,10 @@ public class Ciudad implements Cloneable {
     public LinkedList<Interrupcion> getInterrupciones() {
         return interrupciones;
     }
+
+    public void setCantidadNodos(int cantidadNodos) {
+        this.cantidadNodos = cantidadNodos;
+    }
+    
 
 }

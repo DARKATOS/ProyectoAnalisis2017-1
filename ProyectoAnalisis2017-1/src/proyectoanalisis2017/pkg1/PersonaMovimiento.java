@@ -23,14 +23,14 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
     private Thread hilo;
     private GrafoNoDirigido grafo; //Grafo que reconoce el vehiculo y trabaja con la ciudad
     private Ciudad ciudad; //Ciudad que el vehiculo reconoce y trabaja en conjunto con el grafo
-    private Componente ubicacion; //Ultima ubicacion conocida del vehiculo
-    private LinkedList<Componente> destinos; //Lista de destinos del vedhiculo en una ruta especifica
+    private int origen; //Ultima ubicacion conocida del vehiculo
+    private LinkedList<Integer> destinos; //Lista de destinos del vedhiculo en una ruta especifica
 
     public PersonaMovimiento(int id, Ciudad ciudad, GrafoNoDirigido grafo, String ruta, LinkedList<Arista> camino, int tipo) {
         super(id, ciudad.getAnchoCampo(), ciudad.getAltoCampo(), ruta, camino, tipo);
         this.ciudad = ciudad;
         this.grafo = grafo;
-        ubicacion = null;
+        
         destinos = new LinkedList<>();
     }
 
@@ -308,62 +308,16 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
         }
     }
 
-    /**
-     * Obtiene la ubicacion actual del vehiculo
-     */
-    public void reconstruirUbicacion() {
-        int auxN = (int) (getArea().getY() / ciudad.getAltoCampo());
-        int auxM = (int) (getArea().getX() / ciudad.getAnchoCampo());
-        ubicacion = ciudad.getMatrizCiudad()[auxN][auxM];
-    }
+   
 
-    /**
-     * Permite reconstruir los destinos marcados en una ciudad luego de una
-     * interrupcion Recorriendo la matriz de la ciudad y los destinos
-     * verificando que las posiciones x y y sean igual y posteriormente marcando
-     * como nodo el componente en la ciudad
-     */
-    public void recuperarDestinos() {
-        for (int k = 0; k < destinos.size(); k++) {
-            for (int i = 0; i < ciudad.getMatrizCiudad().length; i++) {
-                for (int j = 0; j < ciudad.getMatrizCiudad()[i].length; j++) {
-                    if (ciudad.getMatrizCiudad()[i][j] != null) {
-                        if (destinos.get(k).getArea().getX() == ciudad.getMatrizCiudad()[i][j].getArea().getX() && destinos.get(k).getArea().getY() == ciudad.getMatrizCiudad()[i][j].getArea().getY()) {
-                            ciudad.marcarNodo(ciudad.getMatrizCiudad()[i][j]);
-                        }
-                    }
 
-                }
-            }
-        }
-    }
 
-    /**
-     * Permite reconstruir la lista de destinos luego de alguna interrupcion
-     * recorriendo la ciudad y los destinos verificando que sus posiciones en x
-     * y y sean iguales y posteriormente añadiendo a la lista de destinos el
-     * componente
-     */
-    public void reconstruirDestinos() {
-        LinkedList<Componente> auxDestinos = new LinkedList<>();
-        for (int k = 0; k < destinos.size(); k++) {
-            for (int i = 0; i < ciudad.getMatrizCiudad().length; i++) {
-                for (int j = 0; j < ciudad.getMatrizCiudad()[i].length; j++) {
-                    if (ciudad.getMatrizCiudad()[i][j] != null) {
-                        if (destinos.get(k).getArea().getX() == ciudad.getMatrizCiudad()[i][j].getArea().getX() && destinos.get(k).getArea().getY() == ciudad.getMatrizCiudad()[i][j].getArea().getY()) {
-                            auxDestinos.add(ciudad.getMatrizCiudad()[i][j]);
-                        }
-                    }
 
-                }
-            }
-        }
-        destinos = auxDestinos;
-    }
-
-    public void setDestinos(LinkedList<Componente> destinos) {
+    public void setDestinos(LinkedList<Integer> destinos) {
         this.destinos = destinos;
     }
+
+   
 
     public GrafoNoDirigido getGrafo() {
         return grafo;
@@ -392,15 +346,19 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
         return respuesta;
     }
 
-    public LinkedList<Componente> getDestinos() {
+    public LinkedList<Integer> getDestinos() {
         return destinos;
     }
 
-    public void setUbicacion(Componente ubicacion) {
-        this.ubicacion = ubicacion;
+   
+
+    public int getOrigen() {
+        return origen;
     }
 
-    public Componente getUbicacion() {
-        return ubicacion;
+    public void setOrigen(int origen) {
+        this.origen = origen;
     }
+
+
 }

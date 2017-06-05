@@ -28,11 +28,13 @@ public class FormVentana extends javax.swing.JFrame {
     GraphicsDevice grafica;
     GrafoDirigido grafo;
     int cantidadCarros;
+    int cantidadPersona;
 
     public FormVentana() {
         initComponents();
         //Indica la cantidad de carros puestos
         this.cantidadCarros = 0;
+        this.cantidadPersona = 0;
         grafica = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         grafica.setFullScreenWindow(this);
         panelVentana.setFocusable(true);
@@ -65,6 +67,7 @@ public class FormVentana extends javax.swing.JFrame {
         ciudadPersonas.setAltoCampo(altoCampo);
         //El ancho de la ciudad es el numero de columnas por el ancho del campo.
         ciudadCarros.setAnchoCiudad(ciudadCarros.getM() * ciudadCarros.getAnchoCampo());
+        ciudadPersonas.setAnchoCiudad(ciudadCarros.getM() * ciudadCarros.getAnchoCampo());
         //El alto de la ciudad es el numero de filas por el alto del campo.
         ciudadCarros.setAltoCiudad(ciudadCarros.getAltoCampo() * ciudadCarros.getN());
         ciudadPersonas.setAltoCiudad(ciudadCarros.getAltoCampo() * ciudadCarros.getN());
@@ -92,6 +95,7 @@ public class FormVentana extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         btnIngresarP = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -165,6 +169,13 @@ public class FormVentana extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("CaminoP");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelVentanaLayout = new javax.swing.GroupLayout(panelVentana);
         panelVentana.setLayout(panelVentanaLayout);
         panelVentanaLayout.setHorizontalGroup(
@@ -186,7 +197,9 @@ public class FormVentana extends javax.swing.JFrame {
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCamino)
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         panelVentanaLayout.setVerticalGroup(
             panelVentanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,7 +213,8 @@ public class FormVentana extends javax.swing.JFrame {
                     .addComponent(btnCamino)
                     .addComponent(jButton1)
                     .addComponent(btnIngresarP)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addContainerGap())
         );
 
@@ -270,6 +284,7 @@ public class FormVentana extends javax.swing.JFrame {
     private void btnCaminoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaminoActionPerformed
 
         if (panelVentana.getOpciones() == 0) {
+             panelVentana.setTipoSeleccion(0);
             //Seleccion del camino minimo en forma de camino mas corto, camino veloz, camiono de menor trafico
             int tipoCamino = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 camino corto \n 2 camino veloz \n 3 camino trafico", "Menu", JOptionPane.INFORMATION_MESSAGE));
             panelVentana.setOpciones(2);
@@ -301,14 +316,28 @@ public class FormVentana extends javax.swing.JFrame {
                 }
             }
         }
-        ingresarPersona(new PersonaMovimiento(cantidadCarros, ciudadCarros, auxGrafo1, "../ImgComponentes/per1.png", camino1, 0));
-        this.cantidadCarros++;
+        ingresarPersona(new PersonaMovimiento(cantidadPersona, ciudadPersonas, auxGrafo1, "../ImgComponentes/per1.png", camino1, 0));
+        this.cantidadPersona++;
     }//GEN-LAST:event_btnIngresarPActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //inicia el movimiento del carro
         panelVentana.getPersonasMovimiento().getLast().iniciar();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       
+        if (panelVentana.getOpciones() == 0) {
+            panelVentana.setTipoSeleccion(1);
+            //Seleccion del camino minimo en forma de camino mas corto, camino veloz, camiono de menor trafico
+          // int tipoCamino = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 camino corto \n 2 camino veloz \n 3 camino trafico", "Menu", JOptionPane.INFORMATION_MESSAGE));
+            panelVentana.setOpciones(2);
+            panelVentana.setTipoCamino(1);
+        } else if (panelVentana.getOpciones() == 3) {
+            panelVentana.modificarGrafoPersonas();
+            panelVentana.setOpciones(0);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -356,6 +385,7 @@ public class FormVentana extends javax.swing.JFrame {
     private javax.swing.JButton btnIniciarCarro;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private proyectoanalisis2017.pkg1.PanelVentana panelVentana;
     // End of variables declaration//GEN-END:variables
 
@@ -431,8 +461,9 @@ public class FormVentana extends javax.swing.JFrame {
                 }
                 filas++;
             }
-            ciudadCarros = new Ciudad(matrizCiudad, n, m);
-            ciudadPersonas = new Ciudad(matrizCiudad, n, m);
+            Ciudad auxCiudad = new Ciudad(matrizCiudad, n, m);
+            ciudadCarros = panelVentana.copiarCiudad(auxCiudad);
+            ciudadPersonas = panelVentana.copiarCiudad(auxCiudad);
         } catch (IOException | NumberFormatException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -484,6 +515,7 @@ public class FormVentana extends javax.swing.JFrame {
         panelVentana.getCarrosMovimiento().add(carro);
         panelVentana.getCarrosMovimiento().getLast().setPanel(panelVentana);
     }
+
     private void ingresarPersona(PersonaMovimiento persona) {
         panelVentana.getPersonasMovimiento().add(persona);
         panelVentana.getPersonasMovimiento().getLast().setPanel(panelVentana);

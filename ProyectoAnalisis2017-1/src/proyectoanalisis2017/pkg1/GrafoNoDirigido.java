@@ -88,26 +88,26 @@ public class GrafoNoDirigido implements Cloneable {
             for (int j = 0; j < matrizCiudad[i].length; j++) {
                 if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1 && matrizCiudad[i][j].getTipoVia().equals("cruce")) {
                     if (j - 1 < 0 || matrizCiudad[i][j - 1] == null || (!matrizCiudad[i][j - 1].getTipoVia().equals("calle") && !matrizCiudad[i][j - 1].getTipoVia().equals("carretera") && !matrizCiudad[i][j - 1].getTipoVia().equals("cebra") && !matrizCiudad[i - 1][j].getTipoVia().equals("cebra"))) {
-                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY() + auxCiudad.getAltoCampo(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 2);
+                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY() + (int)(auxCiudad.getAltoCampo() * 0.5), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 2);
                     }
                     if (j + 1 >= matrizCiudad[i].length || matrizCiudad[i][j + 1] == null || (!matrizCiudad[i][j + 1].getTipoVia().equals("calle") && !matrizCiudad[i][j + 1].getTipoVia().equals("carretera") && !matrizCiudad[i][j + 1].getTipoVia().equals("cebra") && !matrizCiudad[i][j + 1].getTipoVia().equals("cruce"))) {
 
-                        añadirArista(new Arista((int) matrizCiudad[i][j].getArea().getX() + auxCiudad.getAnchoCampo(), (int) matrizCiudad[i][j].getArea().getX() + auxCiudad.getAnchoCampo(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY() + auxCiudad.getAltoCampo(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo() + 1, matrizCiudad[i][j].getIdNodo() + 3);
+                        añadirArista(new Arista((int) matrizCiudad[i][j].getArea().getX() +(int) (auxCiudad.getAnchoCampo()*0.5), (int) matrizCiudad[i][j].getArea().getX() +(int) (auxCiudad.getAnchoCampo()*0.5), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY() + (int)(auxCiudad.getAltoCampo() * 0.5), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo() + 1, matrizCiudad[i][j].getIdNodo() + 3);
                     }
                     if (i - 1 < 0 || matrizCiudad[i - 1][j] == null || (!matrizCiudad[i - 1][j].getTipoVia().equals("calle") && !matrizCiudad[i - 1][j].getTipoVia().equals("carretera") && !matrizCiudad[i - 1][j].getTipoVia().equals("cebra"))) {
-                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX() + auxCiudad.getAnchoCampo(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 1);
+                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX() +(int) (auxCiudad.getAnchoCampo()*0.5), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 1);
                     }
                     if (i + 1 >= matrizCiudad.length || matrizCiudad[i + 1][j] == null || (!matrizCiudad[i + 1][j].getTipoVia().equals("calle") && !matrizCiudad[i + 1][j].getTipoVia().equals("carretera") && !matrizCiudad[i + 1][j].getTipoVia().equals("cebra") && !matrizCiudad[i + 1][j].getTipoVia().equals("cruce"))) {
-                        añadirArista(new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX() + auxCiudad.getAnchoCampo(), (int) matrizCiudad[i][j].getArea().getY() + auxCiudad.getAltoCampo(), (int) matrizCiudad[i][j].getArea().getY() + auxCiudad.getAltoCampo(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo() + 2, matrizCiudad[i][j].getIdNodo() + 3);
+                        añadirArista(new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX() +(int) (auxCiudad.getAnchoCampo()*0.5), (int) matrizCiudad[i][j].getArea().getY() + (int)(auxCiudad.getAltoCampo() * 0.5), (int) matrizCiudad[i][j].getArea().getY() + (int)(auxCiudad.getAltoCampo() * 0.5), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo() + 2, matrizCiudad[i][j].getIdNodo() + 3);
                     }
                 }
                 if (matrizCiudad[i][j] != null && matrizCiudad[i][j].getIdNodo() != -1 && matrizCiudad[i][j].getTipoVia().equals("cebra")) {
 
                     if (matrizCiudad[i][j].getNombre().equals("B.1")) {
-                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX() + auxCiudad.getAnchoCampo(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 1);
+                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX() + (int) (auxCiudad.getAnchoCampo()*0.5), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 1);
 
                     } else {
-                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY() + auxCiudad.getAltoCampo(), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 1);
+                        añadirArista( new Arista((int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getX(), (int) matrizCiudad[i][j].getArea().getY(), (int) matrizCiudad[i][j].getArea().getY() + (int)(auxCiudad.getAltoCampo() * 0.5), -1, -1, new LinkedList<>()), matrizCiudad[i][j].getIdNodo(), matrizCiudad[i][j].getIdNodo() + 1);
 
                     }
                 }
@@ -236,14 +236,14 @@ public class GrafoNoDirigido implements Cloneable {
             if (destinoCalle(idNodoorigen)) {
                 x1 = (int) idNodoorigen.getArea().getX();
                 y1 = (int) idNodoorigen.getArea().getY();
-                x2 = x1 + ancho;
+                x2 = (int) (x1 +(ancho*0.5));
                 y2 = y1;
                 auxOrigen = idNodoorigen.getIdNodo();
                 auxOrigen1 = idNodoorigen.getIdNodo() + 1;
                 if (destino.getTipoVia().equals("cebra") || destino.getTipoVia().equals("cruce")) {
                     x3 = (int) destino.getArea().getX();
                     y3 = (int) destino.getArea().getY();
-                    x4 = x3 + ancho;
+                    x4 = (int) (x3 +(ancho*0.5));
                     y4 = y3;
                     auxDestino = destino.getIdNodo();
                     auxDestino1 = destino.getIdNodo() + 1;
@@ -253,9 +253,9 @@ public class GrafoNoDirigido implements Cloneable {
                     añadirArista(auxArista1, auxOrigen1, auxDestino1);
                 } else {
                     x3 = (int) destino.getArea().getX();
-                    y3 = (int) destino.getArea().getY() + alto;
-                    x4 = x3 + ancho;
-                    y4 = y3 + alto;
+                    y3 = (int) ((int) destino.getArea().getY() +(alto*0.5));
+                    x4 = (int) (x3 +(ancho*0.5));
+                    y4 = (int) (y3 +(alto*0.5));
                     auxDestino = destino.getIdNodo();
                     auxDestino1 = destino.getIdNodo() + 1;
                     auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
@@ -266,15 +266,15 @@ public class GrafoNoDirigido implements Cloneable {
 
             } else {
                 x1 = (int) idNodoorigen.getArea().getX();
-                y1 = (int) idNodoorigen.getArea().getY() + alto;
-                x2 = x1 + ancho;
+                y1 = (int) ((int) idNodoorigen.getArea().getY() +(alto*0.5));
+                x2 = (int) (x1 +(ancho*0.5));
                 y2 = y1;
                 auxOrigen = idNodoorigen.getIdNodo() + 2;
                 auxOrigen1 = idNodoorigen.getIdNodo() + 3;
                 if (destino.getTipoVia().equals("cebra") || destino.getTipoVia().equals("cruce")) {
                     x3 = (int) destino.getArea().getX();
                     y3 = (int) destino.getArea().getY();
-                    x4 = x3 + ancho;
+                    x4 = (int) (x3 +(ancho*0.5));
                     y4 = y3;
                     auxDestino = destino.getIdNodo();
                     auxDestino1 = destino.getIdNodo() + 1;
@@ -284,8 +284,8 @@ public class GrafoNoDirigido implements Cloneable {
                     añadirArista( auxArista1, auxOrigen1, auxDestino1);
                 } else {
                     x3 = (int) destino.getArea().getX();
-                    y3 = (int) destino.getArea().getY() + alto;
-                    x4 = x3 + ancho;
+                    y3 = (int) ((int) destino.getArea().getY() +(alto*0.5));
+                    x4 = (int) (x3 +(ancho*0.5));
                     y4 = y3;
                     auxDestino = destino.getIdNodo();
                     auxDestino1 = destino.getIdNodo() + 1;
@@ -297,9 +297,9 @@ public class GrafoNoDirigido implements Cloneable {
 
             }
             //        if (yOrigen * ancho == j * ancho) {
-//            auxArista1 = crearArista(yOrigen * ancho, (xOrigen * alto) + alto, j * ancho, (i * alto) + alto, auxListaComponentes);
+//            auxArista1 = crearArista(yOrigen * ancho, (xOrigen * alto) +(alto*0.5), j * ancho, (i * alto) +(alto*0.5), auxListaComponentes);
 //        } else {
-//            auxArista1 = crearArista((yOrigen * ancho) + ancho, xOrigen * alto, (j * ancho) + ancho, i * alto, auxListaComponentes);
+//            auxArista1 = crearArista((yOrigen * ancho) +(ancho*0.5), xOrigen * alto, (j * ancho) +(ancho*0.5), i * alto, auxListaComponentes);
 //        }
 
         } else {
@@ -307,14 +307,14 @@ public class GrafoNoDirigido implements Cloneable {
                 x1 = (int) idNodoorigen.getArea().getX();
                 y1 = (int) idNodoorigen.getArea().getY();
                 x2 = x1;
-                y2 = y1 + alto;
+                y2 = (int) (y1 +(alto*0.5));
                 auxOrigen = idNodoorigen.getIdNodo();
                 auxOrigen1 = idNodoorigen.getIdNodo() + 1;
                 if (destino.getTipoVia().equals("cebra")) {
                     x3 = (int) destino.getArea().getX();
                     y3 = (int) destino.getArea().getY();
                     x4 = x3;
-                    y4 = y3 + alto;
+                    y4 = (int) (y3 +(alto*0.5));
                     auxDestino = destino.getIdNodo();
                     auxDestino1 = destino.getIdNodo() + 1;
                     auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
@@ -325,7 +325,7 @@ public class GrafoNoDirigido implements Cloneable {
                     x3 = (int) destino.getArea().getX();
                     y3 = (int) destino.getArea().getY();
                     x4 = x3;
-                    y4 = y3 + alto;
+                    y4 = (int) (y3 +(alto*0.5));
                     auxDestino = destino.getIdNodo();
                     auxDestino1 = destino.getIdNodo() + 2;
                     auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
@@ -333,10 +333,10 @@ public class GrafoNoDirigido implements Cloneable {
                     añadirArista(auxArista, auxOrigen, auxDestino);
                     añadirArista( auxArista1, auxOrigen1, auxDestino1);
                 } else {
-                    x3 = (int) destino.getArea().getX() + ancho;
+                    x3 = (int) ((int) destino.getArea().getX() +(ancho*0.5));
                     y3 = (int) destino.getArea().getY();
                     x4 = x3;
-                    y4 = y3 + alto;
+                    y4 = (int) (y3 +(alto*0.5));
                     auxDestino = destino.getIdNodo();
                     auxDestino1 = destino.getIdNodo() + 1;
                     auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
@@ -346,17 +346,17 @@ public class GrafoNoDirigido implements Cloneable {
                 }
 
             } else {
-                x1 = (int) idNodoorigen.getArea().getX() + ancho;
+                x1 = (int) ((int) idNodoorigen.getArea().getX() +(ancho*0.5));
                 y1 = (int) idNodoorigen.getArea().getY();
                 x2 = x1;
-                y2 = y1 + alto;
+                y2 = (int) (y1 +(alto*0.5));
                 auxOrigen = idNodoorigen.getIdNodo() + 1;
                 auxOrigen1 = idNodoorigen.getIdNodo() + 3;
                 if (destino.getTipoVia().equals("cebra")) {
                     x3 = (int) destino.getArea().getX();
                     y3 = (int) destino.getArea().getY();
                     x4 = x3;
-                    y4 = y3 + alto;
+                    y4 = (int) (y3 +(alto*0.5));
                     auxDestino = destino.getIdNodo();
                     auxDestino1 = destino.getIdNodo() + 1;
                     auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
@@ -367,7 +367,7 @@ public class GrafoNoDirigido implements Cloneable {
                     x3 = (int) destino.getArea().getX();
                     y3 = (int) destino.getArea().getY();
                     x4 = x3;
-                    y4 = y3 + alto;
+                    y4 = (int) (y3 +(alto*0.5));
                     auxDestino = destino.getIdNodo();
                     auxDestino1 = destino.getIdNodo() + 2;
                     auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);
@@ -375,10 +375,10 @@ public class GrafoNoDirigido implements Cloneable {
                     añadirArista( auxArista, auxOrigen, auxDestino);
                     añadirArista( auxArista1, auxOrigen1, auxDestino1);
                 } else {
-                    x3 = (int) destino.getArea().getX() + ancho;
+                    x3 = (int) ((int) destino.getArea().getX() +(ancho*0.5));
                     y3 = (int) destino.getArea().getY();
                     x4 = x3;
-                    y4 = y3 + alto;
+                    y4 = (int) (y3 +(alto*0.5));
                     auxDestino = destino.getIdNodo();
                     auxDestino1 = destino.getIdNodo() + 1;
                     auxArista = new Arista(x1, x3, y1, y3, -1, -1, auxListaComponentes);

@@ -31,8 +31,11 @@ public class PanelVentana extends javax.swing.JPanel {
     private LinkedList<PersonaMovimiento> personasMovimiento;
     private int opciones; //0: Para crear el mapa, 1: Para seleccionar el carro y nodo origen.
     private Ciudad auxCiudad;
+    private Ciudad auxCiudadPersonas;
     private int tipoCamino;
     private CarroMovimiento auxCarro;
+    private PersonaMovimiento auxPersona;
+    private int tipoSeleccion;
 
     private int pesoMenor;
 
@@ -42,11 +45,13 @@ public class PanelVentana extends javax.swing.JPanel {
         personasMovimiento = new LinkedList<>();
         xImgSelecionada = 0;
         yImgSelecionada = 0;
+        tipoSeleccion = 0;
         itemSeleccionado = new Item();
         estaSelecionadoComponente = false;
         opciones = 0;
         tipoCamino = 0;
         auxCarro = null;
+        auxPersona = null;
         pesoMenor = 0;
     }
 
@@ -98,55 +103,150 @@ public class PanelVentana extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        //Si opciones es igual a 2 es porque el usuario va a realizar un camino.
-        if (opciones == 2) {
-            auxCiudad = copiarCiudad(ciudad);
-            Componente auxUbicacion;
-            auxCarro = null;
+        if (tipoSeleccion == 0) {
+            //Si opciones es igual a 2 es porque el usuario va a realizar un camino.
+            if (opciones == 2) {
+                auxCiudad = copiarCiudad(ciudad);
+                Componente auxUbicacion;
+                auxCarro = null;
 //            destinos = new LinkedList<>();
-            //Verificamos que el evento se de dentro del ancho y alto de la ciudad.
-            if (evt.getX() < auxCiudad.getAnchoCiudad() && evt.getY() < auxCiudad.getAltoCiudad()) {
-                //Recorro la lista de carros en movimiento para obtener el carro al cual se le dio click
-                int auxNSeleccion = (int) evt.getY() / ciudad.getAltoCampo();
-                int auxMSeleccion = (int) evt.getX() / ciudad.getAnchoCampo();
-                //Y tambien obtenemos la ubicacion del carro que se toma como un nodo
-                auxUbicacion = auxCiudad.getMatrizCiudad()[auxNSeleccion][auxMSeleccion];
-                // Si la ubicación no es un nodo se debe marcar como nodo
-                if (auxUbicacion != null) {
-                    auxCiudad.marcarNodo(auxUbicacion);
-                    for (int i = 0; i < carrosMovimiento.size(); i++) {
-                        if (carrosMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
-                            auxCarro = carrosMovimiento.get(i);
-                            auxCarro.setUbicacion(auxUbicacion);
-                            auxCarro.parar();
-                            auxCarro.getArea().setLocation((int) auxCarro.getUbicacion().getArea().getX(), (int) auxCarro.getUbicacion().getArea().getY());
+                //Verificamos que el evento se de dentro del ancho y alto de la ciudad.
+                if (evt.getX() < auxCiudad.getAnchoCiudad() && evt.getY() < auxCiudad.getAltoCiudad()) {
+                    //Recorro la lista de carros en movimiento para obtener el carro al cual se le dio click
+                    int auxNSeleccion = (int) evt.getY() / ciudad.getAltoCampo();
+                    int auxMSeleccion = (int) evt.getX() / ciudad.getAnchoCampo();
+                    //Y tambien obtenemos la ubicacion del carro que se toma como un nodo
+                    auxUbicacion = auxCiudad.getMatrizCiudad()[auxNSeleccion][auxMSeleccion];
+                    // Si la ubicación no es un nodo se debe marcar como nodo
+                    if (auxUbicacion != null) {
+                        auxCiudad.marcarNodo(auxUbicacion);
+                        for (int i = 0; i < carrosMovimiento.size(); i++) {
+                            if (carrosMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
+                                auxCarro = carrosMovimiento.get(i);
+                                auxCarro.setUbicacion(auxUbicacion);
+                                auxCarro.parar();
+                                auxCarro.getArea().setLocation((int) auxCarro.getUbicacion().getArea().getX(), (int) auxCarro.getUbicacion().getArea().getY());
+                                //Pasamos a opciones 3
+                                opciones = 3;
+                            }
                         }
-                    }
-                    //Pasamos a opciones 3
-                    opciones = 3;
-                }
-            }
-            //Si opciones es igual a 3 es porque ya esta seleccionado el carro y el nodo origen
-        } else if (opciones == 3) {
-            //Verificamos que el evento esta dentro del ancho y alto de ciudad.
-            if (evt.getX() < auxCiudad.getAnchoCiudad() && evt.getY() < auxCiudad.getAltoCiudad()) {
-                int auxi = (int) evt.getY() / auxCiudad.getAltoCampo();
-                int auxj = (int) evt.getX() / auxCiudad.getAnchoCampo();
-                //Obtenemos la ubicacion
-                Componente destino = auxCiudad.getMatrizCiudad()[auxi][auxj];
-                if (destino != null) {
-                    if (!destino.getTipoVia().equals("")) {
-                        //La marcamos si es nodo.
-                        auxCiudad.marcarNodo(destino);
-                    } else {
-                        destino = buscarCarreteraCercana(auxi, auxj);
-                        auxCiudad.marcarNodo(destino);
 
                     }
-                    //Añado a los destinos el nodo de destino
-                    auxCarro.getDestinos().add(destino);
+                }
+                //Si opciones es igual a 3 es porque ya esta seleccionado el carro y el nodo origen
+            } else if (opciones == 3) {
+                //Verificamos que el evento esta dentro del ancho y alto de ciudad.
+                if (evt.getX() < auxCiudad.getAnchoCiudad() && evt.getY() < auxCiudad.getAltoCiudad()) {
+                    int auxi = (int) evt.getY() / auxCiudad.getAltoCampo();
+                    int auxj = (int) evt.getX() / auxCiudad.getAnchoCampo();
+                    //Obtenemos la ubicacion
+                    Componente destino = auxCiudad.getMatrizCiudad()[auxi][auxj];
+                    if (destino != null) {
+                        if (!destino.getTipoVia().equals("")) {
+                            //La marcamos si es nodo.
+                            auxCiudad.marcarNodo(destino);
+                        } else {
+                            destino = buscarCarreteraCercana(auxi, auxj);
+                            auxCiudad.marcarNodo(destino);
+
+                        }
+                        //Añado a los destinos el nodo de destino
+                        auxCarro.getDestinos().add(destino);
+                    }
                 }
             }
+        } else {
+            //Si opciones es igual a 2 es porque el usuario va a realizar un camino.
+            if (opciones == 2) {
+                auxCiudadPersonas = copiarCiudad(ciudadPersonas);
+                auxCiudadPersonas.setCantidadNodos(ciudadPersonas.getCantidadNodos());
+                Componente auxUbicacion;
+                auxPersona = null;
+                int origen = 0;
+//            destinos = new LinkedList<>();
+                //Verificamos que el evento se de dentro del ancho y alto de la ciudad.
+                if (evt.getX() < auxCiudadPersonas.getAnchoCiudad() && evt.getY() < auxCiudadPersonas.getAltoCiudad()) {
+                    //Recorro la lista de carros en movimiento para obtener el carro al cual se le dio click
+                    int auxNSeleccion = (int) evt.getY() / auxCiudadPersonas.getAltoCampo();
+                    int auxMSeleccion = (int) evt.getX() / auxCiudadPersonas.getAnchoCampo();
+                    //Y tambien obtenemos la ubicacion del carro que se toma como un nodo
+                    auxUbicacion = auxCiudadPersonas.getMatrizCiudad()[auxNSeleccion][auxMSeleccion];
+                    //auxUbicacion.setIdNodo(auxCiudadPersonas.getMatrizCiudad()[auxNSeleccion][auxMSeleccion].getIdNodo());
+                    // Si la ubicación no es un nodo se debe marcar como nodo
+                    if (auxUbicacion != null) {
+                        if (auxUbicacion.getIdNodo() == -1) {
+                            auxCiudadPersonas.marcarNodo(auxUbicacion);
+                            auxCiudadPersonas.setCantidadNodos(auxCiudadPersonas.getCantidadNodos() + 1);
+                            origen = auxCiudadPersonas.getCantidadNodos();
+                        } else {
+                            if (!auxUbicacion.getTipoVia().equals("Cruce")) {
+                                origen = auxUbicacion.getIdNodo() + 1;
+                            }
+                        }
+                        int posx = 0;
+                        int posy = 0;
+                        for (int i = 0; i < personasMovimiento.size(); i++) {
+                            if (personasMovimiento.get(i).getArea().contains(new Point(evt.getX(), evt.getY()))) {
+                                auxPersona = personasMovimiento.get(i);
+                                // auxPersona.setUbicacion(auxUbicacion);
+                                if (auxPersona.getCamino().getFirst().getX1() == auxPersona.getCamino().getFirst().getX2()) {
+                                    if (auxPersona.getCamino().getFirst().getX1() == auxMSeleccion * auxCiudadPersonas.getAnchoCampo()) {
+                                        auxPersona.setOrigen(origen - 1);
+                                        posx = auxMSeleccion * auxCiudadPersonas.getAnchoCampo();
+                                        posy = (int) auxNSeleccion * auxCiudadPersonas.getAltoCampo();
+                                    } else {
+                                        auxPersona.setOrigen(origen);
+                                        posx = (int) ((int) auxMSeleccion * auxCiudadPersonas.getAnchoCampo() + auxCiudadPersonas.getAnchoCampo() * 0.5);
+                                        posy = (int) auxNSeleccion * auxCiudadPersonas.getAltoCampo();
+                                    }
+                                } else {
+                                    if (auxPersona.getCamino().getFirst().getY1() == auxNSeleccion * auxCiudadPersonas.getAltoCampo()) {
+                                        auxPersona.setOrigen(origen - 1);
+                                        posx = (int) auxMSeleccion * auxCiudadPersonas.getAnchoCampo();
+                                        posy = (int) auxNSeleccion * auxCiudadPersonas.getAltoCampo();
+                                    } else {
+                                        auxPersona.setOrigen(origen);
+                                        posx = (int) auxMSeleccion * auxCiudadPersonas.getAnchoCampo();
+                                        posy = (int) ((int) auxNSeleccion * auxCiudadPersonas.getAltoCampo() + auxCiudadPersonas.getAltoCampo() * 0.5);
+                                    }
+
+                                }
+                                auxPersona.parar();
+                                System.out.println(auxPersona.getOrigen() + "-----------------");
+                                auxPersona.getArea().setLocation(posx, posy);
+                                //Pasamos a opciones 3
+                                opciones = 3;
+                            }
+
+                        }
+
+                    }
+                }
+                //Si opciones es igual a 3 es porque ya esta seleccionado el carro y el nodo origen
+            } else if (opciones == 3) {
+                //Verificamos que el evento esta dentro del ancho y alto de ciudad.
+                if (evt.getX() < auxCiudadPersonas.getAnchoCiudad() && evt.getY() < auxCiudadPersonas.getAltoCiudad()) {
+                    int auxi = (int) evt.getY() / auxCiudadPersonas.getAltoCampo();
+                    int auxj = (int) evt.getX() / auxCiudadPersonas.getAnchoCampo();
+                    //Obtenemos la ubicacion
+                    Componente destino = auxCiudadPersonas.getMatrizCiudad()[auxi][auxj];
+                    if (destino != null) {
+                        if (!destino.getTipoVia().equals("")) {
+                            //La marcamos si es nodo.
+                            auxCiudadPersonas.marcarNodo(destino);
+                            auxCiudadPersonas.setCantidadNodos(auxCiudadPersonas.getCantidadNodos() + 1);
+                        } else {
+                            destino = buscarCarreteraCercana(auxi, auxj);
+                            auxCiudadPersonas.marcarNodo(destino);
+                            auxCiudadPersonas.setCantidadNodos(auxCiudadPersonas.getCantidadNodos() + 1);
+
+                        }
+                        //Añado a los destinos el nodo de destino
+                        auxPersona.getDestinos().add(destino.getIdNodo());
+                    }
+                }
+            }
+
         }
     }//GEN-LAST:event_formMouseClicked
     /**
@@ -386,6 +486,7 @@ public class PanelVentana extends javax.swing.JPanel {
      */
     public Ciudad copiarCiudad(Ciudad ciudad) {
         Ciudad copiaCiudad = (Ciudad) ciudad.clone();
+
         copiaCiudad.setMatrizCiudad(null);
         Componente[][] compiaComponentes = new Componente[copiaCiudad.getN()][copiaCiudad.getM()];
         copiaCiudad.setMatrizCiudad(compiaComponentes);
@@ -399,11 +500,6 @@ public class PanelVentana extends javax.swing.JPanel {
         return copiaCiudad;
     }
 
-    /**
-     * Permite la modificación de la ciudad y el grafo con el nodo de ubicacion
-     * del vehiculo y sus destinos ademas calcula el camino mino segun el tipo
-     * de ruta selecionado
-     */
     public void modificarGrafo() {
         auxCiudad.modificarNodos();
         Ciudad auxCiudad1 = copiarCiudad(auxCiudad);
@@ -428,6 +524,37 @@ public class PanelVentana extends javax.swing.JPanel {
         }
 //        System.out.println(auxRuta.getCantidadNodos());
         auxRuta.llenarPesos(auxCarro.getGrafo());
+        //auxRuta.mostrarPesos();
+        int matrizVertices[][] = auxRuta.floydWarshall();
+        int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 Destinos secuencia \n 2 Destinos cerca", "Destinos", JOptionPane.INFORMATION_MESSAGE));
+        if (opcion == 1) {
+            destinosSecuencia(auxRuta, matrizVertices);
+        } else {
+            destinosCerca(auxRuta, matrizVertices);
+        }
+    }
+
+    /**
+     * Permite la modificación de la ciudad y el grafo con el nodo de ubicacion
+     * del vehiculo y sus destinos ademas calcula el camino mino segun el tipo
+     * de ruta selecionado
+     */
+    public void modificarGrafoPersonas() {
+        //auxCiudad.modificarNodos();
+        Ciudad auxCiudad1 = copiarCiudad(auxCiudadPersonas);
+        GrafoNoDirigido auxGrafo1 = new GrafoNoDirigido(auxCiudadPersonas.getCantidadNodos());  // Creo un grafo que se le asignara al carro
+        auxGrafo1.crearGrafo(copiarCiudad(auxCiudadPersonas));    //Creo el grafo con la ciudad.
+        auxPersona.setGrafo(auxGrafo1);   //Seteo el grafo al carro.
+        auxPersona.setCiudad(auxCiudad1);
+        auxPersona.setTipo(tipoCamino); //Seteo el tipo de carro.
+  
+//        mostrarGrafo(auxGrafo1);
+        AlgoritmoRuta auxRuta = null;
+        if (auxPersona.getTipo() == 1) {
+            auxRuta = new RutaCorta(auxPersona.getCiudad().getCantidadNodos());
+        }
+        System.out.println(auxRuta.getCantidadNodos());
+        auxRuta.llenarPesos(auxPersona.getGrafo());
         //auxRuta.mostrarPesos();
         int matrizVertices[][] = auxRuta.floydWarshall();
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 Destinos secuencia \n 2 Destinos cerca", "Destinos", JOptionPane.INFORMATION_MESSAGE));
@@ -481,7 +608,7 @@ public class PanelVentana extends javax.swing.JPanel {
             auxCarro.setCamino(caminoMenor);
             String color = JOptionPane.showInputDialog(this, "Ingese el color", "Color", JOptionPane.INFORMATION_MESSAGE);
             auxCarro.obtenerCaminoPintar(color);
-            
+
         }
         auxCarro.iniciar();
 
@@ -860,6 +987,14 @@ public class PanelVentana extends javax.swing.JPanel {
 
     public void setPersonasMovimiento(LinkedList<PersonaMovimiento> personasMovimiento) {
         this.personasMovimiento = personasMovimiento;
+    }
+
+    public void setTipoSeleccion(int tipoSeleccion) {
+        this.tipoSeleccion = tipoSeleccion;
+    }
+
+    public int getTipoSeleccion() {
+        return tipoSeleccion;
     }
 
 
