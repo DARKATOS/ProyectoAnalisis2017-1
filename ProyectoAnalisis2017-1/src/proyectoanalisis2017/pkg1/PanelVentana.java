@@ -146,7 +146,7 @@ public class PanelVentana extends javax.swing.JPanel {
                             //La marcamos si es nodo.
                             auxCiudad.marcarNodo(destino);
                         } else {
-                            destino = buscarCarreteraCercana(auxi, auxj);
+                            destino = buscarCarreteraCercana(auxi, auxj,auxCiudad);
                             auxCiudad.marcarNodo(destino);
 
                         }
@@ -180,7 +180,7 @@ public class PanelVentana extends javax.swing.JPanel {
                             origen = auxCiudadPersonas.getCantidadNodos();
                         } else {
                             if (!auxUbicacion.getTipoVia().equals("Cruce")) {
-                                origen = auxUbicacion.getIdNodo() + 1;
+                                origen = auxUbicacion.getIdNodo() + 2;
                             }
                         }
                         int posx = 0;
@@ -232,14 +232,17 @@ public class PanelVentana extends javax.swing.JPanel {
                     Componente destino = auxCiudadPersonas.getMatrizCiudad()[auxi][auxj];
                     if (destino != null) {
                         if (!destino.getTipoVia().equals("")) {
-                            //La marcamos si es nodo.
-                            auxCiudadPersonas.marcarNodo(destino);
-                            auxCiudadPersonas.setCantidadNodos(auxCiudadPersonas.getCantidadNodos() + 1);
+                            if (destino.getIdNodo() == -1) {
+                                //La marcamos si es nodo.
+                                auxCiudadPersonas.marcarNodo(destino);
+                                auxCiudadPersonas.setCantidadNodos(auxCiudadPersonas.getCantidadNodos() + 1);
+                            }
                         } else {
-                            destino = buscarCarreteraCercana(auxi, auxj);
-                            auxCiudadPersonas.marcarNodo(destino);
-                            auxCiudadPersonas.setCantidadNodos(auxCiudadPersonas.getCantidadNodos() + 1);
-
+                            destino = buscarCarreteraCercana(auxi, auxj,auxCiudadPersonas);
+                            if (destino.getIdNodo() == -1) {
+                                auxCiudadPersonas.marcarNodo(destino);
+                                auxCiudadPersonas.setCantidadNodos(auxCiudadPersonas.getCantidadNodos() + 1);
+                            }
                         }
                         //Añado a los destinos el nodo de destino
                         auxPersona.getDestinos().add(destino.getIdNodo());
@@ -541,7 +544,7 @@ public class PanelVentana extends javax.swing.JPanel {
      */
     public void modificarGrafoPersonas() {
         //auxCiudad.modificarNodos();
-        auxPersona.setOrigen(auxPersona.getOrigen()-1);
+        auxPersona.setOrigen(auxPersona.getOrigen() - 1);
         Ciudad auxCiudad1 = copiarCiudad(auxCiudadPersonas);
         GrafoNoDirigido auxGrafo1 = new GrafoNoDirigido(auxCiudadPersonas.getCantidadNodos());  // Creo un grafo que se le asignara al carro
         auxGrafo1.crearGrafo(copiarCiudad(auxCiudadPersonas));    //Creo el grafo con la ciudad.
@@ -549,7 +552,7 @@ public class PanelVentana extends javax.swing.JPanel {
         auxPersona.setGrafo(auxGrafo1);   //Seteo el grafo al carro.
         auxPersona.setCiudad(auxCiudad1);
         auxPersona.setTipo(tipoCamino); //Seteo el tipo de carro.
-  
+
 //        mostrarGrafo(auxGrafo1);
         AlgoritmoRuta auxRuta = null;
         if (auxPersona.getTipo() == 1) {
@@ -566,7 +569,7 @@ public class PanelVentana extends javax.swing.JPanel {
             destinosCercaPersonas(auxRuta, matrizVertices);
         }
     }
-    
+
     public void destinosCercaPersonas(AlgoritmoRuta auxRuta, int matrizVertices[][]) {
         int origen = auxPersona.getOrigen();
         LinkedList<Arista> caminoMenor = new LinkedList<>();
@@ -583,7 +586,7 @@ public class PanelVentana extends javax.swing.JPanel {
         auxCarro.iniciar();
 
     }
-    
+
     public void buscarCaminoCercaPersonas(AlgoritmoRuta auxRuta, int nivel, int origen, int peso, LinkedList<Arista> caminoMenor, int matrizVertices[][], LinkedList<Arista> auxCamino, int cantidadDestinos) {
         if (nivel == cantidadDestinos) {
             if (peso < pesoMenor) {
@@ -595,7 +598,7 @@ public class PanelVentana extends javax.swing.JPanel {
             }
         } else {
             for (int i = 0; i < auxPersona.getDestinos().size(); i++) {
-                if (auxPersona.getDestinos().get(i)!= -1) {
+                if (auxPersona.getDestinos().get(i) != -1) {
                     int aux = auxPersona.getDestinos().get(i);
                     LinkedList<Arista> auxAuxCamino = (LinkedList<Arista>) auxCamino.clone();
                     auxPersona.getDestinos().set(i, -1);
@@ -615,7 +618,7 @@ public class PanelVentana extends javax.swing.JPanel {
             }
         }
     }
-    
+
     public void destinosSecuenciaPersonas(AlgoritmoRuta auxRuta, int matrizVertices[][]) {
         int origen = auxPersona.getOrigen();
         LinkedList<Arista> auxCamino = new LinkedList<>();
@@ -871,22 +874,22 @@ public class PanelVentana extends javax.swing.JPanel {
      * @param y Posiciones del destino
      * @return el componente carretera mas cercano al destino seleccionado
      */
-    private Componente buscarCarreteraCercana(int x, int y) {
+    private Componente buscarCarreteraCercana(int x, int y, Ciudad auxCiudad) {
         Componente respuesta = null;
-        int comIzq = valorCarreteraIzq(x, y - 1);
-        int comDer = valorCarreteraDer(x, y + 1);
-        int comArriba = valorCarreteraArriba(x - 1, y);
-        int comAbajo = valorCarreteraAbajo(x + 1, y);
+        int comIzq = valorCarreteraIzq(x, y - 1,auxCiudad);
+        int comDer = valorCarreteraDer(x, y + 1,auxCiudad);
+        int comArriba = valorCarreteraArriba(x - 1, y,auxCiudad);
+        int comAbajo = valorCarreteraAbajo(x + 1, y,auxCiudad);
         if (comIzq < comDer) {
-            respuesta = mirarCarreteraIzq(x, y - 1);
+            respuesta = mirarCarreteraIzq(x, y - 1,auxCiudad);
         } else {
             if (comDer < comArriba) {
-                respuesta = mirarCarreteraDer(x, y + 1);
+                respuesta = mirarCarreteraDer(x, y + 1,auxCiudad);
             } else {
                 if (comArriba < comAbajo) {
-                    respuesta = mirarCarreteraArriba(x - 1, y);
+                    respuesta = mirarCarreteraArriba(x - 1, y,auxCiudad);
                 } else {
-                    respuesta = mirarCarreteraAbajo(x + 1, y);
+                    respuesta = mirarCarreteraAbajo(x + 1, y,auxCiudad);
                 }
             }
         }
@@ -900,7 +903,7 @@ public class PanelVentana extends javax.swing.JPanel {
      * @param y Posiciones del destino
      * @return un componente carretera a la izquierda si existe
      */
-    public Componente mirarCarreteraIzq(int x, int y) {
+    public Componente mirarCarreteraIzq(int x, int y,Ciudad auxCiudad) {
         Componente respuesta = null;
         Boolean bandera = true;
         while (y >= 0 && bandera) {
@@ -920,7 +923,7 @@ public class PanelVentana extends javax.swing.JPanel {
      * @param y Posiciones del destino
      * @return un componente carretera a la derecha si existe
      */
-    public Componente mirarCarreteraDer(int x, int y) {
+    public Componente mirarCarreteraDer(int x, int y,Ciudad auxCiudad) {
         Componente respuesta = null;
         Boolean bandera = true;
         while (y < auxCiudad.getMatrizCiudad().length && bandera) {
@@ -941,7 +944,7 @@ public class PanelVentana extends javax.swing.JPanel {
      * @param y Posiciones del destino
      * @return un componente carretera arriba del destino si existe
      */
-    public Componente mirarCarreteraArriba(int x, int y) {
+    public Componente mirarCarreteraArriba(int x, int y,Ciudad auxCiudad) {
         Componente respuesta = null;
         Boolean bandera = true;
         while (x >= 0 && bandera) {
@@ -962,7 +965,7 @@ public class PanelVentana extends javax.swing.JPanel {
      * @param y Posiciones del destino
      * @return un componente carretera abajo del destino si existe
      */
-    public Componente mirarCarreteraAbajo(int x, int y) {
+    public Componente mirarCarreteraAbajo(int x, int y,Ciudad auxCiudad) {
         Componente respuesta = null;
         Boolean bandera = true;
         while (x < auxCiudad.getMatrizCiudad().length && bandera) {
@@ -975,7 +978,7 @@ public class PanelVentana extends javax.swing.JPanel {
         return respuesta;
     }
 
-    public int valorCarreteraIzq(int x, int y) {
+    public int valorCarreteraIzq(int x, int y,Ciudad auxCiudad) {
         int respuesta = 0;
         Boolean bandera = true;
         while (y >= 0 && bandera) {
@@ -991,7 +994,7 @@ public class PanelVentana extends javax.swing.JPanel {
         return respuesta;
     }
 
-    public int valorCarreteraDer(int x, int y) {
+    public int valorCarreteraDer(int x, int y,Ciudad auxCiudad) {
         int respuesta = 0;
         Boolean bandera = true;
         while (y < auxCiudad.getMatrizCiudad().length && bandera) {
@@ -1009,7 +1012,7 @@ public class PanelVentana extends javax.swing.JPanel {
 
     }
 
-    public int valorCarreteraArriba(int x, int y) {
+    public int valorCarreteraArriba(int x, int y,Ciudad auxCiudad) {
         int respuesta = 0;
         Boolean bandera = true;
         while (x >= 0 && bandera) {
@@ -1026,7 +1029,7 @@ public class PanelVentana extends javax.swing.JPanel {
 
     }
 
-    public int valorCarreteraAbajo(int x, int y) {
+    public int valorCarreteraAbajo(int x, int y,Ciudad auxCiudad) {
         int respuesta = 0;
         Boolean bandera = true;
         while (x < auxCiudad.getMatrizCiudad().length && bandera) {

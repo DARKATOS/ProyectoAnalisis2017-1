@@ -30,7 +30,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
         super(id, ciudad.getAnchoCampo(), ciudad.getAltoCampo(), ruta, camino, tipo);
         this.ciudad = ciudad;
         this.grafo = grafo;
-        
+
         destinos = new LinkedList<>();
     }
 
@@ -63,12 +63,12 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
      */
     @Override
     public void run() {
-        int m=0;
+        int m = 0;
         int velocidad;
         Boolean sentido;
         while (!getCamino().isEmpty()) {
             //Se obtiene la velocidad del camino
-            velocidad=40;
+            velocidad = 40;
             sentido = false;
             if (getCamino().getFirst().getX1() == getCamino().getFirst().getX2()) {
                 int auxY;
@@ -153,8 +153,11 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
                     panel.repaint();
                 }
             }
+
+            m = getCamino().getFirst().getY();
+
             if (getTipo() == 0) {
-                m = getCamino().getFirst().getY();
+
                 getCamino().removeFirst();
                 buscarCamino(m);
             } else {
@@ -165,7 +168,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
             buscarCamino(m);
             setTipo(0);
             destinos = new LinkedList<>();
-            setCiudad(panel.copiarCiudad(panel.getCiudad()));
+            setCiudad(panel.copiarCiudad(panel.getCiudadPersonas()));
             GrafoNoDirigido auxGrafo = new GrafoNoDirigido(ciudad.getCantidadNodos());
             auxGrafo.crearGrafo(panel.copiarCiudad(ciudad));
             auxGrafo.completarGrafo(panel.copiarCiudad(ciudad));
@@ -186,7 +189,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
      * @return id de nodo
      */
     public int idNodoComponente(int x, int y) {
-        x=x-5;
+        x = x - 5;
         int auxX = y / this.panel.getCiudad().getAltoCampo();
         int auxY = x / this.panel.getCiudad().getAnchoCampo();
         return ciudad.getMatrizCiudad()[auxX][auxY].getIdNodo();
@@ -309,16 +312,9 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
         }
     }
 
-   
-
-
-
-
     public void setDestinos(LinkedList<Integer> destinos) {
         this.destinos = destinos;
     }
-
-   
 
     public GrafoNoDirigido getGrafo() {
         return grafo;
@@ -351,8 +347,6 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
         return destinos;
     }
 
-   
-
     public int getOrigen() {
         return origen;
     }
@@ -360,6 +354,5 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
     public void setOrigen(int origen) {
         this.origen = origen;
     }
-
 
 }
