@@ -63,6 +63,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
      */
     @Override
     public void run() {
+        int m=0;
         int velocidad;
         Boolean sentido;
         while (!getCamino().isEmpty()) {
@@ -84,7 +85,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
                 if (sentido) {
                     while ((int) getArea().getY() < auxY) {
                         try {
-                            pasar((int) getArea().getX(), (int) getArea().getY() + (int) getArea().getHeight(), 1);
+//                            pasar((int) getArea().getX(), (int) getArea().getY() + (int) getArea().getHeight(), 1);
                             getArea().setLocation((int) getArea().getX(), (int) getArea().getY() + 10);
                             Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
                         } catch (InterruptedException ex) {
@@ -97,7 +98,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
                 } else {
                     while ((int) getArea().getY() > auxY) {
                         try {
-                            pasar((int) getArea().getX(), (int) getArea().getY(), 0);
+//                            pasar((int) getArea().getX(), (int) getArea().getY(), 0);
                             getArea().setLocation((int) getArea().getX(), (int) getArea().getY() - 10);
                             Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
                         } catch (InterruptedException ex) {
@@ -153,7 +154,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
                 }
             }
             if (getTipo() == 0) {
-                int m = getCamino().getFirst().getY();
+                m = getCamino().getFirst().getY();
                 getCamino().removeFirst();
                 buscarCamino(m);
             } else {
@@ -161,13 +162,13 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
             }
         }
         if (getTipo() != 0) {
-            int m = idNodoComponente((int) getArea().getX(), (int) getArea().getY());
             buscarCamino(m);
             setTipo(0);
             destinos = new LinkedList<>();
             setCiudad(panel.copiarCiudad(panel.getCiudad()));
             GrafoNoDirigido auxGrafo = new GrafoNoDirigido(ciudad.getCantidadNodos());
             auxGrafo.crearGrafo(panel.copiarCiudad(ciudad));
+            auxGrafo.completarGrafo(panel.copiarCiudad(ciudad));
             setGrafo(auxGrafo);
             iniciar();
         }

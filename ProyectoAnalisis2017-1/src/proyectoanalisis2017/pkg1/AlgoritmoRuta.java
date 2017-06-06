@@ -6,7 +6,6 @@
 package proyectoanalisis2017.pkg1;
 
 import java.util.LinkedList;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,7 +28,17 @@ public class AlgoritmoRuta {
      *
      * @param grafo para obt5ener el peso de las aristas.
      */
-    public void llenarPesos(GrafoDirigido grafo) {
+    public void llenarPesosGrafoDirigido(GrafoDirigido grafo) {
+
+    }
+    
+    /**
+     * Metodo que se sobreescribe en cada una de la rutas para la matriz de
+     * pesos
+     *
+     * @param grafo para obtener el peso de las aristas.
+     */
+    public void llenarPesosGrafoNoDirigido(GrafoNoDirigido grafo) {
 
     }
 
@@ -121,10 +130,41 @@ public class AlgoritmoRuta {
         return camino;
     }
     
-    public void multiplesDestinos()
-    {
-        
+    public LinkedList<Arista> obtenerCaminoPersonas(int matrizNodos[][], int origen, int destino, GrafoNoDirigido grafo) {
+//        mostrarMatrizNodos(matrizNodos);
+//        System.out.println("");
+//        mostrarGrafo(grafo);
+        System.out.println("");
+        LinkedList<Integer> caminoNodos = new LinkedList<>();
+        boolean bandera = true;
+        int nuevoOrigen = origen;
+        while (bandera) {
+            int nuevoDestino = matrizNodos[nuevoOrigen][destino];
+            if (destino == nuevoDestino) {
+                bandera = false;
+            } else {
+                caminoNodos.add(nuevoDestino);
+                nuevoOrigen = nuevoDestino;
+            }
+        }
+        caminoNodos.addFirst(origen);
+        caminoNodos.addLast(destino);
+        System.out.println("Origen: " + origen);
+        System.out.println("Destino: " + destino);
+        mostrarCaminoNodos(caminoNodos);
+        LinkedList<Arista> camino = new LinkedList<>();
+        for (int i = 0; i < caminoNodos.size() - 1; i++) {
+            Arista arista = grafo.getGrafo()[caminoNodos.get(i)][caminoNodos.get(i + 1)];
+            //Si la arista es nula no se agrega
+            if (arista != null) {
+                camino.add(arista);
+            } else {
+                camino = new LinkedList<>();
+            }
+        }
+        return camino;
     }
+    
 
     public void setCantidadNodos(int cantidadNodos) {
         this.cantidadNodos = cantidadNodos;

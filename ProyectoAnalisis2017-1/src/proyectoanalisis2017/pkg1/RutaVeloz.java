@@ -20,7 +20,7 @@ public class RutaVeloz extends AlgoritmoRuta {
      * @param grafo con el que se va a obtener el peso de las aristas para llenar la matriz
      */
     @Override
-    public void llenarPesos(GrafoDirigido grafo) {
+    public void llenarPesosGrafoDirigido(GrafoDirigido grafo) {
         for (int i=0; i<pesos.length; i++)
         {
             for (int j=0; j<pesos.length; j++)

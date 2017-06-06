@@ -346,7 +346,7 @@ public class PanelVentana extends javax.swing.JPanel {
                                 obtenerTrafico(carrosMovimiento.get(i));
                             }
                             //        System.out.println(auxRuta.getCantidadNodos());
-                            auxRuta.llenarPesos(carrosMovimiento.get(i).getGrafo());
+                            auxRuta.llenarPesosGrafoDirigido(carrosMovimiento.get(i).getGrafo());
                             //auxRuta.mostrarPesos();
                             int matrizVertices[][] = auxRuta.floydWarshall();
 
@@ -417,7 +417,7 @@ public class PanelVentana extends javax.swing.JPanel {
                                 obtenerTrafico(carrosMovimiento.get(i));
                             }
                             //        System.out.println(auxRuta.getCantidadNodos());
-                            auxRuta.llenarPesos(carrosMovimiento.get(i).getGrafo());
+                            auxRuta.llenarPesosGrafoDirigido(carrosMovimiento.get(i).getGrafo());
                             //auxRuta.mostrarPesos();
                             int matrizVertices[][] = auxRuta.floydWarshall();
                             int origen = carrosMovimiento.get(i).getUbicacion().getIdNodo();
@@ -523,7 +523,7 @@ public class PanelVentana extends javax.swing.JPanel {
             obtenerTrafico(auxCarro);
         }
 //        System.out.println(auxRuta.getCantidadNodos());
-        auxRuta.llenarPesos(auxCarro.getGrafo());
+        auxRuta.llenarPesosGrafoDirigido(auxCarro.getGrafo());
         //auxRuta.mostrarPesos();
         int matrizVertices[][] = auxRuta.floydWarshall();
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 Destinos secuencia \n 2 Destinos cerca", "Destinos", JOptionPane.INFORMATION_MESSAGE));
@@ -541,9 +541,11 @@ public class PanelVentana extends javax.swing.JPanel {
      */
     public void modificarGrafoPersonas() {
         //auxCiudad.modificarNodos();
+        auxPersona.setOrigen(auxPersona.getOrigen()-1);
         Ciudad auxCiudad1 = copiarCiudad(auxCiudadPersonas);
         GrafoNoDirigido auxGrafo1 = new GrafoNoDirigido(auxCiudadPersonas.getCantidadNodos());  // Creo un grafo que se le asignara al carro
         auxGrafo1.crearGrafo(copiarCiudad(auxCiudadPersonas));    //Creo el grafo con la ciudad.
+        auxGrafo1.completarGrafo(copiarCiudad(auxCiudadPersonas));
         auxPersona.setGrafo(auxGrafo1);   //Seteo el grafo al carro.
         auxPersona.setCiudad(auxCiudad1);
         auxPersona.setTipo(tipoCamino); //Seteo el tipo de carro.
@@ -554,15 +556,82 @@ public class PanelVentana extends javax.swing.JPanel {
             auxRuta = new RutaCorta(auxPersona.getCiudad().getCantidadNodos());
         }
         System.out.println(auxRuta.getCantidadNodos());
-        auxRuta.llenarPesos(auxPersona.getGrafo());
+        auxRuta.llenarPesosGrafoNoDirigido(auxPersona.getGrafo());
         //auxRuta.mostrarPesos();
         int matrizVertices[][] = auxRuta.floydWarshall();
         int opcion = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingese \n 1 Destinos secuencia \n 2 Destinos cerca", "Destinos", JOptionPane.INFORMATION_MESSAGE));
         if (opcion == 1) {
-            destinosSecuencia(auxRuta, matrizVertices);
+            destinosSecuenciaPersonas(auxRuta, matrizVertices);
         } else {
-            destinosCerca(auxRuta, matrizVertices);
+            destinosCercaPersonas(auxRuta, matrizVertices);
         }
+    }
+    
+    public void destinosCercaPersonas(AlgoritmoRuta auxRuta, int matrizVertices[][]) {
+        int origen = auxPersona.getOrigen();
+        LinkedList<Arista> caminoMenor = new LinkedList<>();
+        pesoMenor = Integer.MAX_VALUE;
+        buscarCaminoCercaPersonas(auxRuta, 0, origen, 0, caminoMenor, matrizVertices, new LinkedList<>(), auxPersona.getDestinos().size());
+        if (caminoMenor.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No existe un camino disponible", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            auxPersona.setCamino(caminoMenor);
+            String color = JOptionPane.showInputDialog(this, "Ingese el color", "Color", JOptionPane.INFORMATION_MESSAGE);
+            auxPersona.obtenerCaminoPintar(color);
+
+        }
+        auxCarro.iniciar();
+
+    }
+    
+    public void buscarCaminoCercaPersonas(AlgoritmoRuta auxRuta, int nivel, int origen, int peso, LinkedList<Arista> caminoMenor, int matrizVertices[][], LinkedList<Arista> auxCamino, int cantidadDestinos) {
+        if (nivel == cantidadDestinos) {
+            if (peso < pesoMenor) {
+                caminoMenor.clear();
+                for (int i = 0; i < auxCamino.size(); i++) {
+                    caminoMenor.add((Arista) auxCamino.get(i).clone());
+                }
+                pesoMenor = peso;
+            }
+        } else {
+            for (int i = 0; i < auxPersona.getDestinos().size(); i++) {
+                if (auxPersona.getDestinos().get(i)!= -1) {
+                    int aux = auxPersona.getDestinos().get(i);
+                    LinkedList<Arista> auxAuxCamino = (LinkedList<Arista>) auxCamino.clone();
+                    auxPersona.getDestinos().set(i, -1);
+                    peso += auxRuta.getPesos()[origen][aux];
+                    LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoPersonas(matrizVertices, origen, aux, auxPersona.getGrafo());
+                    if (!auxCamino1.isEmpty()) {
+                        for (int j = 0; j < auxCamino1.size(); j++) {
+                            System.out.println("camino: A" + auxCamino1.get(j).getX());
+                            System.out.println("camino: B" + auxCamino1.get(j).getY());
+                            auxAuxCamino.add(auxCamino1.get(j));
+                        }
+                        buscarCaminoCercaPersonas(auxRuta, nivel + 1, aux, peso, caminoMenor, matrizVertices, auxAuxCamino, cantidadDestinos);
+                    }
+                    auxPersona.getDestinos().set(i, aux);
+                    peso -= auxRuta.getPesos()[origen][aux];
+                }
+            }
+        }
+    }
+    
+    public void destinosSecuenciaPersonas(AlgoritmoRuta auxRuta, int matrizVertices[][]) {
+        int origen = auxPersona.getOrigen();
+        LinkedList<Arista> auxCamino = new LinkedList<>();
+        for (int i = 0; i < auxPersona.getDestinos().size(); i++) {
+            LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoPersonas(matrizVertices, origen, auxPersona.getDestinos().get(i), auxPersona.getGrafo());
+            for (int j = 0; j < auxCamino1.size(); j++) {
+                System.out.println("camino: A" + auxCamino1.get(j).getX());
+                System.out.println("camino: B" + auxCamino1.get(j).getY());
+                auxCamino.add(auxCamino1.get(j));
+            }
+            origen = auxPersona.getDestinos().get(i);
+        }
+        auxPersona.setCamino(auxCamino);
+        String color = JOptionPane.showInputDialog(this, "Ingese el color", "Color", JOptionPane.INFORMATION_MESSAGE);
+        auxPersona.obtenerCaminoPintar(color);
+        auxPersona.iniciar();
     }
 
     public void buscarCaminoCerca(AlgoritmoRuta auxRuta, int nivel, int origen, int peso, LinkedList<Arista> caminoMenor, int matrizVertices[][], LinkedList<Arista> auxCamino, int cantidadDestinos) {
