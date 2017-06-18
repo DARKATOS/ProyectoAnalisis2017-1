@@ -38,6 +38,7 @@ public class PanelVentana extends javax.swing.JPanel {
     private int tipoSeleccion;
 
     private int pesoMenor;
+    private int pesoMenorPersonas;
 
     public PanelVentana() {
         initComponents();
@@ -212,7 +213,6 @@ public class PanelVentana extends javax.swing.JPanel {
 
                                 }
                                 auxPersona.parar();
-                                System.out.println(auxPersona.getOrigen() + "-----------------");
                                 auxPersona.getArea().setLocation(posx, posy);
                                 //Pasamos a opciones 3
                                 opciones = 3;
@@ -348,7 +348,6 @@ public class PanelVentana extends javax.swing.JPanel {
                                 auxRuta = new RutaTrafico(carrosMovimiento.get(i).getCiudad().getCantidadNodos());
                                 obtenerTrafico(carrosMovimiento.get(i));
                             }
-                            //        System.out.println(auxRuta.getCantidadNodos());
                             auxRuta.llenarPesosGrafoDirigido(carrosMovimiento.get(i).getGrafo());
                             //auxRuta.mostrarPesos();
                             int matrizVertices[][] = auxRuta.floydWarshall();
@@ -358,8 +357,8 @@ public class PanelVentana extends javax.swing.JPanel {
                             for (int k = 0; k < carrosMovimiento.get(i).getDestinos().size(); k++) {
                                 LinkedList<Arista> auxCamino1 = auxRuta.obtenerCamino(matrizVertices, origen, carrosMovimiento.get(i).getDestinos().get(k).getIdNodo(), carrosMovimiento.get(i).getGrafo());
                                 for (int j = 0; j < auxCamino1.size(); j++) {
-                                    System.out.println("camino: A" + auxCamino1.get(j).getX());
-                                    System.out.println("camino: B" + auxCamino1.get(j).getY());
+//                                    System.out.println("camino: A" + auxCamino1.get(j).getX());
+//                                    System.out.println("camino: B" + auxCamino1.get(j).getY());
                                     auxCamino.add(auxCamino1.get(j));
                                 }
                                 origen = carrosMovimiento.get(i).getDestinos().get(k).getIdNodo();
@@ -408,8 +407,8 @@ public class PanelVentana extends javax.swing.JPanel {
                             carrosMovimiento.get(i).reconstruirUbicacion();
                             carrosMovimiento.get(i).getArea().setLocation((int) carrosMovimiento.get(i).getUbicacion().getArea().getX(), (int) carrosMovimiento.get(i).getUbicacion().getArea().getY());
                             carrosMovimiento.get(i).reconstruirDestinos();
-                            System.out.println("Muestro ciudad que queda");
-                            carrosMovimiento.get(i).getCiudad().mostrarMatrizCiudad();
+//                            System.out.println("Muestro ciudad que queda");
+//                            carrosMovimiento.get(i).getCiudad().mostrarMatrizCiudad();
                             AlgoritmoRuta auxRuta;
                             if (carrosMovimiento.get(i).getTipo() == 1) {
                                 auxRuta = new RutaCorta(carrosMovimiento.get(i).getCiudad().getCantidadNodos());
@@ -428,8 +427,8 @@ public class PanelVentana extends javax.swing.JPanel {
                             for (int k = 0; k < carrosMovimiento.get(i).getDestinos().size(); k++) {
                                 LinkedList<Arista> auxCamino1 = auxRuta.obtenerCamino(matrizVertices, origen, carrosMovimiento.get(i).getDestinos().get(k).getIdNodo(), carrosMovimiento.get(i).getGrafo());
                                 for (int j = 0; j < auxCamino1.size(); j++) {
-                                    System.out.println("camino: A" + auxCamino1.get(j).getX());
-                                    System.out.println("camino: B" + auxCamino1.get(j).getY());
+//                                    System.out.println("camino: A" + auxCamino1.get(j).getX());
+//                                    System.out.println("camino: B" + auxCamino1.get(j).getY());
                                     auxCamino.add(auxCamino1.get(j));
                                 }
                                 origen = carrosMovimiento.get(i).getDestinos().get(k).getIdNodo();
@@ -558,7 +557,7 @@ public class PanelVentana extends javax.swing.JPanel {
         if (auxPersona.getTipo() == 1) {
             auxRuta = new RutaCorta(auxPersona.getCiudad().getCantidadNodos());
         }
-        System.out.println(auxRuta.getCantidadNodos());
+//        System.out.println(auxRuta.getCantidadNodos());
         auxRuta.llenarPesosGrafoNoDirigido(auxPersona.getGrafo());
         //auxRuta.mostrarPesos();
         int matrizVertices[][] = auxRuta.floydWarshall();
@@ -568,12 +567,18 @@ public class PanelVentana extends javax.swing.JPanel {
         } else {
             destinosCercaPersonas(auxRuta, matrizVertices);
         }
+        System.out.println("Camino");
+        for (int i=0; i<auxPersona.getCamino().size(); i++)
+        {
+            System.out.println(auxPersona.getCamino().get(i).getX()+"---"+auxPersona.getCamino().get(i).getY());
+            
+        }
     }
 
     public void destinosCercaPersonas(AlgoritmoRuta auxRuta, int matrizVertices[][]) {
         int origen = auxPersona.getOrigen();
         LinkedList<Arista> caminoMenor = new LinkedList<>();
-        pesoMenor = Integer.MAX_VALUE;
+        pesoMenorPersonas = Integer.MAX_VALUE;
         buscarCaminoCercaPersonas(auxRuta, 0, origen, 0, caminoMenor, matrizVertices, new LinkedList<>(), auxPersona.getDestinos().size());
         if (caminoMenor.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No existe un camino disponible", "Error", JOptionPane.ERROR_MESSAGE);
@@ -581,20 +586,20 @@ public class PanelVentana extends javax.swing.JPanel {
             auxPersona.setCamino(caminoMenor);
             String color = JOptionPane.showInputDialog(this, "Ingese el color", "Color", JOptionPane.INFORMATION_MESSAGE);
             auxPersona.obtenerCaminoPintar(color);
-
         }
-        auxCarro.iniciar();
-
+        auxPersona.iniciar();
     }
 
     public void buscarCaminoCercaPersonas(AlgoritmoRuta auxRuta, int nivel, int origen, int peso, LinkedList<Arista> caminoMenor, int matrizVertices[][], LinkedList<Arista> auxCamino, int cantidadDestinos) {
         if (nivel == cantidadDestinos) {
-            if (peso < pesoMenor) {
+            if (peso < pesoMenorPersonas) {
                 caminoMenor.clear();
                 for (int i = 0; i < auxCamino.size(); i++) {
                     caminoMenor.add((Arista) auxCamino.get(i).clone());
                 }
-                pesoMenor = peso;
+                System.out.println(auxCamino.get(0).getX());
+                System.out.println(auxCamino.get(auxCamino.size()-1).getY());
+                pesoMenorPersonas = peso;
             }
         } else {
             for (int i = 0; i < auxPersona.getDestinos().size(); i++) {
@@ -606,8 +611,8 @@ public class PanelVentana extends javax.swing.JPanel {
                     LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoPersonas(matrizVertices, origen, aux, auxPersona.getGrafo());
                     if (!auxCamino1.isEmpty()) {
                         for (int j = 0; j < auxCamino1.size(); j++) {
-                            System.out.println("camino: A" + auxCamino1.get(j).getX());
-                            System.out.println("camino: B" + auxCamino1.get(j).getY());
+//                            System.out.println("camino: A" + auxCamino1.get(j).getX());
+//                            System.out.println("camino: B" + auxCamino1.get(j).getY());
                             auxAuxCamino.add(auxCamino1.get(j));
                         }
                         buscarCaminoCercaPersonas(auxRuta, nivel + 1, aux, peso, caminoMenor, matrizVertices, auxAuxCamino, cantidadDestinos);
@@ -625,8 +630,8 @@ public class PanelVentana extends javax.swing.JPanel {
         for (int i = 0; i < auxPersona.getDestinos().size(); i++) {
             LinkedList<Arista> auxCamino1 = auxRuta.obtenerCaminoPersonas(matrizVertices, origen, auxPersona.getDestinos().get(i), auxPersona.getGrafo());
             for (int j = 0; j < auxCamino1.size(); j++) {
-                System.out.println("camino: A" + auxCamino1.get(j).getX());
-                System.out.println("camino: B" + auxCamino1.get(j).getY());
+//                System.out.println("camino: A" + auxCamino1.get(j).getX());
+//                System.out.println("camino: B" + auxCamino1.get(j).getY());
                 auxCamino.add(auxCamino1.get(j));
             }
             origen = auxPersona.getDestinos().get(i);
@@ -656,8 +661,8 @@ public class PanelVentana extends javax.swing.JPanel {
                     LinkedList<Arista> auxCamino1 = auxRuta.obtenerCamino(matrizVertices, origen, aux, auxCarro.getGrafo());
                     if (!auxCamino1.isEmpty()) {
                         for (int j = 0; j < auxCamino1.size(); j++) {
-                            System.out.println("camino: A" + auxCamino1.get(j).getX());
-                            System.out.println("camino: B" + auxCamino1.get(j).getY());
+//                            System.out.println("camino: A" + auxCamino1.get(j).getX());
+//                            System.out.println("camino: B" + auxCamino1.get(j).getY());
                             auxAuxCamino.add(auxCamino1.get(j));
                         }
                         buscarCaminoCerca(auxRuta, nivel + 1, aux, peso, caminoMenor, matrizVertices, auxAuxCamino, cantidadDestinos);
@@ -692,8 +697,8 @@ public class PanelVentana extends javax.swing.JPanel {
         for (int i = 0; i < auxCarro.getDestinos().size(); i++) {
             LinkedList<Arista> auxCamino1 = auxRuta.obtenerCamino(matrizVertices, origen, auxCarro.getDestinos().get(i).getIdNodo(), auxCarro.getGrafo());
             for (int j = 0; j < auxCamino1.size(); j++) {
-                System.out.println("camino: A" + auxCamino1.get(j).getX());
-                System.out.println("camino: B" + auxCamino1.get(j).getY());
+//                System.out.println("camino: A" + auxCamino1.get(j).getX());
+//                System.out.println("camino: B" + auxCamino1.get(j).getY());
                 auxCamino.add(auxCamino1.get(j));
             }
             origen = auxCarro.getDestinos().get(i).getIdNodo();
