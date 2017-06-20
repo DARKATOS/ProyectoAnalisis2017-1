@@ -94,6 +94,10 @@ public class EntidadMovimiento  {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
+    }
     
     
     

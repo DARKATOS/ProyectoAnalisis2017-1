@@ -82,9 +82,12 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
                     sentido = false;
                 }
                 if (sentido) {
+                    setRuta("../ImgComponentes/car_ari_abj1.png");
                     while ((int) getArea().getY() < auxY) {
                         try {
                             pasar((int) getArea().getX(), (int) getArea().getY() + (int) getArea().getHeight(), 1);
+                            pasarCebra((int) getArea().getX(), (int) getArea().getY() + (int) getArea().getHeight(), 2);
+
                             getArea().setLocation((int) getArea().getX(), (int) getArea().getY() + 10);
                             Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
                         } catch (InterruptedException ex) {
@@ -95,9 +98,12 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
                     getArea().setLocation((int) getArea().getX(), auxY);
                     panel.repaint();
                 } else {
+                    setRuta("../ImgComponentes/car_abj_ari1.png");
                     while ((int) getArea().getY() > auxY) {
                         try {
                             pasar((int) getArea().getX(), (int) getArea().getY(), 0);
+
+                            pasarCebra((int) getArea().getX(), (int) getArea().getY(), 1);
                             getArea().setLocation((int) getArea().getX(), (int) getArea().getY() - 10);
                             Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
                         } catch (InterruptedException ex) {
@@ -123,8 +129,11 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
                     sentido = false;
                 }
                 if (sentido) {
+                    setRuta("../ImgComponentes/car_der_izq1.png");
                     while ((int) getArea().getX() < auxX) {
                         try {
+
+                            pasarCebra((int) getArea().getX() + (int) getArea().getWidth(), (int) getArea().getY(), 4);
                             getArea().setLocation((int) getArea().getX() + 10, (int) getArea().getY());
 
                             Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
@@ -137,8 +146,11 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
 
                     panel.repaint();
                 } else {
+                    setRuta("../ImgComponentes/car_izq_der1.png");
                     while ((int) getArea().getX() > auxX) {
                         try {
+
+                            pasarCebra((int) getArea().getX(), (int) getArea().getY(), 3);
                             getArea().setLocation((int) getArea().getX() - 10, (int) getArea().getY());
 
                             Thread.sleep((ciudad.getN() * ciudad.getM()) / velocidad + 100);
@@ -188,6 +200,48 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
         int auxX = y / this.panel.getCiudad().getAltoCampo();
         int auxY = x / this.panel.getCiudad().getAnchoCampo();
         return ciudad.getMatrizCiudad()[auxX][auxY].getIdNodo();
+    }
+
+    public void pasarCebra(int x, int y, int tipo) {
+
+        try {
+            int auxX = y / this.panel.getCiudad().getAltoCampo();
+            int auxY = x / this.panel.getCiudad().getAnchoCampo();
+            if (tipo == 4) {
+                auxY = (x - 1) / this.panel.getCiudad().getAnchoCampo();
+            } else if (tipo == 2) {
+                auxX = (y - 1) / this.panel.getCiudad().getAltoCampo();
+            }
+            Boolean paso = true;
+            switch (tipo) {
+                case 1:
+                    auxX--;
+                    break;
+                case 2:
+                    auxX++;
+                    break;
+                case 3:
+                    auxY--;
+                    break;
+                case 4:
+                    auxY++;
+                    break;
+                default:
+
+            }
+
+            if (auxX != -1 && auxY != -1) {
+                Componente cebra = ciudad.getMatrizCiudad()[auxX][auxY];
+                if (cebra.getTipoVia().equals("cebra")) {
+                    while (paso) {
+                        paso = existePersona(cebra);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("aa");
+        }
     }
 
     /**
@@ -386,6 +440,26 @@ public class CarroMovimiento extends EntidadMovimiento implements Runnable {
         for (int k = 0; k < panel.getCarrosMovimiento().size() && respuesta; k++) {
             if (ciudad.getMatrizCiudad()[i][j].getArea().contains(new Point((int) panel.getCarrosMovimiento().get(k).getArea().getX(), (int) panel.getCarrosMovimiento().get(k).getArea().getY()))) {
                 respuesta = false;
+            }
+        }
+        return respuesta;
+    }
+
+    /**
+     * Permite verificar si en alguna posición determinada de la matriz existe
+     * un carro.
+     *
+     * @param i
+     * @param j Posiciones de la matriz en donde se verifica si en ese momento
+     * existe un carro
+     * @return true o false si existe un carro en la posicion de la matriz
+     */
+    private Boolean existePersona(Componente cebra) {
+        Boolean respuesta = false;
+        for (int k = 0; k < panel.getPersonasMovimiento().size() && !respuesta; k++) {
+            if (cebra.getArea().contains(new Point((int) panel.getPersonasMovimiento().get(k).getArea().getX(), (int) panel.getPersonasMovimiento().get(k).getArea().getY()))) {
+                System.out.println("haypeaton");
+                respuesta = true;
             }
         }
         return respuesta;

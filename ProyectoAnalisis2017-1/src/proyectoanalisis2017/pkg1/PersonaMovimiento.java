@@ -83,6 +83,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
                     sentido = false;
                 }
                 if (sentido) {
+                    setRuta("per2");
                     while ((int) getArea().getY() < auxY) {
                         try {
 //                            pasar((int) getArea().getX(), (int) getArea().getY() + (int) getArea().getHeight(), 1);
@@ -96,6 +97,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
                     getArea().setLocation((int) getArea().getX(), auxY);
                     panel.repaint();
                 } else {
+                    setRuta("per2");
                     while ((int) getArea().getY() > auxY) {
                         try {
 //                            pasar((int) getArea().getX(), (int) getArea().getY(), 0);
@@ -124,6 +126,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
                     sentido = false;
                 }
                 if (sentido) {
+                    setRuta("per1");
                     while ((int) getArea().getX() < auxX) {
                         try {
                             getArea().setLocation((int) getArea().getX() + 10, (int) getArea().getY());
@@ -138,6 +141,7 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
 
                     panel.repaint();
                 } else {
+                    setRuta("per1");
                     while ((int) getArea().getX() > auxX) {
                         try {
                             getArea().setLocation((int) getArea().getX() - 10, (int) getArea().getY());
@@ -165,15 +169,22 @@ public class PersonaMovimiento extends EntidadMovimiento implements Runnable {
             }
         }
         if (getTipo() != 0) {
-            buscarCamino(m);
-            setTipo(0);
-            destinos = new LinkedList<>();
-            setCiudad(panel.copiarCiudad(panel.getCiudadPersonas()));
-            GrafoNoDirigido auxGrafo = new GrafoNoDirigido(ciudad.getCantidadNodos());
-            auxGrafo.crearGrafo(panel.copiarCiudad(ciudad));
-            auxGrafo.completarGrafo(panel.copiarCiudad(ciudad));
-            setGrafo(auxGrafo);
-            iniciar();
+            try {
+                Thread.sleep(1000);
+                buscarCamino(m);
+                System.out.println(getCamino().getFirst().getX() + "------" + getCamino().getFirst().getY());
+
+                setTipo(0);
+                destinos = new LinkedList<>();
+                setCiudad(panel.copiarCiudad(panel.getCiudadPersonas()));
+                GrafoNoDirigido auxGrafo = new GrafoNoDirigido(ciudad.getCantidadNodos());
+                auxGrafo.crearGrafo(panel.copiarCiudad(ciudad));
+                auxGrafo.completarGrafo(panel.copiarCiudad(ciudad));
+                setGrafo(auxGrafo);
+                iniciar();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PersonaMovimiento.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

@@ -19,6 +19,7 @@ public class Componente implements Cloneable {
     private String nombre;// nos indica el nombre del compoente 
     private int idNodo;//si es -1 no es nodo y >=0 si es un nodo y el valor es el identificador del nodo
     private Rectangle area; //Area que tiene el componente dentro de la ciudad
+    private Boolean nuevo;
 
     public Componente() {
     }
@@ -34,6 +35,7 @@ public class Componente implements Cloneable {
         this.idNodo = -1;
         this.tipoVia = "";
         area = null;
+        this.nuevo=false;
     }
 
     @Override
@@ -90,5 +92,14 @@ public class Componente implements Cloneable {
     public void setArea(Rectangle area) {
         this.area = area;
     }
+
+    public void setNuevo(Boolean nuevo) {
+        this.nuevo = nuevo;
+    }
+
+    public Boolean getNuevo() {
+        return nuevo;
+    }
+    
 
 }
